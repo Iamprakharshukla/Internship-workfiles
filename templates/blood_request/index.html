@@ -4,10 +4,17 @@
 {% block content %}
 <div class="bg-gray-50 min-h-screen font-sans">
 
-    <!-- Header Title -->
-    <div class="text-center pt-10 pb-6">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-400 uppercase tracking-widest">Blood Request</h1>
-        <p class="text-xs text-gray-500 mt-2">("Life" is a gift! Share it.)</p>
+    <!-- Hero Section -->
+    <div class="relative w-full h-64 md:h-[400px] overflow-hidden mb-8">
+        <!-- Background Image -->
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{% static 'img/hero_bg.png' %}');"></div>
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+        <!-- Text Content -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4 z-10">
+            <h1 class="text-5xl md:text-6xl font-extrabold uppercase tracking-wider mb-2 drop-shadow-lg">BLOOD REQUEST</h1>
+            <p class="text-lg md:text-xl font-medium tracking-wide drop-shadow-md">Post or find blood request in you city</p>
+        </div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
