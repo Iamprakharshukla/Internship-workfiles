@@ -7,13 +7,16 @@
     <!-- Hero Section -->
     <div class="relative w-full h-64 md:h-[400px] overflow-hidden mb-8">
         <!-- Background Image -->
-        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{% static 'img/hero_bg.png' %}');"></div>
+        <div class="absolute inset-0 bg-cover bg-center"
+            style="background-image: url('{% static 'img/hero_bg.png' %}');"></div>
         <!-- Overlay -->
         <div class="absolute inset-0 bg-black bg-opacity-60"></div>
         <!-- Text Content -->
         <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4 z-10">
-            <h1 class="text-5xl md:text-6xl font-extrabold uppercase tracking-wider mb-2 drop-shadow-lg">BLOOD REQUEST</h1>
-            <p class="text-lg md:text-xl font-medium tracking-wide drop-shadow-md">Post or find blood request in you city</p>
+            <h1 class="text-5xl md:text-6xl font-extrabold uppercase tracking-wider mb-2 drop-shadow-lg">BLOOD REQUEST
+            </h1>
+            <p class="text-lg md:text-xl font-medium tracking-wide drop-shadow-md">Post or find blood request in you
+                city</p>
         </div>
     </div>
 
@@ -34,8 +37,10 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
             <!-- LEFT COLUMN: Form -->
-            <div class="lg:col-span-4" id="view-donor">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
+            <div class="lg:col-span-4">
+                <!-- DONOR FORM -->
+                <div id="view-donor"
+                    class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-1 h-full bg-brand-red"></div>
                     <h2 class="text-xl font-bold text-brand-red mb-6 uppercase border-b pb-2">User Registration</h2>
 
@@ -119,6 +124,106 @@
                         <button type="submit"
                             class="w-full mt-6 bg-brand-red text-white py-3 rounded font-bold shadow-md hover:bg-red-700 transition-colors uppercase tracking-wider text-sm">
                             Submit Request
+                        </button>
+                    </form>
+                </div>
+
+                <!-- RECIPIENT FORM (Initially Hidden) -->
+                <div id="view-recipient"
+                    class="hidden bg-white rounded-xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-brand-red"></div>
+                    <h2 class="text-xl font-bold text-brand-red mb-6 uppercase border-b pb-2">Blood Request</h2>
+
+                    <form id="recipient-form" onsubmit="handleRecipientSubmit(event)" class="space-y-4">
+                        {% csrf_token %}
+                        <!-- City -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">City *</label>
+                            <input type="text" name="city" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Select City">
+                        </div>
+
+                        <!-- Pincode -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Pincode *</label>
+                            <input type="text" name="pin_code" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Select Pincode">
+                        </div>
+
+                        <!-- Blood Group -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Blood Group *</label>
+                            <select name="blood_group" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors bg-white">
+                                <option value="" disabled selected>Select</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+
+                        <!-- Blood Unit/Bags -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Blood Unit/Bags
+                                *</label>
+                            <input type="number" name="units" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Units">
+                        </div>
+
+                        <!-- Address Line 1 -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Address Line 1</label>
+                            <input type="text" name="address_line_1"
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Address Line 1">
+                        </div>
+
+                        <!-- Address Line 2 -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Address Line 2 *</label>
+                            <input type="text" name="address_line_2" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Address Line 2">
+                        </div>
+
+                        <!-- Contact Person -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Contact Person *</label>
+                            <input type="text" name="contact_person" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Contact Person">
+                        </div>
+
+                        <!-- Contact Phone -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Contact Person Phone
+                                *</label>
+                            <input type="tel" name="contact_phone" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Contact Phone">
+                        </div>
+
+                        <!-- File Input (Non-functional in JSON for now) -->
+                        <div>
+                            <label class="block text-xs font-bold text-brand-red uppercase mb-1">Blood Request Form
+                                *</label>
+                            <div class="flex items-center space-x-2">
+                                <span
+                                    class="text-xs font-bold text-brand-red uppercase cursor-pointer hover:underline">UPLOAD</span>
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full mt-6 bg-brand-red text-white py-3 rounded font-bold shadow-md hover:bg-red-700 transition-colors uppercase tracking-wider text-sm">
+                            Submit
                         </button>
                     </form>
                 </div>

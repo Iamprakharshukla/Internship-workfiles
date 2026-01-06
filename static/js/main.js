@@ -1,37 +1,36 @@
 function switchView(view) {
-    const donorBtn = document.getElementById('btn-donor');
-    const recipientBtn = document.getElementById('btn-recipient');
-    const bg = document.getElementById('toggle-bg');
-
     const donorView = document.getElementById('view-donor');
     const recipientView = document.getElementById('view-recipient');
 
     if (view === 'donor') {
-        // UI State
-        bg.style.transform = 'translateX(0)';
-        donorBtn.classList.add('text-brand-red');
-        donorBtn.classList.remove('text-gray-600');
-        recipientBtn.classList.remove('text-brand-red');
-        recipientBtn.classList.add('text-gray-600');
-
         // View State
         donorView.classList.remove('hidden');
         recipientView.classList.add('hidden');
+        // Ensure buttons update correctly (this part was missing explicit ID handling in previous logic if I recall correctly, but existing logic seems to rely on btn-donor/btn-recipient which might not exist in HTML yet. I'll stick to 'tab-donor' and 'tab-recipient' IDs from the HTML file I viewed earlier)
+        document.getElementById('tab-donor').classList.add('bg-brand-red', 'text-white', 'border-brand-red');
+        document.getElementById('tab-donor').classList.remove('bg-white', 'text-gray-500', 'border-gray-200');
+
+        document.getElementById('tab-recipient').classList.remove('bg-brand-red', 'text-white', 'border-brand-red');
+        document.getElementById('tab-recipient').classList.add('bg-white', 'text-gray-500', 'border-gray-200');
+
         setTimeout(() => {
             donorView.classList.remove('opacity-0');
             recipientView.classList.add('opacity-0');
         }, 10);
     } else {
         // UI State
-        bg.style.transform = 'translateX(100%)';
-        recipientBtn.classList.add('text-brand-red');
-        recipientBtn.classList.remove('text-gray-600');
-        donorBtn.classList.remove('text-brand-red');
-        donorBtn.classList.add('text-gray-600');
+        // bg.style.transform = 'translateX(100%)'; // Removing 'bg' ref if it doesn't exist or logic is simpler
 
         // View State
         recipientView.classList.remove('hidden');
         donorView.classList.add('hidden');
+
+        document.getElementById('tab-recipient').classList.add('bg-brand-red', 'text-white', 'border-brand-red');
+        document.getElementById('tab-recipient').classList.remove('bg-white', 'text-gray-500', 'border-gray-200');
+
+        document.getElementById('tab-donor').classList.remove('bg-brand-red', 'text-white', 'border-brand-red');
+        document.getElementById('tab-donor').classList.add('bg-white', 'text-gray-500', 'border-gray-200');
+
         setTimeout(() => {
             recipientView.classList.remove('opacity-0');
             donorView.classList.add('opacity-0');
@@ -65,7 +64,7 @@ async function handleDonorSubmit(event) {
     data.consent_given = form.consent_given.checked;
 
     try {
-        const response = await fetch('/api/register/', {
+        const response = await fetch('/blood-request/api/register_donor/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -99,6 +98,36 @@ async function handleDonorSubmit(event) {
     }
 }
 
+async function handleRecipientSubmit(event) {
+    event.preventDefault();
+    const form = event.target;
+    // Map form data to JSON object
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+        const response = await fetch('/blood-request/api/blood_request_create/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+            showModal('Success', result.message, true);
+            form.reset();
+        } else {
+            showModal('Submission Failed', result.error || 'Unknown error', false);
+        }
+    } catch (error) {
+        showModal('System Notification', 'The service is temporarily unavailable. Please try again later.', false);
+    }
+}
+
 async function searchDonors() {
     const group = document.getElementById('search-group').value;
     const city = document.getElementById('search-city').value;
@@ -107,7 +136,7 @@ async function searchDonors() {
     grid.innerHTML = '<div class="col-span-full text-center py-12"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-red mx-auto"></div></div>';
 
     try {
-        const url = new URL('/api/search/', window.location.origin);
+        const url = new URL('/blood-request/api/search_donors/', window.location.origin);
         if (group) url.searchParams.append('blood_group', group);
         if (city) url.searchParams.append('city', city);
 
