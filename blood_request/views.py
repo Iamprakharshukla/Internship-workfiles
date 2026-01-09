@@ -97,3 +97,20 @@ def blood_request_create(request):
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)}, status=500)
     return JsonResponse({"success": False, "error": "Invalid request method."}, status=405)
+    return JsonResponse({"success": False, "error": "Invalid request method."}, status=405)
+
+from .models import Campaign, Report
+
+def home_view(request):
+    """
+    Renders the homepage with dynamic content.
+    """
+    campaigns = Campaign.objects.all().order_by('-created_at')[:3]
+    # Assuming 'Reports' map to 'Projects' section or similar
+    reports = Report.objects.all().order_by('-published_date')[:3]
+    
+    context = {
+        'campaigns': campaigns,
+        'reports': reports
+    }
+    return render(request, 'home.html', context)

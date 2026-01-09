@@ -43,3 +43,46 @@ class BloodRequest(models.Model):
 
     def __str__(self):
         return f"Request: {self.blood_group} by {self.contact_person} in {self.city}"
+
+# --- CMS Models ---
+class Report(models.Model):
+    title = models.CharField(max_length=200)
+    file = models.FileField(upload_to='reports/')
+    published_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+class Campaign(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    goal_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    raised_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    image = models.ImageField(upload_to='campaigns/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+# --- Project Management Models ---
+from django.contrib.auth.models import User
+
+class Task(models.Model):
+    STATUS_CHOICES = [
+        ('TODO', 'To Do'),
+        ('IN_PROGRESS', 'In Progress'),
+        ('REVIEW', 'Review'),
+        ('DONE', 'Done'),
+    ]
+
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='tasks')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='TODO')
+    due_date = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.title} ({self.get_status_display()})"

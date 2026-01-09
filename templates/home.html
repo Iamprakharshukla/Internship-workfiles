@@ -214,21 +214,27 @@
     </h2>
 
     <div class="causes-cards">
-      <!-- Card 1 -->
+      {% for campaign in campaigns %}
+      <!-- Card {{ forloop.counter }} -->
       <div class="cause-card">
         <span class="cause-tag health">Health</span>
 
-        <img src="{% static 'assets/p1.jpeg' %}" alt="Cause image" class="cause-image" />
+        {% if campaign.image %}
+          <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="cause-image" />
+        {% else %}
+          <img src="{% static 'assets/p1.jpeg' %}" alt="Placeholder" class="cause-image" />
+        {% endif %}
 
         <div class="cause-goal">
-          Goal: ₹ 200000
+          Goal: ₹ {{ campaign.goal_amount }}
           <div class="goal-bar">
-            <span></span>
+            <!-- Calculate width dynamically if desired, or random for demo -->
+            <span style="width: 50%;"></span>
           </div>
         </div>
 
         <h3 class="cause-heading">
-          Appeal For Support: Help Puvendra Sing...
+          {{ campaign.title }}
         </h3>
 
         <hr />
@@ -236,7 +242,7 @@
         <div class="cause-meta">
           <div>
             <strong>Date:</strong>
-            <span>04/01/2026</span>
+            <span>{{ campaign.created_at|date:"d/m/Y" }}</span>
           </div>
           <div>
             <strong>By:</strong>
@@ -244,68 +250,9 @@
           </div>
         </div>
       </div>
-
-      <!-- Card 2 -->
-      <div class="cause-card">
-        <span class="cause-tag livelihood">Livelihood</span>
-
-        <img src="{% static 'assets/p2.jpg' %}" alt="Cause image" class="cause-image" />
-
-        <div class="cause-goal">
-          Goal: ₹ 60000
-          <div class="goal-bar">
-            <span></span>
-          </div>
-        </div>
-
-        <h3 class="cause-heading">
-          Empower A Single Mother’s Business...
-        </h3>
-
-        <hr />
-
-        <div class="cause-meta">
-          <div>
-            <strong>Date:</strong>
-            <span>30/06/2025</span>
-          </div>
-          <div>
-            <strong>By:</strong>
-            <span>Gyanendra Mishra</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="cause-card">
-        <span class="cause-tag health">Health</span>
-
-        <img src="{% static 'assets/p3.jpeg' %}" alt="Cause image" class="cause-image" />
-
-        <div class="cause-goal">
-          Goal: ₹ 100000
-          <div class="goal-bar">
-            <span></span>
-          </div>
-        </div>
-
-        <h3 class="cause-heading">
-          ⭐ Support Sachin In Fight Against...
-        </h3>
-
-        <hr />
-
-        <div class="cause-meta">
-          <div>
-            <strong>Date:</strong>
-            <span>05/04/2025</span>
-          </div>
-          <div>
-            <strong>By:</strong>
-            <span>UDAAN Society</span>
-          </div>
-        </div>
-      </div>
+      {% empty %}
+      <p>No active campaigns at the moment.</p>
+      {% endfor %}
     </div>
 
     <div class="causes-footer">
