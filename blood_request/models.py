@@ -65,6 +65,16 @@ class Campaign(models.Model):
     def __str__(self):
         return self.title
 
+class Project(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    image = models.ImageField(upload_to='projects/')
+    date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
 # --- Project Management Models ---
 from django.contrib.auth.models import User
 

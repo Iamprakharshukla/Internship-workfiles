@@ -99,18 +99,19 @@ def blood_request_create(request):
     return JsonResponse({"success": False, "error": "Invalid request method."}, status=405)
     return JsonResponse({"success": False, "error": "Invalid request method."}, status=405)
 
-from .models import Campaign, Report
+from .models import Campaign, Report, Project
 
 def home_view(request):
     """
     Renders the homepage with dynamic content.
     """
     campaigns = Campaign.objects.all().order_by('-created_at')[:3]
-    # Assuming 'Reports' map to 'Projects' section or similar
-    reports = Report.objects.all().order_by('-published_date')[:3]
+    projects = Project.objects.all().order_by('-date')[:3]
+    # Keep Reports if needed, or remove if Projects replaces it entirely. 
+    # The user asked to replace "Projects" section which was static.
     
     context = {
         'campaigns': campaigns,
-        'reports': reports
+        'projects': projects
     }
     return render(request, 'home.html', context)

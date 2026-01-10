@@ -35,58 +35,87 @@ if settings.DEBUG and settings.DATABASES['default']['NAME'] == ':memory:' and 'r
             staff.save()
             print("Systems > Staff user 'staff' created.")
 
-        # Auto-Create Initial Campaigns (Seeding Data)
-        from blood_request.models import Campaign
-        from django.core.files import File
-        from django.conf import settings
+        # Auto-Create Initial Data (Seeding)
+        from blood_request.models import Campaign, Project
+        import datetime
+        import shutil
         import os
-        
-        if not Campaign.objects.exists():
-            print("Systems > Seeding Initial Campaigns...")
-            
-            # Helper to get static file
-            def get_static_image(filename):
-                path = os.path.join(settings.BASE_DIR, 'static', 'assets', filename)
-                if os.path.exists(path):
-                    return open(path, 'rb')
-                return None
+        from django.conf import settings
 
-            campaigns_data = [
-                {
-                    "title": "Appeal For Support: Help Puvendra Singh",
-                    "goal": 200000,
-                    "raised": 12000,
-                    "img": "p1.jpeg",
-                    "desc": "Help Puvendra Singh in his fight against critical illness."
-                },
-                {
-                    "title": "Empower A Single Mother’s Business",
-                    "goal": 60000,
-                    "raised": 45000,
-                    "img": "p2.jpg",
-                    "desc": "Support a single mother to establish her livelihood and support her family."
-                },
-                {
-                    "title": "Support Sachin In Fight Against Cancer",
-                    "goal": 100000,
-                    "raised": 85000,
-                    "img": "p3.jpeg",
-                    "desc": "Sachin needs your help to afford life-saving treatment."
-                }
-            ]
-            
-            for c in campaigns_data:
-                img_file = get_static_image(c['img'])
-                if img_file:
-                    camp = Campaign(
-                        title=c['title'],
-                        description=c['desc'],
-                        goal_amount=c['goal'],
-                        raised_amount=c['raised']
-                    )
-                    camp.image.save(c['img'], File(img_file), save=True)
-                    img_file.close()
-                    print(f"Systems > Created Campaign: {c['title']}")
+        def seed_image_data(model_cls, data_list, folder):
+            if not model_cls.objects.exists():
+                print(f"Systems > Seeding {model_cls.__name__}...")
+                for item in data_list:
+                    # Prepare paths
+                    img_name = item.pop('img_filename')
+                    static_path = os.path.join(settings.BASE_DIR, 'static', 'assets', img_name)
+                    media_path = os.path.join(settings.MEDIA_ROOT, folder, img_name)
+                    
+                    # Ensure media folder exists
+                    os.makedirs(os.path.dirname(media_path), exist_ok=True)
+                    
+                    # Copy only if missing
+                    if not os.path.exists(media_path) and os.path.exists(static_path):
+                        shutil.copy(static_path, media_path)
+                    
+                    # Create object
+                    obj = model_cls(**item)
+                    
+                    # Set image path if valid
+                    if os.path.exists(media_path):
+                        obj.image.name = f"{folder}/{img_name}"
+                    
+                    obj.save()
+                    print(f"Systems > Created {model_cls.__name__}: {item.get('title')}")
+
+        # Campaigns Data
+        campaigns = [
+            {
+                "title": "Appeal For Support: Help Puvendra Singh",
+                "goal_amount": 200000,
+                "raised_amount": 12000,
+                "img_filename": "p1.jpeg",
+                "description": "Help Puvendra Singh in his fight against critical illness."
+            },
+            {
+                "title": "Empower A Single Mother’s Business",
+                "goal_amount": 60000,
+                "raised_amount": 45000,
+                "img_filename": "p2.jpg",
+                "description": "Support a single mother to establish her livelihood and support her family."
+            },
+            {
+                "title": "Support Sachin In Fight Against Cancer",
+                "goal_amount": 100000,
+                "raised_amount": 85000,
+                "img_filename": "p3.jpeg",
+                "description": "Sachin needs your help to afford life-saving treatment."
+            }
+        ]
+        seed_image_data(Campaign, campaigns, 'campaigns')
+
+        # Projects Data
+        projects = [
+            {
+                "title": "Enabling Future Through Youth Skill Development",
+                "description": "UDAAN Society Joins Hands with Bandhan Skill Development Centre for Youth Empowerment.",
+                "img_filename": "p4.jpg",
+                "date": datetime.date(2025, 5, 26)
+            },
+            {
+                "title": "Shiksha Plus Initiative With Shiv Nadar Foundation",
+                "description": "The Shiksha Plus initiative is a program by the Shiv Nadar Foundation focused on adult literacy.",
+                "img_filename": "p5.jpg",
+                "date": datetime.date(2024, 12, 4)
+            },
+            {
+                "title": "Operation And Management Of Shelter Homes",
+                "description": "The shelter homes are constructed under the central government’s Shelter for Urban Homeless scheme.",
+                "img_filename": "p6.webp",
+                "date": datetime.date(2024, 2, 16)
+            }
+        ]
+        seed_image_data(Project, projects, 'projects')
 
     except Exception as e:
         print(f"Systems > Initialization Error: {e}")

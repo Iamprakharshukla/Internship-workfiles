@@ -273,15 +273,20 @@
     </h2>
 
     <div class="projects-grid">
-      <!-- Card 1 -->
+      {% for project in projects %}
+      <!-- Card {{ forloop.counter }} -->
       <div class="project-card">
-        <img src="{% static 'assets/p4.jpg' %}" alt="Project image" />
+        {% if project.image %}
+          <img src="{{ project.image.url }}" alt="{{ project.title }}" />
+        {% else %}
+          <img src="{% static 'assets/p4.jpg' %}" alt="Placeholder" />
+        {% endif %}
 
         <div class="project-content">
-          <h3>Enabling Future Through Youth...</h3>
+          <h3>{{ project.title|truncatechars:35 }}</h3>
 
           <p class="project-desc">
-            ✨ UDAAN Society Joins Hands with Bandhan Skill Development Centre for Youth...
+            {{ project.description|truncatechars:100 }}
           </p>
 
           <a href="#" class="project-btn">Read More</a>
@@ -289,52 +294,13 @@
           <hr />
 
           <p class="project-date">
-            📅 Date: May 26, 2025
+            📅 Date: {{ project.date|date:"F j, Y" }}
           </p>
         </div>
       </div>
-
-      <!-- Card 2 -->
-      <div class="project-card">
-        <img src="{% static 'assets/p5.jpg' %}" alt="Project image" />
-
-        <div class="project-content">
-          <h3>Shiksha Plus Initiative With Shiv Nadar...</h3>
-
-          <p class="project-desc">
-            The Shiksha Plus initiative is a program by the Shiv Nadar Foundation...
-          </p>
-
-          <a href="#" class="project-btn">Read More</a>
-
-          <hr />
-
-          <p class="project-date">
-            📅 Date: December 4, 2024
-          </p>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="project-card">
-        <img src="{% static 'assets/p6.webp' %}" alt="Project image" />
-
-        <div class="project-content">
-          <h3>Operation And Management Of Shelt...</h3>
-
-          <p class="project-desc">
-            The shelter homes are constructed under the central government’s Shelter for Urban...
-          </p>
-
-          <a href="#" class="project-btn">Read More</a>
-
-          <hr />
-
-          <p class="project-date">
-            📅 Date: February 16, 2024
-          </p>
-        </div>
-      </div>
+      {% empty %}
+      <p>No recent projects found.</p>
+      {% endfor %}
     </div>
 
     <div class="projects-footer">

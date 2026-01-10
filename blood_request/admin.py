@@ -1,6 +1,5 @@
 from django.contrib import admin
-from django.core.mail import send_mail
-from .models import BloodDonor, BloodRequest, Report, Campaign, Task
+from .models import BloodDonor, BloodRequest, Report, Campaign, Task, Project
 
 # Register your models here.
 
@@ -18,6 +17,10 @@ class BloodRequestAdmin(admin.ModelAdmin):
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
     list_display = ('title', 'published_date', 'created_at')
+
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ('title', 'date', 'created_at')
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
