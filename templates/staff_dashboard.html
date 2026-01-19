@@ -33,7 +33,7 @@
                     <thead>
                         <tr class="bg-gray-50 text-gray-600 text-sm">
                             <th class="p-4 font-semibold">Title</th>
-                            <th class="p-4 font-semibold">Description</th>
+                            <th class="p-4 font-semibold">Priority</th>
                             <th class="p-4 font-semibold">Status</th>
                             <th class="p-4 font-semibold">Due Date</th>
                             <th class="p-4 font-semibold">Actions</th>
@@ -42,8 +42,21 @@
                     <tbody class="divide-y divide-gray-100">
                         {% for task in tasks %}
                         <tr class="hover:bg-gray-50 transition">
-                            <td class="p-4 font-medium text-gray-900">{{ task.title }}</td>
-                            <td class="p-4 text-gray-600 text-sm">{{ task.description|truncatechars:50 }}</td>
+                            <td class="p-4 font-medium text-gray-900">
+                                {{ task.title }}
+                                {% if task.remarks %}
+                                <div class="text-xs text-gray-400 mt-1">{{ task.remarks|truncatechars:30 }}</div>
+                                {% endif %}
+                            </td>
+                            <td class="p-4">
+                                <span class="px-2 py-1 rounded text-xs font-bold
+                  {% if task.priority == 'Critical' %} bg-red-100 text-red-700
+                  {% elif task.priority == 'High' %} bg-orange-100 text-orange-700
+                  {% elif task.priority == 'Medium' %} bg-blue-100 text-blue-700
+                  {% else %} bg-gray-100 text-gray-600 {% endif %}">
+                                    {{ task.priority }}
+                                </span>
+                            </td>
                             <td class="p-4">
                                 <span class="px-3 py-1 rounded-full text-xs font-semibold
                   {% if task.status == 'Done' %} bg-green-100 text-green-700

@@ -95,6 +95,7 @@ if settings.DEBUG and settings.DATABASES['default']['NAME'] == ':memory:' and 'r
                 description="Compile the financial and impact data for the 2024-2025 annual report.",
                 assigned_to=u,
                 status="To Do",
+                priority="High",
                 due_date=datetime.date.today() + datetime.timedelta(days=7)
             )
             print("Systems > Assigned Demo Task to 'staff1'.")
