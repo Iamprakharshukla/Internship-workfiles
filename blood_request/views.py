@@ -122,8 +122,16 @@ from .models import Task
 @login_required
 def staff_dashboard(request):
     """
-    Staff Dashboard: Kanban Board View.
+    Staff Dashboard: Kanban Board View with Bulletin and Task Grouping.
     """
+    from .models import Announcement, BloodDonor
+    
+    # Fetch Active Announcements
+    announcements = Announcement.objects.filter(is_active=True).order_by('-created_at')
+    
+    # Impact Stats
+    total_donors = BloodDonor.objects.count()
+
     # Fetch all tasks for the user
     all_tasks = Task.objects.filter(assigned_to=request.user).order_by('due_date')
     
@@ -133,6 +141,8 @@ def staff_dashboard(request):
     done_tasks = [t for t in all_tasks if t.status == 'Done']
 
     context = {
+        'announcements': announcements,
+        'total_donors': total_donors,
         'todo_tasks': todo_tasks,
         'inprogress_tasks': inprogress_tasks,
         'done_tasks': done_tasks,
