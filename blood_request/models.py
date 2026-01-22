@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class BloodDonor(models.Model):
     BLOOD_GROUP_CHOICES = [
@@ -70,6 +71,7 @@ class Project(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='projects/')
     date = models.DateField()
+    managers = models.ManyToManyField(User, related_name='managed_projects', blank=True, help_text="Managers responsible for this project")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -93,6 +95,7 @@ class Task(models.Model):
         ('Critical', 'Critical'),
     ]
 
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True, related_name='tasks')
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='tasks')
@@ -114,3 +117,28 @@ class Announcement(models.Model):
 
     def __str__(self):
         return self.title
+
+# --- NGO Suite: Enhanced Data Structures (Phase 6) ---
+
+class StaffProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    phone_number = models.CharField(max_length=15, blank=True, null=True, help_text="Contact number for urgent coordination")
+    
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
+
+class SubTask(models.Model):
+    STATUS_CHOICES = [
+        ('To Do', 'To Do'),
+        ('In Progress', 'In Progress'),
+        ('Done', 'Done'),
+    ]
+    
+    parent_task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='subtasks')
+    title = models.CharField(max_length=200)
+    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='To Do')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Sub: {self.title} ({self.status})"
