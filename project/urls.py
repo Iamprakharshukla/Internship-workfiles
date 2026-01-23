@@ -12,4 +12,5 @@ urlpatterns = [
     path("portal/manager/", manager_dashboard, name="manager_dashboard"), # New Team View
     path("portal/task/<int:pk>/update/", update_task_status, name="update_task_status"),
     path("blood-request/", include("blood_request.urls")),
+    path("chat/", include("chatbot_service.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
