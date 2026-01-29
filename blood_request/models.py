@@ -103,6 +103,12 @@ class Task(models.Model):
     priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default='Medium')
     remarks = models.TextField(blank=True, help_text="Staff notes or completion comments")
     due_date = models.DateField(null=True, blank=True)
+    
+    # GPS Tagging (Phase 9)
+    completion_lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    completion_lng = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    completion_timestamp = models.DateTimeField(null=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -142,3 +148,40 @@ class SubTask(models.Model):
 
     def __str__(self):
         return f"Sub: {self.title} ({self.status})"
+
+# --- CRM & Interactions (Phase 8) ---
+
+# --- CRM & Interactions (Phase 8) ---
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+
+class Interaction(models.Model):
+    INTERACTION_TYPES = [
+        ('Call', 'Call'),
+        ('Meeting', 'Meeting'),
+        ('Email', 'Email'),
+        ('Visit', 'Visit'),
+    ]
+    
+    OUTCOME_CHOICES = [
+        ('Interested', 'Interested'),
+        ('Follow-up Scheduled', 'Follow-up Scheduled'),
+        ('Closed', 'Closed'),
+        ('Not Interested', 'Not Interested'),
+    ]
+
+    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='interactions')
+    
+    # Generic Relation (Can link to BloodDonor, BloodRequest, Project, etc.)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    entity = GenericForeignKey('content_type', 'object_id')
+    
+    interaction_type = models.CharField(max_length=20, choices=INTERACTION_TYPES)
+    outcome = models.CharField(max_length=50, choices=OUTCOME_CHOICES, default='Interested')
+    notes = models.TextField(blank=True)
+    next_followup_date = models.DateField(null=True, blank=True, help_text="If set, a task will be auto-created")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.interaction_type} by {self.staff.username} ({self.outcome})"

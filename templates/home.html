@@ -63,7 +63,7 @@
           <a href="/blood-request/" class="nav-link">Blood Request</a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">Campaigns</a>
+          <a href="{% url 'campaign_list' %}" class="nav-link">Campaigns</a>
         </li>
         <li class="nav-item">
           <a href="#" class="donate-btn">
@@ -220,9 +220,9 @@
         <span class="cause-tag health">Health</span>
 
         {% if campaign.image %}
-          <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="cause-image" />
+        <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="cause-image" />
         {% else %}
-          <img src="{% static 'assets/p1.jpeg' %}" alt="Placeholder" class="cause-image" />
+        <img src="{% static 'assets/p1.jpeg' %}" alt="Placeholder" class="cause-image" />
         {% endif %}
 
         <div class="cause-goal">
@@ -256,7 +256,7 @@
     </div>
 
     <div class="causes-footer">
-      <a href="#" class="view-more">View more..</a>
+      <a href="{% url 'campaign_list' %}" class="view-more">View more..</a>
 
       <div class="cause-actions">
         <a href="#" class="btn-red">₹ Donate</a>
@@ -277,9 +277,9 @@
       <!-- Card {{ forloop.counter }} -->
       <div class="project-card">
         {% if project.image %}
-          <img src="{{ project.image.url }}" alt="{{ project.title }}" />
+        <img src="{{ project.image.url }}" alt="{{ project.title }}" />
         {% else %}
-          <img src="{% static 'assets/p4.jpg' %}" alt="Placeholder" />
+        <img src="{% static 'assets/p4.jpg' %}" alt="Placeholder" />
         {% endif %}
 
         <div class="project-content">

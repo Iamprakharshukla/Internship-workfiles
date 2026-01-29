@@ -198,3 +198,10 @@ def manager_dashboard(request):
         'stats': stats
     }
     return render(request, 'manager_dashboard.html', context)
+
+def campaign_list(request):
+    """
+    Public Campaign Listing Page
+    """
+    campaigns = Campaign.objects.all().order_by('-created_at')
+    return render(request, 'campaigns.html', {'campaigns': campaigns})

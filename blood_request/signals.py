@@ -69,3 +69,25 @@ def notify_managers_blood_request(sender, instance, created, **kwargs):
                 )
             except Exception as e:
                 print(f"Signals > Failed to send manager alert: {e}")
+
+from .models import Interaction
+@receiver(post_save, sender=Interaction)
+def auto_create_followup_task(sender, instance, created, **kwargs):
+    """
+    Automatically creates a Task if the Interaction outcome is 'Follow-up Scheduled'.
+    """
+    if instance.outcome == 'Follow-up Scheduled' and instance.next_followup_date:
+        # Check if a task already exists to avoid duplicates (optional but good practice)
+        # For this MVP, we'll just create it.
+        
+        task_title = f"Follow-up: {instance.interaction_type} with {instance.entity}"
+        
+        print(f"Signals > Auto-generating Follow-up Task for {instance.staff.username}...")
+        Task.objects.create(
+            title=task_title,
+            description=f"Auto-generated from Interaction.\nNotes: {instance.notes}",
+            assigned_to=instance.staff,
+            due_date=instance.next_followup_date,
+            priority='High',
+            status='To Do'
+        )

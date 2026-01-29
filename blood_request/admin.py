@@ -34,6 +34,13 @@ class SubTaskAdmin(admin.ModelAdmin):
     list_display = ('title', 'parent_task', 'status', 'assigned_to')
     list_filter = ('status',)
 
+from .models import Interaction
+@admin.register(Interaction)
+class InteractionAdmin(admin.ModelAdmin):
+    list_display = ('staff', 'interaction_type', 'outcome', 'next_followup_date', 'created_at')
+    list_filter = ('staff', 'interaction_type', 'outcome')
+    search_fields = ('notes',)
+
 @admin.register(BloodDonor)
 class BloodDonorAdmin(admin.ModelAdmin):
     list_display = ('name', 'blood_group', 'city', 'phone', 'created_at')
