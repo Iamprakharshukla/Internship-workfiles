@@ -16,6 +16,7 @@ urlpatterns = [
     path("projects/", project_list, name="project_list"),
     path("projects/<slug:slug>/", project_detail, name="project_detail"),
      path("blogs/", lambda request: render(request, "blogs.html"), name="blogs"),
+      path('', include('blood_request.urls')),
     path("blood-request/", include("blood_request.urls")),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

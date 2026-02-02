@@ -6,6 +6,8 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import BloodDonor, BloodRequest
 from .schemas import DonorSchema
 from pydantic import ValidationError
+# from django.shortcuts import render
+from .models import Blog, Project
 
 @ensure_csrf_cookie
 def index(request):
@@ -219,3 +221,12 @@ def project_detail(request, slug):
     """
     project = get_object_or_404(Project, slug=slug)
     return render(request, 'project_detail.html', {'project': project})
+
+def blogs_page(request):
+    blogs = Blog.objects.all().order_by('-created_at')
+    return render(request, 'blogs.html', {'blogs': blogs})
+
+
+def projects_page(request):
+    projects = Project.objects.all().order_by('-created_at')
+    return render(request, 'projects.html', {'projects': projects})

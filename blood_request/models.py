@@ -187,3 +187,11 @@ class Interaction(models.Model):
 
     def __str__(self):
         return f"{self.interaction_type} by {self.staff.username} ({self.outcome})"
+class Blog(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    image = models.ImageField(upload_to='blogs/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
+from .models import Blog, Project
 from .models import BloodDonor, BloodRequest, Report, Campaign, Task, Project, SubTask, Announcement, StaffProfile
 
 # Define an inline admin descriptor for StaffProfile model
@@ -81,3 +82,6 @@ class TaskAdmin(admin.ModelAdmin):
     inlines = [SubTaskInline]
     
     # Note: Email logic moved to signals.py in Phase 5
+
+    admin.site.register(Blog)
+
