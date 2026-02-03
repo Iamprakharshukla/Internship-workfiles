@@ -9,8 +9,7 @@ body {
   color: #333;
 }
 
-/* Navigation Styles - Moved to nav.css */
-@import url('nav.css');
+/* Navigation Styles - Moved to nav.css, included via HTML */
 
 /* Hero Section */
 .hero {
