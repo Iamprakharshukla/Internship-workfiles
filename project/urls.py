@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from blood_request.views import home_view, staff_dashboard, update_task_status, manager_dashboard, campaign_list, project_list, project_detail
+from blood_request.views import home_view, staff_dashboard, update_task_status, manager_dashboard, campaign_list, project_list, project_detail, report_list, blogs_page
 
 from django.conf import settings
 from django.shortcuts import render
@@ -15,8 +15,8 @@ urlpatterns = [
     path("campaigns/", campaign_list, name="campaign_list"),
     path("projects/", project_list, name="project_list"),
     path("projects/<slug:slug>/", project_detail, name="project_detail"),
-     path("blogs/", lambda request: render(request, "blogs.html"), name="blogs"),
-      path('', include('blood_request.urls')),
+    path("blogs/", blogs_page, name="blogs"),
+    path("reports/", report_list, name="report_list"),
     path("blood-request/", include("blood_request.urls")),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
