@@ -233,6 +233,7 @@ def projects_page(request):
     return render(request, 'projects.html', {'projects': projects})
 
 def report_list(request):
+
     return render(request, 'annual_reports.html')
 
 def blog_detail(request, id):
@@ -243,3 +244,7 @@ def blog_detail(request, id):
         'blog': blog,
         'recent_blogs': recent_blogs
     })
+
+    reports = Report.objects.all().order_by('-published_date')
+    return render(request, 'annual_reports.html', {'reports': reports})
+
