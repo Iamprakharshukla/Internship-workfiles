@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ blog.title }}{% endblock %}
+
+{% block content %}
+
+
+<!-- Blog Detail CSS -->
+<link rel="stylesheet" href="{% static 'css/blog_detail.css' %}">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+    <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=500&fit=crop">
+        <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+        <h1>BLOG POST</h1>
+    </div>
+</section>
+
+
+<!-- ================= BREADCRUMB ================= -->
+<div class="breadcrumb">
+    <div class="container">
+
+        <a href="{% url 'home' %}">Home</a>
+        <span class="sep">»</span>
+
+        <a href="{% url 'blogs' %}">Blog</a>
+        <span class="sep">»</span>
+
+        <span class="current">
+            {{ blog.title|truncatechars:40 }}
+        </span>
+
+    </div>
+</div>
+
+
+<!-- ================= BLOG DETAIL ================= -->
+<section class="blog-detail">
+    <div class="container detail-grid">
+
+
+        <!-- ========= LEFT CONTENT ========= -->
+        <div class="blog-main">
+
+            <h1 class="blog-title">
+                {{ blog.title }}
+            </h1>
+
+            <div class="blog-meta">
+                <span>
+                    📅 {{ blog.created_at|date:"F d, Y" }}
+                </span>
+
+                <span>
+                    💬 No Comments
+                </span>
+            </div>
+
+
+            <!-- Blog Image -->
+            <div class="blog-image">
+                <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+            </div>
+
+
+            <!-- Blog Content -->
+            <div class="blog-content">
+
+                {% if blog.description %}
+                   {{ blog.content|safe }}
+
+                {% elif blog.content %}
+                    {{ blog.content|safe }}
+
+                {% else %}
+                    <p>No content available.</p>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ========= RIGHT SIDEBAR ========= -->
+        <aside class="blog-sidebar">
+
+
+            <!-- About Box -->
+            <div class="side-box sidebar-about">
+
+    <img src="{% static 'assets/logo.webp' %}" 
+         alt="UDAAN Society Logo"
+         class="sidebar-logo">
+
+    <p>
+        Empowering communities through education,
+        health and social development.
+    </p>
+
+</div>
+
+<div class="side-box campaign-box">
+
+        <h3>Support a Campaign</h3>
+
+        {% for c in campaigns %}
+
+        <div class="campaign-card">
+
+            <img src="{{ c.image.url }}" alt="{{ c.title }}">
+
+            <div class="campaign-body">
+
+                <h4>{{ c.title|truncatechars:50 }}</h4>
+
+                <a href="{% url 'campaign_detail' c.id %}">
+                    VIEW »
+                </a>
+
+                <span>
+                    {{ c.created_at|date:"F d, Y" }}
+                </span>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+            <!-- Recent Blogs -->
+            <div class="side-box">
+
+                <h3>Recent Blog Posts</h3>
+
+
+                {% for b in recent_blogs %}
+
+                <div class="recent-item">
+
+                    <img src="{{ b.image.url }}" alt="{{ b.title }}">
+
+                    <div class="recent-text">
+
+                        <a href="{% url 'blog_detail' b.id %}">
+                            {{ b.title|truncatechars:45 }}
+                        </a>
+
+                        <small>
+                            {{ b.created_at|date:"M d, Y" }}
+                        </small>
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <p>No recent blogs.</p>
+
+                {% endfor %}
+
+
+            </div>
+
+
+
+            <!-- Share Box -->
+           <div class="side-box">
+
+    <h3>Share This Post</h3>
+
+    <div class="share-icons-modern">
+
+        <a href="#" class="fb"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="ig"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="in"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="yt"><i class="fab fa-youtube"></i></a>
+        <a href="#" class="wa"><i class="fab fa-whatsapp"></i></a>
+        <a href="#" class="tg"><i class="fab fa-telegram-plane"></i></a>
+
+    </div>
+
+</div>
+
+
+
+        </aside>
+
+
+    </div>
+</section>
+
+
+
+<!-- ================= CTA ================= -->
+
+
+{% endblock %}

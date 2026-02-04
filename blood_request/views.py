@@ -8,6 +8,7 @@ from .schemas import DonorSchema
 from pydantic import ValidationError
 # from django.shortcuts import render
 from .models import Blog, Project
+from django.shortcuts import get_object_or_404
 
 @ensure_csrf_cookie
 def index(request):
@@ -232,4 +233,13 @@ def projects_page(request):
     return render(request, 'projects.html', {'projects': projects})
 
 def report_list(request):
-    return render(request, 'report_list.html')
+    return render(request, 'annual_reports.html')
+
+def blog_detail(request, id):
+    blog = get_object_or_404(Blog, id=id)
+    recent_blogs = Blog.objects.exclude(id=id).order_by('-created_at')[:4]
+
+    return render(request, 'blog_detail.html', {
+        'blog': blog,
+        'recent_blogs': recent_blogs
+    })

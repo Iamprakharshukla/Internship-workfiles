@@ -189,6 +189,7 @@ class Interaction(models.Model):
         return f"{self.interaction_type} by {self.staff.username} ({self.outcome})"
 class Blog(models.Model):
     title = models.CharField(max_length=200)
+    content = models.TextField()   # <-- Yahin full HTML aayega
     description = models.TextField()
     image = models.ImageField(upload_to='blogs/')
     created_at = models.DateTimeField(auto_now_add=True)
