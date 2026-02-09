@@ -333,7 +333,36 @@ def donor_detail(request, pk):
         'donor': donor,
         'interactions': interactions,
         'interaction_types': Interaction.INTERACTION_TYPES,
-        'outcome_choices': Interaction.OUTCOME_CHOICES
     })
+
+# --- Appointment Scheduling (Phase 8) ---
+from .models import Appointment
+
+@login_required
+def appointment_list(request):
+    # Show user's appointments
+    appointments = Appointment.objects.filter(staff=request.user).order_by('start_time')
+    return render(request, 'appointments.html', {'appointments': appointments})
+
+@login_required
+def appointment_create(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        start = request.POST.get('start_time')
+        end = request.POST.get('end_time')
+        description = request.POST.get('description')
+        
+        if title and start and end:
+            Appointment.objects.create(
+                title=title,
+                start_time=start,
+                end_time=end,
+                description=description,
+                staff=request.user,
+                status='Scheduled'
+            )
+            return redirect('appointment_list')
+    
+    return render(request, 'appointment_form.html')
 
 

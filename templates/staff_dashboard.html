@@ -46,6 +46,20 @@
                 <h3 class="text-gray-500 text-sm uppercase">Impact: Donors</h3>
                 <p class="text-3xl font-bold text-red-600">{{ total_donors }}</p>
             </div>
+
+            <!-- APPOINTMENTS LINK -->
+            <a href="{% url 'appointment_list' %}"
+                class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition group">
+                <h3 class="text-gray-500 text-sm uppercase group-hover:text-brand-red transition">Schedule</h3>
+                <div class="flex items-center mt-2 text-brand-red font-bold">
+                    <span>View Appointments</span>
+                    <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </div>
+            </a>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
