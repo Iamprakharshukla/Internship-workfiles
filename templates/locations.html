@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Locations - UDAAN Society{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/locations.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+    <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=500&fit=crop" alt="Location">
+
+        <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+        <h1>OUR LOCATION</h1>
+    </div>
+</section>
+
+<!-- ================= BREADCRUMB ================= -->
+<div class="breadcrumb">
+    <div class="container">
+        <a href="{% url 'home' %}">Home</a>
+        <span class="sep">»</span>
+        <span class="current">Our Location</span>
+    </div>
+</div>
+
+<!-- ================= INTRO ================= -->
+<section class="intro">
+    <div class="container">
+
+        <h2 class="main-title">
+            OUR <span>LOCATION</span>
+        </h2>
+
+        <p class="description">
+            UDAAN Society works tirelessly to uplift communities across Uttar Pradesh.
+            Explore our centers in different districts and join us in building
+            a brighter future for all.
+        </p>
+
+    </div>
+</section>
+
+<!-- ================= LOCATION GRID ================= -->
+
+<section class="locations">
+    <div class="container">
+
+        <div class="location-grid">
+
+            <!-- Aligarh -->
+            <div class="location-card">
+
+                    <iframe
+                    src="https://www.google.com/maps?q=Aligarh,UP&output=embed"
+                    loading="lazy">
+                    </iframe>
+
+                 <h3>Aligarh</h3>
+            </div>
+
+
+            <!-- Banda -->
+            <div class="location-card">
+
+                    <iframe
+                    src="https://www.google.com/maps?q=Banda,UP&output=embed"
+                    loading="lazy">
+                    </iframe>
+
+            <h3>Banda</h3>
+            </div>
+
+
+            <!-- Bulandshahr -->
+            <div class="location-card">
+
+                <iframe
+                src="https://www.google.com/maps?q=Bulandshahr,UP&output=embed"
+                loading="lazy">
+                </iframe>
+
+          <h3>Bulandshahr</h3>
+    </div>
+
+
+            <!-- Firozabad -->
+           <div class="location-card">
+
+                    <iframe
+                    src="https://www.google.com/maps?q=Firozabad,UP&output=embed"
+                    loading="lazy">
+                    </iframe>
+
+               <h3>Firozabad</h3>
+          </div>
+
+
+            <!-- Mahoba -->
+            <div class="location-card">
+
+                    <iframe
+                    src="https://www.google.com/maps?q=Mahoba,UP&output=embed"
+                    loading="lazy">
+                    </iframe>
+
+                <h3>Mahoba</h3>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

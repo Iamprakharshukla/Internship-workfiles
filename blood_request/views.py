@@ -280,14 +280,16 @@ def blog_detail(request, id):
     return render(request, 'annual_reports.html', {'reports': reports})
 
 
+
+def locations(request):
+    return render(request, 'locations.html')
+
 from django.contrib.contenttypes.models import ContentType
 from .models import Interaction
 
 @login_required
 def donor_detail(request, pk):
-    """
-    CRM: View Donor Profile and Log Interactions.
-    """
+    
     donor = get_object_or_404(BloodDonor, pk=pk)
     
     # Handle New Interaction Log
@@ -322,4 +324,5 @@ def donor_detail(request, pk):
         'interaction_types': Interaction.INTERACTION_TYPES,
         'outcome_choices': Interaction.OUTCOME_CHOICES
     })
+
 
