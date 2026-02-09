@@ -248,3 +248,7 @@ def blog_detail(request, id):
     reports = Report.objects.all().order_by('-published_date')
     return render(request, 'annual_reports.html', {'reports': reports})
 
+
+def locations(request):
+    return render(request, 'locations.html')
+
