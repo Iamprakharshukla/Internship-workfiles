@@ -110,9 +110,11 @@
                         <h4 class="font-bold text-gray-800 mb-1">{{ task.title }}</h4>
                         <p class="text-xs text-gray-500 mb-3">{{ task.description|truncatechars:50 }}</p>
 
-                        <form action="{% url 'update_task_status' task.pk %}" method="POST" class="mt-3">
+                        <form action="{% url 'update_task_status' task.pk %}" method="POST" class="mt-3 task-form">
                             {% csrf_token %}
-                            <button type="submit"
+                            <input type="hidden" name="lat" class="gps-lat">
+                            <input type="hidden" name="lng" class="gps-lng">
+                            <button type="submit" onclick="captureLocation(event, this)"
                                 class="w-full py-2 bg-green-50 text-green-600 rounded-md text-xs font-bold hover:bg-green-100 transition">
                                 Mark Done &check;
                             </button>
@@ -152,4 +154,57 @@
         </div>
     </div>
 </section>
+
+<script>
+    function captureLocation(event, btn) {
+        // Find the form that contains the clicked button
+        // Note: btn is the submit button passed via 'this'
+        const form = btn.closest('form');
+
+        // Find the hidden inputs within that form by name attribute
+        const latInput = form.querySelector('input[name="lat"]');
+        const lngInput = form.querySelector('input[name="lng"]');
+
+        // Only intecept if this form has GPS inputs (e.g. the Mark Done form)
+        if (latInput && lngInput) {
+            event.preventDefault(); // Stop form submission
+
+            // Update button text to give feedback
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Locating...';
+            btn.disabled = true;
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        // Success: Set inputs
+                        latInput.value = position.coords.latitude;
+                        lngInput.value = position.coords.longitude;
+
+                        btn.innerHTML = 'Submitting...';
+                        form.submit();
+                    },
+                    (error) => {
+                        // Error: Log and alert
+                        console.warn("GPS Error: " + error.message);
+                        alert("⚠️ Location access is needed to mark tasks as Done.\n\nProceeding without location data.");
+
+                        // Fallback: Submit without location
+                        btn.innerHTML = 'Submitting...';
+                        form.submit();
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+                form.submit(); // Submit anyway if not supported
+            }
+        }
+        // Else let the form submit normally (e.g. "Start Working" button)
+    }
+</script>
 {% endblock %}

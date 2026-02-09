@@ -49,6 +49,14 @@
                     <img class="logo-circle" src="{% static 'assets/logo.webp' %}" alt="UDAAN Society" />
                 </a>
             </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" aria-label="Toggle navigation">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
             <ul class="nav-menu">
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -87,7 +95,7 @@
                     </a>
                     <div class="dropdown-menu">
                         <a href="{% url 'report_list' %}" class="dropdown-item">Annual Report</a>
-                        <a href="#" class="dropdown-item">Our Locations</a>
+                        <a href="{% url 'locations' %}" class="dropdown-item">Our Locations</a>
                         <a href="{% url 'project_list' %}" class="dropdown-item">Projects</a>
                         <a href="#" class="dropdown-item">Our Activities</a>
                         <a href="{% url 'blogs' %}" class="dropdown-item">Blogs</a>

@@ -193,3 +193,25 @@ function showModal(title, message, isSuccess) {
 function closeModal() {
     document.getElementById('notification-modal').classList.add('hidden');
 }
+
+
+// --- Mobile Navigation Toggle ---
+document.addEventListener('DOMContentLoaded', () => {
+    const mobileBtn = document.querySelector('.mobile-menu-btn');
+    const navMenu = document.querySelector('.nav-menu');
+
+    if (mobileBtn && navMenu) {
+        mobileBtn.addEventListener('click', () => {
+            mobileBtn.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileBtn.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+    }
+});

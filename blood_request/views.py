@@ -158,17 +158,28 @@ from django.views.decorators.http import require_POST
 @login_required
 @require_POST
 def update_task_status(request, pk):
+    from django.utils import timezone
     task = get_object_or_404(Task, pk=pk, assigned_to=request.user)
     
+    # Get GPS data if provided
+    lat = request.POST.get('lat')
+    lng = request.POST.get('lng')
+
     # Simple Toggle for now: To Do -> In Progress -> Done -> To Do
     if task.status == 'To Do':
         task.status = 'In Progress'
     elif task.status == 'In Progress':
         task.status = 'Done'
+        # Only save completion data when marking as Done
+        if lat and lng:
+            task.completion_lat = lat
+            task.completion_lng = lng
+        task.completion_timestamp = timezone.now()
     else:
         task.status = 'To Do'
+        # specific logic for re-opening? maybe clear completion data?
+        # for now, keep history.
         
-    task.save()
     task.save()
     return redirect('staff_dashboard')
 

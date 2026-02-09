@@ -39,16 +39,20 @@
             <div class="flex">
                 <div class="flex-shrink-0">
                     <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                            clip-rule="evenodd" />
                     </svg>
                 </div>
                 <div class="ml-3">
-                    <h3 class="text-sm font-medium text-red-800">Action Required: {{ overdue_tasks.count }} Overdue Task(s)</h3>
+                    <h3 class="text-sm font-medium text-red-800">Action Required: {{ overdue_tasks.count }} Overdue
+                        Task(s)</h3>
                     <div class="mt-2 text-sm text-red-700">
                         <ul class="list-disc pl-5 space-y-1">
                             {% for task in overdue_tasks %}
                             <li>
-                                <strong>{{ task.title }}</strong> - Assigned to: {{ task.assigned_to.username|default:"Unassigned" }} 
+                                <strong>{{ task.title }}</strong> - Assigned to: {{
+                                task.assigned_to.username|default:"Unassigned" }}
                                 (Due: {{ task.due_date|date:"M d" }})
                             </li>
                             {% endfor %}
@@ -61,7 +65,7 @@
 
         <!-- TWO COLUMN LAYOUT: Progress & Resources -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            
+
             <!-- Project Progress -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <h2 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">🚀 Project Progress</h2>
@@ -104,14 +108,17 @@
                                 <td class="px-3 py-3 text-center font-bold">{{ staff.active_task_count }}</td>
                                 <td class="px-3 py-3 text-center">
                                     {% if staff.active_task_count == 0 %}
-                                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Available</span>
-                                    {% elif staff.active_task_count < 3 %}
-                                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Optimal</span>
-                                    {% elif staff.active_task_count < 6 %}
-                                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Busy</span>
-                                    {% else %}
-                                        <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Overloaded</span>
-                                    {% endif %}
+                                    <span
+                                        class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Available</span>
+                                    {% elif staff.active_task_count < 3 %} <span
+                                        class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Optimal</span>
+                                        {% elif staff.active_task_count < 6 %} <span
+                                            class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">
+                                            Busy</span>
+                                            {% else %}
+                                            <span
+                                                class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Overloaded</span>
+                                            {% endif %}
                                 </td>
                             </tr>
                             {% empty %}
@@ -126,7 +133,7 @@
 
         </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                 <h2 class="text-xl font-bold text-gray-800">All Tasks</h2>
                 <a href="/admin/blood_request/task/add/"
