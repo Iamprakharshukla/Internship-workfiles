@@ -336,7 +336,26 @@ def donor_detail(request, pk):
     })
 
 # --- Appointment Scheduling (Phase 8) ---
-from .models import Appointment
+from .models import Appointment, PersonalNote
+from django.http import JsonResponse
+
+@login_required
+def personal_notes_api(request):
+    """API to get/save personal notes"""
+    # Use get_or_create to ensure a note exists
+    note, created = PersonalNote.objects.get_or_create(user=request.user)
+    
+    if request.method == 'POST':
+        import json
+        try:
+            data = json.loads(request.body)
+            note.content = data.get('content', '')
+            note.save()
+            return JsonResponse({'status': 'saved', 'updated_at': note.updated_at})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    
+    return JsonResponse({'content': note.content, 'updated_at': note.updated_at})
 
 @login_required
 def appointment_list(request):

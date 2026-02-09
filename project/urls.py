@@ -7,11 +7,11 @@ from django.shortcuts import render
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path("admin/portal/manager/", manager_dashboard, name="manager_dashboard"), # New Team View
+    path("admin/portal/task/<int:pk>/update/", update_task_status, name="update_task_status"),
+    path("admin/portal/", staff_dashboard, name="staff_dashboard"),
+    
     path("admin/", admin.site.urls),
-    path("", home_view, name="home"),
-    path("portal/", staff_dashboard, name="staff_dashboard"),
-    path("portal/manager/", manager_dashboard, name="manager_dashboard"), # New Team View
-    path("portal/task/<int:pk>/update/", update_task_status, name="update_task_status"),
     path("campaigns/", campaign_list, name="campaign_list"),
     path("projects/", project_list, name="project_list"),
     path("projects/<slug:slug>/", project_detail, name="project_detail"),

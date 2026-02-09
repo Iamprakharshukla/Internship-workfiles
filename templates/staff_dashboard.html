@@ -1,171 +1,169 @@
-{% extends 'base.html' %}
+{% extends 'portal_layout.html' %}
 
 {% block content %}
-<section class="py-20 bg-gray-50 min-h-screen">
-    <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">My Workspace</h1>
-            <div class="text-gray-600">
-                <span class="font-semibold">{{ request.user.username }}</span>
-                <span class="mx-2">|</span>
-                <a href="{% url 'admin:logout' %}" class="text-red-500 hover:underline">Logout</a>
-            </div>
+<section class="max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800">My Workspace</h1>
+            <p class="text-sm text-gray-500">Welcome back, {{ request.user.first_name|default:request.user.username }}
+            </p>
         </div>
-
-        <!-- STAFF BULLETIN BOARD -->
-        {% if announcements %}
-        <div class="mb-8 space-y-4">
-            {% for notice in announcements %}
-            <div
-                class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center">
-                <div>
-                    <h3 class="font-bold text-yellow-800 flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z">
-                            </path>
-                        </svg>
-                        {{ notice.title }}
-                    </h3>
-                    <p class="text-yellow-700 text-sm mt-1">{{ notice.content }}</p>
-                </div>
-                <span class="text-xs text-yellow-600 mt-2 md:mt-0">{{ notice.created_at|date:"M d, Y" }}</span>
-            </div>
-            {% endfor %}
+        <div class="text-sm text-gray-500 bg-white px-3 py-1 rounded-full shadow-sm border border-gray-100">
+            {% now "l, F jS" %}
         </div>
-        {% endif %}
+    </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <h3 class="text-gray-500 text-sm uppercase">Assigned Tasks</h3>
-                <p class="text-3xl font-bold text-blue-600">{{ todo_tasks|length|add:inprogress_tasks|length }}</p>
-            </div>
-
-            <!-- IMPACT TRACKER (PDF Requirement) -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <h3 class="text-gray-500 text-sm uppercase">Impact: Donors</h3>
-                <p class="text-3xl font-bold text-red-600">{{ total_donors }}</p>
-            </div>
-
-            <!-- APPOINTMENTS LINK -->
-            <a href="{% url 'appointment_list' %}"
-                class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition group">
-                <h3 class="text-gray-500 text-sm uppercase group-hover:text-brand-red transition">Schedule</h3>
-                <div class="flex items-center mt-2 text-brand-red font-bold">
-                    <span>View Appointments</span>
-                    <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
+    <!-- STAFF BULLETIN BOARD -->
+    {% if announcements %}
+    <div class="mb-8 space-y-4">
+        {% for notice in announcements %}
+        <div
+            class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div>
+                <h3 class="font-bold text-yellow-800 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z">
+                        </path>
                     </svg>
-                </div>
-            </a>
+                    {{ notice.title }}
+                </h3>
+                <p class="text-yellow-700 text-sm mt-1">{{ notice.content }}</p>
+            </div>
+            <span class="text-xs text-yellow-600 mt-2 md:mt-0">{{ notice.created_at|date:"M d, Y" }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-gray-500 text-sm uppercase">Assigned Tasks</h3>
+            <p class="text-3xl font-bold text-blue-600">{{ todo_tasks|length|add:inprogress_tasks|length }}</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- IMPACT TRACKER (PDF Requirement) -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-gray-500 text-sm uppercase">Impact: Donors</h3>
+            <p class="text-3xl font-bold text-red-600">{{ total_donors }}</p>
+        </div>
 
-            <!-- TO DO COLUMN -->
-            <div class="bg-gray-100 rounded-xl p-4">
-                <h3 class="text-gray-500 font-bold uppercase text-sm mb-4 flex justify-between">
-                    To Do <span class="bg-gray-200 px-2 rounded-full text-xs py-1">{{ todo_tasks|length }}</span>
-                </h3>
-                <div class="space-y-4">
-                    {% for task in todo_tasks %}
-                    <div
-                        class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-gray-400 hover:shadow-md transition">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider
+        <!-- APPOINTMENTS LINK -->
+        <a href="{% url 'appointment_list' %}"
+            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition group">
+            <h3 class="text-gray-500 text-sm uppercase group-hover:text-brand-red transition">Schedule</h3>
+            <div class="flex items-center mt-2 text-brand-red font-bold">
+                <span>View Appointments</span>
+                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3">
+                    </path>
+                </svg>
+            </div>
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- TO DO COLUMN -->
+        <div class="bg-gray-100 rounded-xl p-4">
+            <h3 class="text-gray-500 font-bold uppercase text-sm mb-4 flex justify-between">
+                To Do <span class="bg-gray-200 px-2 rounded-full text-xs py-1">{{ todo_tasks|length }}</span>
+            </h3>
+            <div class="space-y-4">
+                {% for task in todo_tasks %}
+                <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-gray-400 hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider
                                 {% if task.priority == 'Critical' %} bg-red-100 text-red-700
                                 {% elif task.priority == 'High' %} bg-orange-100 text-orange-700
                                 {% elif task.priority == 'Medium' %} bg-blue-100 text-blue-700
                                 {% else %} bg-gray-100 text-gray-600 {% endif %}">
-                                {{ task.priority }}
-                            </span>
-                            <span class="text-xs text-gray-400">{{ task.due_date|date:"M d" }}</span>
-                        </div>
-                        <h4 class="font-bold text-gray-800 mb-1">{{ task.title }}</h4>
-                        {% if task.remarks %}
-                        <p class="text-xs text-gray-500 mb-3">{{ task.remarks|truncatechars:60 }}</p>
-                        {% endif %}
-
-                        <form action="{% url 'update_task_status' task.pk %}" method="POST" class="mt-3">
-                            {% csrf_token %}
-                            <button type="submit"
-                                class="w-full py-2 bg-blue-50 text-blue-600 rounded-md text-xs font-bold hover:bg-blue-100 transition">
-                                Start Working &rarr;
-                            </button>
-                        </form>
+                            {{ task.priority }}
+                        </span>
+                        <span class="text-xs text-gray-400">{{ task.due_date|date:"M d" }}</span>
                     </div>
-                    {% empty %}
-                    <div class="text-center py-8 text-gray-400 text-sm">No pending tasks</div>
-                    {% endfor %}
-                </div>
-            </div>
+                    <h4 class="font-bold text-gray-800 mb-1">{{ task.title }}</h4>
+                    {% if task.remarks %}
+                    <p class="text-xs text-gray-500 mb-3">{{ task.remarks|truncatechars:60 }}</p>
+                    {% endif %}
 
-            <!-- IN PROGRESS COLUMN -->
-            <div class="bg-blue-50 rounded-xl p-4">
-                <h3 class="text-blue-500 font-bold uppercase text-sm mb-4 flex justify-between">
-                    In Progress <span class="bg-blue-200 px-2 rounded-full text-xs py-1 text-blue-800">{{
-                        inprogress_tasks|length }}</span>
-                </h3>
-                <div class="space-y-4">
-                    {% for task in inprogress_tasks %}
-                    <div
-                        class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-500 hover:shadow-md transition">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider
+                    <form action="{% url 'update_task_status' task.pk %}" method="POST" class="mt-3">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="w-full py-2 bg-blue-50 text-blue-600 rounded-md text-xs font-bold hover:bg-blue-100 transition">
+                            Start Working &rarr;
+                        </button>
+                    </form>
+                </div>
+                {% empty %}
+                <div class="text-center py-8 text-gray-400 text-sm">No pending tasks</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- IN PROGRESS COLUMN -->
+        <div class="bg-blue-50 rounded-xl p-4">
+            <h3 class="text-blue-500 font-bold uppercase text-sm mb-4 flex justify-between">
+                In Progress <span class="bg-blue-200 px-2 rounded-full text-xs py-1 text-blue-800">{{
+                    inprogress_tasks|length }}</span>
+            </h3>
+            <div class="space-y-4">
+                {% for task in inprogress_tasks %}
+                <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-500 hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider
                                 {% if task.priority == 'Critical' %} bg-red-100 text-red-700
                                 {% elif task.priority == 'High' %} bg-orange-100 text-orange-700 (High)
                                 {% else %} bg-blue-100 text-blue-700 {% endif %}">
-                                {{ task.priority }}
-                            </span>
-                            <span class="text-xs text-blue-500 font-bold">Active</span>
-                        </div>
-                        <h4 class="font-bold text-gray-800 mb-1">{{ task.title }}</h4>
-                        <p class="text-xs text-gray-500 mb-3">{{ task.description|truncatechars:50 }}</p>
-
-                        <form action="{% url 'update_task_status' task.pk %}" method="POST" class="mt-3 task-form">
-                            {% csrf_token %}
-                            <input type="hidden" name="lat" class="gps-lat">
-                            <input type="hidden" name="lng" class="gps-lng">
-                            <button type="submit" onclick="captureLocation(event, this)"
-                                class="w-full py-2 bg-green-50 text-green-600 rounded-md text-xs font-bold hover:bg-green-100 transition">
-                                Mark Done &check;
-                            </button>
-                        </form>
+                            {{ task.priority }}
+                        </span>
+                        <span class="text-xs text-blue-500 font-bold">Active</span>
                     </div>
-                    {% endfor %}
+                    <h4 class="font-bold text-gray-800 mb-1">{{ task.title }}</h4>
+                    <p class="text-xs text-gray-500 mb-3">{{ task.description|truncatechars:50 }}</p>
+
+                    <form action="{% url 'update_task_status' task.pk %}" method="POST" class="mt-3 task-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="lat" class="gps-lat">
+                        <input type="hidden" name="lng" class="gps-lng">
+                        <button type="submit" onclick="captureLocation(event, this)"
+                            class="w-full py-2 bg-green-50 text-green-600 rounded-md text-xs font-bold hover:bg-green-100 transition">
+                            Mark Done &check;
+                        </button>
+                    </form>
                 </div>
+                {% endfor %}
             </div>
-
-            <!-- DONE COLUMN -->
-            <div class="bg-green-50 rounded-xl p-4">
-                <h3 class="text-green-600 font-bold uppercase text-sm mb-4 flex justify-between">
-                    Completed <span class="bg-green-200 px-2 rounded-full text-xs py-1 text-green-800">{{
-                        done_tasks|length }}</span>
-                </h3>
-                <div class="space-y-4">
-                    {% for task in done_tasks %}
-                    <div
-                        class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-green-500 opacity-75 hover:opacity-100 transition">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-xs text-green-600 font-bold strike-through">Completed</span>
-                            <span class="text-[10px] text-gray-400">{{ task.updated_at|date:"M d" }}</span>
-                        </div>
-                        <h4 class="font-medium text-gray-500 line-through mb-1">{{ task.title }}</h4>
-
-                        <form action="{% url 'update_task_status' task.pk %}" method="POST" class="mt-2">
-                            {% csrf_token %}
-                            <button type="submit" class="text-xs text-gray-400 hover:text-gray-600 underline">
-                                Re-open
-                            </button>
-                        </form>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-
         </div>
+
+        <!-- DONE COLUMN -->
+        <div class="bg-green-50 rounded-xl p-4">
+            <h3 class="text-green-600 font-bold uppercase text-sm mb-4 flex justify-between">
+                Completed <span class="bg-green-200 px-2 rounded-full text-xs py-1 text-green-800">{{
+                    done_tasks|length }}</span>
+            </h3>
+            <div class="space-y-4">
+                {% for task in done_tasks %}
+                <div
+                    class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-green-500 opacity-75 hover:opacity-100 transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs text-green-600 font-bold strike-through">Completed</span>
+                        <span class="text-[10px] text-gray-400">{{ task.updated_at|date:"M d" }}</span>
+                    </div>
+                    <h4 class="font-medium text-gray-500 line-through mb-1">{{ task.title }}</h4>
+
+                    <form action="{% url 'update_task_status' task.pk %}" method="POST" class="mt-2">
+                        {% csrf_token %}
+                        <button type="submit" class="text-xs text-gray-400 hover:text-gray-600 underline">
+                            Re-open
+                        </button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
     </div>
 </section>
 

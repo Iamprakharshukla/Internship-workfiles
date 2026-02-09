@@ -213,6 +213,14 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.start_time.strftime('%Y-%m-%d %H:%M')})"
+
+class PersonalNote(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='personal_note')
+    content = models.TextField(blank=True, default="")
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Note for {self.user.username}"
 class Blog(models.Model):
     title = models.CharField(max_length=200)
     content = RichTextField()   # <-- RichTextEditor
