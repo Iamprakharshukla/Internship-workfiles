@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "blood_request",
     "chatbot_service",
+    "ckeditor",
 ]
 
 MIDDLEWARE = [

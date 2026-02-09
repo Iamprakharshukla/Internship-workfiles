@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 class BloodDonor(models.Model):
     BLOOD_GROUP_CHOICES = [
@@ -70,7 +71,7 @@ class Project(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True, null=True) # Will populate via migration
     description = models.TextField(help_text="Short excerpt for the card")
-    content = models.TextField(blank=True, help_text="Full HTML content for the detail page")
+    content = RichTextField(blank=True, help_text="Full HTML content for the detail page")
     image = models.ImageField(upload_to='projects/')
     date = models.DateField()
     managers = models.ManyToManyField(User, related_name='managed_projects', blank=True, help_text="Managers responsible for this project")
@@ -189,7 +190,7 @@ class Interaction(models.Model):
         return f"{self.interaction_type} by {self.staff.username} ({self.outcome})"
 class Blog(models.Model):
     title = models.CharField(max_length=200)
-    content = models.TextField()   # <-- Yahin full HTML aayega
+    content = RichTextField()   # <-- RichTextEditor
     description = models.TextField()
     image = models.ImageField(upload_to='blogs/')
     created_at = models.DateTimeField(auto_now_add=True)

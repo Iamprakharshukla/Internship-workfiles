@@ -181,24 +181,56 @@ def is_manager(user):
 def manager_dashboard(request):
     """
     Manager Dashboard: View ALL tasks across the organization.
+    Enhanced with Phase 7 metrics: Progress Bars, Resource Load, Bottlenecks.
     """
-    # Order by Priority (Critical first)
-    # Since priority is text, we might want custom sorting, but simple string sort
-    # works if Critical > High > Low... wait C > H > L. Alphabetical is C, H, L, M. 
-    # Critical should be top.
-    # Ideally we use an IntegerField for sorting, but for now we'll just fetch all.
-    tasks = Task.objects.all().order_by('status', '-created_at') 
+    from django.db.models import Count, Q
+    from django.contrib.auth.models import User
+    from datetime import date
     
+    # 1. Task Overview
+    tasks = Task.objects.all().order_by('status', '-created_at')
+    
+    # 2. Project Progress (Phase 7.1)
+    # Calculate % completion for each project
+    projects = Project.objects.annotate(
+        total_tasks=Count('tasks'),
+        completed_tasks=Count('tasks', filter=Q(tasks__status='Done'))
+    ).filter(total_tasks__gt=0) # Only show projects with tasks
+    
+    # Attach percentage manually (Django annotations for division can be complex database-dependent)
+    for p in projects:
+        if p.total_tasks > 0:
+            p.progress = int((p.completed_tasks / p.total_tasks) * 100)
+        else:
+            p.progress = 0
+
+    # 3. Resource Allocation (Phase 7.2)
+    # Count open tasks (Not Done) for each staff member
+    staff_load = User.objects.filter(is_staff=False, is_superuser=False).annotate(
+        active_task_count=Count('tasks', filter=~Q(tasks__status='Done'))
+    ).order_by('-active_task_count')
+
+    # 4. Bottlenecks (Phase 7.3)
+    # Tasks that are NOT Done and Past Due date
+    overdue_tasks = Task.objects.filter(
+        ~Q(status='Done'),
+        due_date__lt=date.today()
+    ).order_by('due_date')
+
     # Simple stats
     stats = {
         'total': tasks.count(),
         'high_priority': tasks.filter(priority__in=['High', 'Critical']).count(),
-        'pending': tasks.filter(status__in=['To Do', 'In Progress']).count()
+        'pending': tasks.filter(status__in=['To Do', 'In Progress']).count(),
+        'overdue': overdue_tasks.count()
     }
 
     context = {
         'tasks': tasks,
-        'stats': stats
+        'stats': stats,
+        'projects': projects,
+        'staff_load': staff_load,
+        'overdue_tasks': overdue_tasks,
     }
     return render(request, 'manager_dashboard.html', context)
 
@@ -245,10 +277,52 @@ def blog_detail(request, id):
         'recent_blogs': recent_blogs
     })
 
-    reports = Report.objects.all().order_by('-published_date')
     return render(request, 'annual_reports.html', {'reports': reports})
+
 
 
 def locations(request):
     return render(request, 'locations.html')
+
+from django.contrib.contenttypes.models import ContentType
+from .models import Interaction
+
+@login_required
+def donor_detail(request, pk):
+    
+    donor = get_object_or_404(BloodDonor, pk=pk)
+    
+    # Handle New Interaction Log
+    if request.method == 'POST':
+        interaction_type = request.POST.get('interaction_type')
+        outcome = request.POST.get('outcome')
+        notes = request.POST.get('notes')
+        followup_date = request.POST.get('next_followup_date') or None
+        
+        # Create Interaction linked to this Donor
+        Interaction.objects.create(
+            staff=request.user,
+            content_type=ContentType.objects.get_for_model(BloodDonor),
+            object_id=donor.id,
+            interaction_type=interaction_type,
+            outcome=outcome,
+            notes=notes,
+            next_followup_date=followup_date
+        )
+        return redirect('donor_detail', pk=pk)
+    
+    # Fetch Interaction History
+    ct = ContentType.objects.get_for_model(BloodDonor)
+    interactions = Interaction.objects.filter(
+        content_type=ct, 
+        object_id=donor.id
+    ).order_by('-created_at')
+
+    return render(request, 'blood_request/donor_detail.html', {
+        'donor': donor,
+        'interactions': interactions,
+        'interaction_types': Interaction.INTERACTION_TYPES,
+        'outcome_choices': Interaction.OUTCOME_CHOICES
+    })
+
 
