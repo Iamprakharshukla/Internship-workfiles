@@ -365,6 +365,10 @@ def personal_notes_api(request):
     
     return JsonResponse({'content': note.content, 'updated_at': note.updated_at})
 
+def resources_page(request):
+    """Render the resources page"""
+    return render(request, "resources.html")
+
 @login_required
 def appointment_list(request):
     # Show user's appointments

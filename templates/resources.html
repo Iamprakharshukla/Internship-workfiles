@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Resources & Policies | UDAAN Society{% endblock %}
+
+{% block extra_css %}
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap"
+    rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/resources.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="resources-page-container">
+    <div class="resources-container">
+
+        <div class="page-header">
+            <h1>Resources & Policies</h1>
+            <p>
+                UDAAN Society shares its key organisational policies and statutory compliance documents to promote
+                transparency, ethical governance, and a safe working environment.
+            </p>
+        </div>
+
+        <div class="resources-grid">
+
+            <div class="resource-card">
+                <h3>Whistle Blower Policy</h3>
+                <p>
+                    Enables employees and stakeholders to report unethical conduct, malpractice, or violations in a
+                    confidential and protected manner.
+                </p>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-outline">View Policy</a>
+                    <a href="#" class="btn btn-primary" download>Download PDF</a>
+                </div>
+            </div>
+
+            <div class="resource-card">
+                <h3>POSH Training (TRG)</h3>
+                <p>
+                    Awareness and training material under the Sexual Harassment of Women at Workplace (Prevention,
+                    Prohibition and Redressal) Act, 2013.
+                </p>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-outline">View Training</a>
+                    <a href="#" class="btn btn-primary" download>Download PDF</a>
+                </div>
+            </div>
+
+            <div class="resource-card">
+                <h3>POSH Policy</h3>
+                <p>
+                    Policy outlining prevention, prohibition, and redressal mechanisms for sexual harassment at the
+                    workplace as per Indian law.
+                </p>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-outline">View Policy</a>
+                    <a href="#" class="btn btn-primary" download>Download PDF</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="note">
+            © {% now "Y" %} UDAAN Society | Resources published in the interest of compliance, awareness, and good
+            governance.
+        </div>
+
+    </div>
+</div>
+{% endblock %}

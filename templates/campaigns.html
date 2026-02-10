@@ -1,184 +1,138 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campaigns - UDAAN Society</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/campaigns.css' %}">
-</head>
+{% block title %}Campaigns - UDAAN Society{% endblock %}
 
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="{% url 'home' %}" class="logo">
-                <img src="{% static 'img/logo.png' %}" alt="UDAAN Society">
-            </a>
-            <button class="mobile-menu" id="mobileMenu" aria-label="Toggle menu">
-                <i class="fas fa-bars"></i>
-            </button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li class="dropdown">
-                    <a href="#">Who We Are <i class="fas fa-chevron-down"></i></a>
-                    <ul class="dropdown-content">
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Our Mission</a></li>
-                        <li><a href="#">Team</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Blood Request</a></li>
-                <li><a href="{% url 'campaign_list' %}" class="active">Campaigns</a></li>
-                <li>
-                    <a href="#" class="donate-btn">
-                        <div class="donate-text">
-                            <span>📱Donate Now</span>
-                            <small>Secured by Razorpay</small>
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/campaigns.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Campaigns</h1>
+    </div>
+</section>
+
+<!-- Breadcrumb -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+    <ol>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li aria-current="page">Campaigns</li>
+    </ol>
+</nav>
+
+<!-- Intro Section -->
+<section class="intro">
+    <div class="container">
+        <h2>We Are Always Where Other People <span>Need</span> Help</h2>
+        <p>UDAAN Society, a leading NGO in Aligarh, runs impactful campaigns to uplift underprivileged communities.
+            Explore our diverse fundraising campaigns dedicated to education, healthcare, poverty alleviation, and
+            more.</p>
+    </div>
+</section>
+
+<!-- Stats Bar -->
+<section class="stats-bar">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" data-count="{{ campaigns.count }}">0</div>
+                <div class="stat-label">Active Campaigns</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="2500000">0</div>
+                <div class="stat-label">₹ Raised</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="15000">0</div>
+                <div class="stat-label">Lives Impacted</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="5000">0</div>
+                <div class="stat-label">Donors</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Controls Bar -->
+<section class="controls-section">
+    <div class="container">
+        <div class="controls-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search campaigns..." aria-label="Search campaigns">
+            </div>
+            <div class="sort-box">
+                <label for="sortSelect">Sort by:</label>
+                <select id="sortSelect">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Campaigns Grid -->
+<section class="campaigns-section">
+    <div class="container">
+        <div class="campaigns-grid" id="campaignsGrid">
+
+            {% for campaign in campaigns %}
+            <article class="campaign-card" data-category="general" data-date="{{ campaign.created_at|date:'Y-m-d' }}"
+                data-goal="{{ campaign.goal_amount|floatformat:0 }}"
+                data-raised="{{ campaign.raised_amount|floatformat:0 }}">
+                <div class="card-image">
+                    {% if campaign.image %}
+                    <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" loading="lazy">
+                    {% else %}
+                    <img src="{% static 'images/pn1.png' %}" alt="Placeholder" loading="lazy">
+                    {% endif %}
+                    <span class="category-badge">General</span>
+                    <button class="quick-donate" onclick="quickDonate('{{ campaign.title|escapejs }}')"
+                        aria-label="Quick donate">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="progress-section">
+                        <div class="goal-text">
+                            <span class="raised-amount">Raised: {% if campaign.raised_amount > 0 %}₹{{
+                                campaign.raised_amount }}{% else %}No Amount{% endif %}</span>
+                            <span class="goal-amount">Goal: ₹{{ campaign.goal_amount }}</span>
                         </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Campaigns</h1>
-        </div>
-    </section>
-
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-        <ol>
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li aria-current="page">Campaigns</li>
-        </ol>
-    </nav>
-
-    <!-- Intro Section -->
-    <section class="intro">
-        <div class="container">
-            <h2>We Are Always Where Other People <span>Need</span> Help</h2>
-            <p>UDAAN Society, a leading NGO in Aligarh, runs impactful campaigns to uplift underprivileged communities.
-                Explore our diverse fundraising campaigns dedicated to education, healthcare, poverty alleviation, and
-                more.</p>
-        </div>
-    </section>
-
-    <!-- Stats Bar -->
-    <section class="stats-bar">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number" data-count="{{ campaigns.count }}">0</div>
-                    <div class="stat-label">Active Campaigns</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="2500000">0</div>
-                    <div class="stat-label">₹ Raised</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="15000">0</div>
-                    <div class="stat-label">Lives Impacted</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="5000">0</div>
-                    <div class="stat-label">Donors</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Controls Bar -->
-    <section class="controls-section">
-        <div class="container">
-            <div class="controls-bar">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search campaigns..." aria-label="Search campaigns">
-                </div>
-                <div class="sort-box">
-                    <label for="sortSelect">Sort by:</label>
-                    <select id="sortSelect">
-                        <option value="newest">Newest First</option>
-                        <option value="oldest">Oldest First</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Campaigns Grid -->
-    <section class="campaigns-section">
-        <div class="container">
-            <div class="campaigns-grid" id="campaignsGrid">
-
-                {% for campaign in campaigns %}
-                <article class="campaign-card" data-category="general"
-                    data-date="{{ campaign.created_at|date:'Y-m-d' }}"
-                    data-goal="{{ campaign.goal_amount|floatformat:0 }}"
-                    data-raised="{{ campaign.raised_amount|floatformat:0 }}">
-                    <div class="card-image">
-                        {% if campaign.image %}
-                        <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" loading="lazy">
-                        {% else %}
-                        <img src="{% static 'images/pn1.png' %}" alt="Placeholder" loading="lazy">
-                        {% endif %}
-                        <span class="category-badge">General</span>
-                        <button class="quick-donate" onclick="quickDonate('{{ campaign.title|escapejs }}')"
-                            aria-label="Quick donate">
-                            <i class="fas fa-heart"></i>
-                        </button>
-                    </div>
-                    <div class="card-body">
-                        <div class="progress-section">
-                            <div class="goal-text">
-                                <span class="raised-amount">Raised: {% if campaign.raised_amount > 0 %}₹{{
-                                    campaign.raised_amount }}{% else %}No Amount{% endif %}</span>
-                                <span class="goal-amount">Goal: ₹{{ campaign.goal_amount }}</span>
-                            </div>
-                            <div class="progress-bar">
-                                <!-- Calculate progress percentage -->
-                                <div class="progress-fill"
-                                    style="width: {% widthratio campaign.raised_amount campaign.goal_amount 100 %}%"
-                                    data-progress="{% widthratio campaign.raised_amount campaign.goal_amount 100 %}">
-                                </div>
+                        <div class="progress-bar">
+                            <!-- Calculate progress percentage -->
+                            <div class="progress-fill"
+                                style="width: {% widthratio campaign.raised_amount campaign.goal_amount 100 %}%"
+                                data-progress="{% widthratio campaign.raised_amount campaign.goal_amount 100 %}">
                             </div>
                         </div>
-                        <h3 class="card-title">{{ campaign.title }}</h3>
-                        <p class="card-description">{{ campaign.description|truncatewords:20 }}</p>
-                        <div class="card-meta">
-                            <span class="meta-item">
-                                <i class="fas fa-calendar"></i>
-                                Date - <time datetime="{{ campaign.created_at|date:'Y-m-d' }}">{{
-                                    campaign.created_at|date:"d/m/Y" }}</time>
-                            </span>
-                        </div>
                     </div>
-                </article>
-                {% empty %}
-                <div class="no-results" style="grid-column: 1/-1;">
-                    <h3>No campaigns found</h3>
+                    <h3 class="card-title">{{ campaign.title }}</h3>
+                    <p class="card-description">{{ campaign.description|truncatewords:20 }}</p>
+                    <div class="card-meta">
+                        <span class="meta-item">
+                            <i class="fas fa-calendar"></i>
+                            Date - <time datetime="{{ campaign.created_at|date:'Y-m-d' }}">{{
+                                campaign.created_at|date:"d/m/Y" }}</time>
+                        </span>
+                    </div>
                 </div>
-                {% endfor %}
-
+            </article>
+            {% empty %}
+            <div class="no-results" style="grid-column: 1/-1;">
+                <h3>No campaigns found</h3>
             </div>
+            {% endfor %}
+
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 UDAAN Society. All rights reserved. | Making a difference in Aligarh</p>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="{% static 'js/campaigns.js' %}"></script>
-</body>
-
-</html>
+<script src="{% static 'js/campaigns.js' %}"></script>
+{% endblock %}
