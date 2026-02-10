@@ -335,6 +335,10 @@ def donor_detail(request, pk):
         'interaction_types': Interaction.INTERACTION_TYPES,
     })
 
+
+def career_fellowship(request):
+    return render(request, 'career_and_fellowship.html')
+
 # --- Appointment Scheduling (Phase 8) ---
 from .models import Appointment, PersonalNote
 from django.http import JsonResponse
