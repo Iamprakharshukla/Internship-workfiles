@@ -18,6 +18,7 @@ urlpatterns = [
     path("blogs/", blogs_page, name="blogs"),
     path("reports/", report_list, name="report_list"),
     path("blood-request/", include("blood_request.urls")),
+    path('', include('blood_request.urls')),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

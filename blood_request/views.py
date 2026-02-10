@@ -325,4 +325,7 @@ def donor_detail(request, pk):
         'outcome_choices': Interaction.OUTCOME_CHOICES
     })
 
+def career_fellowship(request):
+    return render(request, 'career_and_fellowship.html')
+
 
