@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from blood_request.views import home_view, staff_dashboard, update_task_status, manager_dashboard, campaign_list, project_list, project_detail, report_list, blogs_page, resources_page
+from blood_request.views import home_view, staff_dashboard, update_task_status, manager_dashboard, campaign_list, project_list, project_detail, report_list, blogs_page, resources_page, profile_edit
 
 from django.conf import settings
 from django.shortcuts import render
@@ -10,7 +10,8 @@ urlpatterns = [
     path("admin/portal/manager/", manager_dashboard, name="manager_dashboard"), # New Team View
     path("admin/portal/task/<int:pk>/update/", update_task_status, name="update_task_status"),
     path("admin/portal/", staff_dashboard, name="staff_dashboard"),
-    
+    path("admin/portal/profile/", profile_edit, name="profile_edit"),
+
     path("admin/", admin.site.urls),
     path("", home_view, name="home"),
     path("campaigns/", campaign_list, name="campaign_list"),

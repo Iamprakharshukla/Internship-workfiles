@@ -1,0 +1,97 @@
+{% extends 'portal_layout.html' %} 
+
+{% block title %}Edit Profile | UDAAN Workspace{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-800">My Profile</h1>
+        <p class="text-sm text-gray-500">Manage your personal information and contact details.</p>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+        {% for message in messages %}
+        <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-md shadow-sm">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-green-800">{{ message }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="p-6 md:p-8">
+            <div class="flex items-center space-x-6 mb-8">
+                <div class="w-20 h-20 rounded-full bg-brand-dark text-white flex items-center justify-center font-bold text-3xl shadow-lg">
+                    {{ request.user.username|slice:":1"|upper }}
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-gray-800">{{ request.user.first_name }} {{ request.user.last_name }}</h2>
+                    <p class="text-gray-500">@{{ request.user.username }}</p>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-2">
+                        {% if request.user.is_superuser %}Administrator{% else %}Team Member{% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- User Form Fields -->
+                    <div class="space-y-1">
+                        <label for="{{ u_form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700">First Name</label>
+                        {{ u_form.first_name }}
+                        {% if u_form.first_name.errors %}
+                            <p class="text-red-500 text-xs mt-1">{{ u_form.first_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="space-y-1">
+                        <label for="{{ u_form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Last Name</label>
+                        {{ u_form.last_name }}
+                         {% if u_form.last_name.errors %}
+                            <p class="text-red-500 text-xs mt-1">{{ u_form.last_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-1">
+                        <label for="{{ u_form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        {{ u_form.email }}
+                         {% if u_form.email.errors %}
+                            <p class="text-red-500 text-xs mt-1">{{ u_form.email.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Profile Form Fields -->
+                     <div class="space-y-1">
+                        <label for="{{ p_form.phone_number.id_for_label }}" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                        {{ p_form.phone_number }}
+                         {% if p_form.phone_number.errors %}
+                            <p class="text-red-500 text-xs mt-1">{{ p_form.phone_number.errors.0 }}</p>
+                        {% endif %}
+                        <p class="text-xs text-gray-400">Used for urgent task coordination.</p>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-gray-100 flex justify-end">
+                    <button type="submit" class="bg-brand-red text-white px-6 py-2.5 rounded-lg font-bold hover:bg-red-700 transition shadow-sm hover:shadow-md transform hover:-translate-y-0.5">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
