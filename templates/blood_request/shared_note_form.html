@@ -1,0 +1,59 @@
+{% extends "portal_layout.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">Create Shared Note</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Title</label>
+            <input type="text" name="title" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Meeting Notes: Q1 Goals">
+        </div>
+
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Content</label>
+            <!-- CKEditor 5 container -->
+            <div class="border border-gray-300 rounded-lg overflow-hidden">
+                {{ form.media }}
+                {{ form.content }}
+                <!-- If not using form class, we need manual textarea or upgrade later. 
+                     For now using simple textarea to match view logic in append. -->
+                <textarea name="content" rows="10" class="w-full px-3 py-2 focus:outline-none"
+                    placeholder="Write your note here..."></textarea>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">Rich Text Editor will be enabled in Phase 17.3</p>
+        </div>
+
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Share with Teams</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                {% for team in teams %}
+                <label
+                    class="flex items-center space-x-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" name="teams" value="{{ team.id }}"
+                        class="form-checkbox h-5 w-5 text-indigo-600">
+                    <div>
+                        <span class="block text-gray-800 font-medium">{{ team.name }}</span>
+                        <span class="block text-xs text-gray-500">{{ team.members.count }} members</span>
+                    </div>
+                </label>
+                {% empty %}
+                <div class="col-span-full text-gray-500">No teams available to share with.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="flex justify-end space-x-4">
+            <a href="{% url 'staff_dashboard' %}" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</a>
+            <button type="submit"
+                class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 shadow-md transition">
+                Save & Share
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

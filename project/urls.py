@@ -9,6 +9,14 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/portal/manager/", manager_dashboard, name="manager_dashboard"), # New Team View
+    path("admin/portal/users/", views.user_list, name="user_list"),
+    path("admin/portal/users/add/", views.user_add, name="user_add"),
+    path("admin/portal/users/<int:pk>/", views.user_edit_portal, name="user_edit_portal"),
+    path("admin/portal/teams/", views.team_list, name="team_list"),
+    path("admin/portal/teams/create/", views.team_create, name="team_create"),
+    path("admin/portal/teams/<int:pk>/", views.team_detail, name="team_detail"),
+    path("admin/portal/notes/create/", views.shared_note_create, name="shared_note_create"),
+    path("admin/portal/notes/<int:pk>/", views.shared_note_detail, name="shared_note_detail"),
     path("admin/portal/task/<int:pk>/update/", update_task_status, name="update_task_status"),
     path("admin/portal/", staff_dashboard, name="staff_dashboard"),
     path("admin/portal/profile/", profile_edit, name="profile_edit"),

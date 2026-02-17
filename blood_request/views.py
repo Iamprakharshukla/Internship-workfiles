@@ -494,3 +494,140 @@ def calendar_events_api(request):
 
 def workplace_living(request):
     return render(request, 'workplace_living.html')
+
+# --- Phase 17: Team Views ---
+from .models import Team, SharedNote
+from django.contrib import messages
+
+@login_required
+@user_passes_test(is_manager)
+def team_list(request):
+    teams = Team.objects.all().order_by('-created_at')
+    return render(request, 'blood_request/team_list.html', {'teams': teams})
+
+@login_required
+@user_passes_test(is_manager)
+def team_create(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        member_ids = request.POST.getlist('members')
+        
+        if name:
+            team = Team.objects.create(name=name, description=description, created_by=request.user)
+            if member_ids:
+                team.members.set(member_ids)
+            from django.contrib import messages
+            messages.success(request, f"Team '{name}' created successfully!")
+            return redirect('team_list')
+    
+    from django.contrib.auth.models import User
+    users = User.objects.filter(is_active=True).exclude(is_superuser=True)
+    return render(request, 'blood_request/team_form.html', {'users': users})
+
+@login_required
+def team_detail(request, pk):
+    team = get_object_or_404(Team, pk=pk)
+    # Check access: Manager or Member
+    if not (is_manager(request.user) or request.user in team.members.all()):
+         from django.contrib import messages
+         messages.error(request, "Access Denied")
+         return redirect('staff_dashboard')
+         
+    return render(request, 'blood_request/team_detail.html', {'team': team})
+
+@login_required
+def shared_note_create(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        team_ids = request.POST.getlist('teams')
+        
+        if title:
+            note = SharedNote.objects.create(title=title, content=content, owner=request.user)
+            if team_ids:
+                note.shared_with_teams.set(team_ids)
+            from django.contrib import messages
+            messages.success(request, "Note created and shared!")
+            return redirect('staff_dashboard') # or specific team
+            
+    teams = request.user.teams.all()
+    if is_manager(request.user):
+        teams = Team.objects.all()
+        
+    return render(request, 'blood_request/shared_note_form.html', {'teams': teams})
+
+@login_required
+def shared_note_detail(request, pk):
+    note = get_object_or_404(SharedNote, pk=pk)
+    # Access check: Owner OR in shared_with_teams members OR shared_with_users
+    has_access = (note.owner == request.user) or \
+                 (note.shared_with_users.filter(id=request.user.id).exists()) or \
+                 (note.shared_with_teams.filter(members=request.user).exists())
+                 
+    if not has_access and not is_manager(request.user):
+        from django.contrib import messages
+        messages.error(request, "Access Denied")
+        return redirect('staff_dashboard')
+        
+    return render(request, 'blood_request/shared_note_detail.html', {'note': note})
+
+# --- Phase 18: Portal User Management ---
+@login_required
+@user_passes_test(is_manager)
+def user_list(request):
+    users = User.objects.all().order_by('-date_joined')
+    return render(request, 'blood_request/user_list.html', {'users': users})
+
+@login_required
+@user_passes_test(is_manager)
+def user_add(request):
+    if request.method == 'POST':
+        from .forms import UserUpdateForm # Using similar form or create new
+        # For simplicity, using standard User creation logic here or a specific form
+        # But UserUpdateForm is for existing. Let's use UserCreationForm logic adapted.
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        role = request.POST.get('role') # Manager or Staff
+        
+        if username and password:
+            try:
+                user = User.objects.create_user(username=username, email=email, password=password)
+                if role == 'Manager':
+                    from django.contrib.auth.models import Group
+                    g = Group.objects.get(name='Managers')
+                    user.groups.add(g)
+                    user.is_staff = True # Managers are staff
+                    user.save()
+                
+                # Create Profile
+                StaffProfile.objects.create(user=user)
+                
+                messages.success(request, f"User {username} created!")
+                return redirect('user_list')
+            except Exception as e:
+                messages.error(request, str(e))
+                
+    return render(request, 'blood_request/user_form.html')
+
+@login_required
+@user_passes_test(is_manager)
+def user_edit_portal(request, pk):
+    user_obj = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        user_obj.first_name = request.POST.get('first_name')
+        user_obj.last_name = request.POST.get('last_name')
+        user_obj.email = request.POST.get('email')
+        user_obj.save()
+        
+        # Phone
+        phone = request.POST.get('phone')
+        profile, created = StaffProfile.objects.get_or_create(user=user_obj)
+        profile.phone_number = phone
+        profile.save()
+        
+        messages.success(request, f"User {user_obj.username} updated!")
+        return redirect('user_list')
+        
+    return render(request, 'blood_request/user_edit.html', {'target_user': user_obj})

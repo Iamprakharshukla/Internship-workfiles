@@ -1,0 +1,931 @@
+/* ================= HERO SECTION ================= */
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    overflow: hidden;
+}
+
+/* IMAGE WRAPPER */
+.hero-image {
+    position: absolute;
+    inset: 0;
+}
+
+/* IMAGE */
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* IMPORTANT */
+}
+
+/* DARK OVERLAY */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+/* TEXT CONTENT */
+.hero-content {
+    position: relative;
+    z-index: 2;
+
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    color: #fff;
+}
+
+.hero-content h1 {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+
+
+/* ================= APPLY ================= */
+
+.apply-section {
+    text-align: center;
+    padding: 70px 20px;
+}
+
+.apply-title {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.apply-banner {
+    width: 50%;
+    max-width: 1100px;
+    margin: auto;
+
+    background-color: #e63946;
+
+    /* DOT PATTERN */
+    background-image: radial-gradient(
+        rgba(255,255,255,0.4) 1px,
+        transparent 1px
+    );
+
+    background-size: 18px 18px;
+
+    border-radius: 20px;
+    overflow: hidden;
+
+    position: relative;
+}
+
+
+/* Register */
+
+.register-now {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: rotate(-90deg) translateY(-50%);
+
+    color: white;
+    font-weight: 600;
+}
+
+
+/* Content */
+
+.apply-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 90px 80px 90px 120px;
+}
+
+
+/* Blue Boxes */
+
+.apply-boxes {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.blue-box {
+    background: #1d3557;
+    color: white;
+
+    padding: 16px 28px;
+    font-size: 24px;
+    font-weight: 700;
+
+    width: fit-content;
+}
+
+
+/* Text */
+
+.apply-text {
+    color: white;
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: right;
+}
+
+
+/* Footer */
+
+.apply-footer {
+    background: #1d3557;
+    color: white;
+
+    position: absolute;
+    bottom: 0;
+
+    width: 100%;
+    padding: 12px;
+
+    font-size: 14px;
+}
+
+
+
+/* ================= CONTENT ================= */
+
+.career-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 50px 20px;
+}
+
+.career-container h2,
+.career-container h3 {
+    font-weight: 700;
+    margin: 20px 0;
+}
+
+.career-container ul {
+    margin-left: 20px;
+    list-style: disc;
+}
+
+
+
+/* Internship block spacing */
+
+.internship-info {
+    margin-top: 40px;
+}
+
+
+
+/* CLICKABLE LINK */
+
+.internship-link {
+    display: inline-block;
+
+    color: #8b1d3f;
+    font-size: 18px;
+    font-weight: 600;
+
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+
+    margin-bottom: 18px;
+
+    transition: all 0.3s ease;
+}
+
+.internship-link:hover {
+    color: #e63946;
+    border-bottom: 2px solid #e63946;
+}
+
+
+
+/* ================= SOCIAL ================= */
+
+.career-social {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+
+    margin: 40px 0;
+    flex-wrap: wrap;
+}
+
+.social-btn {
+    padding: 16px 34px;
+    border-radius: 12px;
+
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    transition: 0.3s;
+}
+
+.social-btn:hover {
+    transform: translateY(-2px);
+}
+
+.fb { background: #1877f2; }
+.wp { background: #16a34a; }
+
+
+
+/* ================= CARDS ================= */
+
+.career-actions {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+
+    padding: 60px 20px;
+    flex-wrap: wrap;
+}
+
+.career-card {
+    width: 320px;
+    padding: 30px;
+
+    background: linear-gradient(135deg,#ec4899,#f97316);
+    color: white;
+
+    border-radius: 18px;
+    text-align: center;
+}
+
+.career-btn {
+    display: inline-block;
+    margin-top: 15px;
+
+    background: white;
+    color: black;
+
+    padding: 10px 26px;
+    border-radius: 20px;
+
+    text-decoration: none;
+    font-weight: 600;
+}
+
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+    .apply-banner {
+        width: 90%;
+    }
+
+    .apply-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 60px 30px;
+        gap: 25px;
+    }
+
+    .apply-text {
+        text-align: center;
+    }
+
+}
+
+/* ================= BREADCRUMB ================= */
+
+.breadcrumb-section {
+    background: #ffffff;
+    border-bottom: 1px solid #eee;
+}
+
+.breadcrumb-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 12px 20px;
+
+    font-size: 15px;
+    color: #6b7280;
+}
+
+.breadcrumb-container a {
+    color: #8b1d3f;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.breadcrumb-container a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb-container span {
+    margin: 0 4px;
+}
+
+/* ================= EMPLOYEE WORKPLACE SECTION ================= */
+
+.employee-workplace {
+    background: #f3f4f6;   /* light grey */
+    padding: 70px 20px;
+    text-align: center;
+}
+
+.employee-container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.employee-workplace h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    line-height: 1.3;
+}
+
+.highlight-red {
+    color: #e63946;
+}
+
+.employee-description {
+    font-size: 18px;
+    line-height: 1.8;
+    font-style: italic;
+    color: #555;
+    max-width: 900px;
+    margin: auto;
+}
+/* ================= WORKPLACE INFO CARD ================= */
+
+.workplace-card-section {
+    padding: 70px 20px;
+    background: #fafafa;
+}
+
+
+/* MAIN CARD */
+
+.workplace-card {
+    max-width: 1150px;
+    margin: auto;
+
+    background: white;
+
+    border: 1px solid #ddd;
+    border-radius: 14px;
+
+    display: flex;
+    gap: 40px;
+
+    padding: 35px;
+
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+}
+
+
+/* LEFT IMAGE */
+
+.workplace-card-image {
+    flex: 0 0 360px;
+}
+
+.workplace-card-image img {
+    width: 100%;
+    height: 100%;
+    max-height: 420px;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+}
+
+
+/* RIGHT CONTENT */
+
+.workplace-card-content {
+    flex: 1;
+}
+
+.workplace-card-content h3 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+
+.workplace-card-content p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #333;
+
+    margin-bottom: 15px;
+}
+
+
+.workplace-card-content ul {
+    margin: 15px 0 20px 25px;
+    padding-left: 15px;
+
+    list-style-type: disc;   /* show bullets */
+}
+
+.workplace-card-content li {
+    display: list-item;      /* force vertical */
+    margin-bottom: 10px;
+
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+
+
+.workplace-card-content li {
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+
+.workplace-card-content strong {
+    font-weight: 600;
+}
+
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+    .workplace-card {
+        flex-direction: column;
+        padding: 25px;
+    }
+
+    .workplace-card-image {
+        flex: none;
+        max-width: 100%;
+    }
+
+    .workplace-card-image img {
+        max-height: 300px;
+    }
+
+}
+.workplace-card-image img {
+    width: 100%;
+    height: auto;      /* auto height */
+    max-height: 420px;
+
+    object-fit: contain;   /* FULL IMAGE, no crop */
+    background: #e63946;   /* red background if space left */
+
+    border-radius: 12px;
+}
+/* ================= BENEFITS CARD ================= */
+
+.benefits-card-section {
+    padding: 70px 20px;
+    background: #fafafa;
+}
+
+
+/* MAIN CARD */
+
+.benefits-card {
+    max-width: 1200px;
+    margin: auto;
+
+    background: #fff;
+
+    border: 1px solid #ddd;
+    border-radius: 18px;
+
+    display: flex;
+    gap: 40px;
+
+    padding: 40px;
+
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+
+/* LEFT SIDE */
+
+.benefits-left {
+    flex: 1.3;
+}
+
+.benefits-left h3 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.benefits-left p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #222;
+    margin-bottom: 18px;
+}
+
+.benefits-left ul {
+    margin: 15px 0 20px 25px;
+    list-style: disc;
+}
+
+.benefits-left li {
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+
+/* RIGHT SIDE */
+
+.benefits-right {
+    flex: 1;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+
+/* SHAPES (DECORATION) */
+
+.benefits-shapes {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+
+    width: 140px;
+    height: 140px;
+
+    background-image: url("../assets/benefit-shape.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.9;
+}
+
+
+/* TEXT */
+
+.benefits-right h2 {
+    font-size: 36px;
+    font-weight: 700;
+    text-transform: lowercase;
+    line-height: 1.3;
+}
+
+.benefits-right span {
+    font-size: 54px;
+    font-weight: 800;
+    color: #e63946;
+    text-transform: capitalize;
+}
+
+.benefits-brand {
+    margin-top: 40px;
+    font-size: 14px;
+    color: #777;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+    .benefits-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .benefits-left ul {
+        text-align: left;
+        display: inline-block;
+    }
+
+    .benefits-shapes {
+        display: none;
+    }
+
+}
+/* ================= BENEFITS IMAGE ================= */
+
+.benefits-right {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.benefits-image {
+    width: 100%;
+    max-width: 420px;
+
+    height: auto;
+
+    border-radius: 12px;
+
+    object-fit: contain;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ================= BENEFITS SECTION ================= */
+
+.benefits-section {
+    padding: 80px 20px;
+    background: #fafafa;
+}
+
+
+.benefits-container {
+    max-width: 1200px;
+    margin: auto;
+
+    background: #fff;
+
+    border: 1px solid #ddd;
+    border-radius: 18px;
+
+    display: flex;
+    gap: 50px;
+
+    padding: 45px;
+
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+
+/* LEFT TEXT */
+
+.benefits-text {
+    flex: 1.3;
+}
+
+.benefits-text h2 {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.benefits-text p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #222;
+    margin-bottom: 18px;
+}
+
+.benefits-text ul {
+    margin: 15px 0 25px 25px;
+    list-style: disc;
+}
+
+.benefits-text li {
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+
+/* RIGHT IMAGE */
+
+.benefits-image-box {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.benefits-image-box img {
+    width: 100%;
+    max-width: 420px;
+
+    height: auto;
+
+    border-radius: 14px;
+
+    object-fit: contain;
+
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+    .benefits-container {
+        flex-direction: column;
+        padding: 30px;
+    }
+
+    .benefits-text {
+        text-align: center;
+    }
+
+    .benefits-text ul {
+        text-align: left;
+        display: inline-block;
+    }
+
+    .benefits-image-box img {
+        max-width: 320px;
+    }
+
+}
+
+/* ================= REVERSE LAYOUT ================= */
+
+.benefits-container.reverse {
+    flex-direction: row-reverse;
+}
+
+/* LINK STYLE */
+
+.benefits-link {
+    color: #e63946;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.benefits-link:hover {
+    text-decoration: underline;
+}
+
+/* ================= FORM SECTION ================= */
+
+.workplace-form-section {
+    padding: 100px 20px;
+    background: #fff;
+}
+
+
+/* HEADER */
+
+.form-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.form-header h2 {
+    font-size: 36px;
+    font-weight: 800;
+}
+
+.form-header h2 span {
+    color: #e63946;
+}
+
+.form-header p {
+    margin-top: 12px;
+    font-size: 16px;
+    color: #555;
+}
+
+
+/* FORM CARD */
+
+.form-card {
+    max-width: 850px;
+    margin: auto;
+
+    background: #fff;
+
+    border-radius: 16px;
+    border: 1px solid #ddd;
+
+    padding: 45px 50px;
+
+    box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+}
+
+
+/* FORM GRID */
+
+.form-row {
+    display: flex;
+    gap: 25px;
+}
+
+.form-group {
+    flex: 1;
+    margin-bottom: 22px;
+}
+
+
+/* LABEL */
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.form-group label span {
+    color: red;
+}
+
+
+/* INPUT */
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    transition: 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #e63946;
+}
+
+
+/* SUB TITLE */
+
+.form-subtitle {
+    margin: 25px 0 12px;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+/* CHECKBOX */
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.checkbox-group label {
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+
+/* BUTTON */
+
+.submit-btn {
+    background: #e63946;
+    color: #fff;
+
+    padding: 14px 32px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    margin-top: 15px;
+
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    background: #cf3f31;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-card {
+        padding: 35px 25px;
+    }
+
+}
