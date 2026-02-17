@@ -1,15 +1,21 @@
 /* Modern Admin Theme Overrides (Portal Style) */
 :root {
-    --primary-bg: #F3F4F6;      /* Gray 100 */
-    --primary-text: #1F2937;    /* Gray 800 */
-    --accent-color: #4F46E5;    /* Indigo 600 */
-    --accent-hover: #4338CA;    /* Indigo 700 */
+    --primary-bg: #F3F4F6;
+    /* Gray 100 */
+    --primary-text: #1F2937;
+    /* Gray 800 */
+    --accent-color: #4F46E5;
+    /* Indigo 600 */
+    --accent-hover: #4338CA;
+    /* Indigo 700 */
     --header-bg: #FFFFFF;
     --header-text: #1F2937;
     --sidebar-bg: #FFFFFF;
-    --sidebar-text: #4B5563;    /* Gray 600 */
+    --sidebar-text: #4B5563;
+    /* Gray 600 */
     --card-bg: #FFFFFF;
-    --border-color: #E5E7EB;    /* Gray 200 */
+    --border-color: #E5E7EB;
+    /* Gray 200 */
 }
 
 /* Global Reset for Admin */
@@ -37,7 +43,8 @@ body {
     font-size: 1.25rem !important;
 }
 
-#header a:link, #header a:visited {
+#header a:link,
+#header a:visited {
     color: var(--header-text) !important;
 }
 
@@ -50,13 +57,25 @@ body {
     margin-bottom: 20px !important;
 }
 
-.module caption, .module h2 {
-    background: transparent !important;
+.module caption,
+.module h2 {
+    background: #F9FAFB !important;
+    /* Gray 50 */
     color: var(--primary-text) !important;
     font-size: 1.1rem !important;
     font-weight: 600 !important;
     padding: 15px 20px !important;
     border-bottom: 1px solid var(--border-color);
+}
+
+.module caption a,
+.module h2 a {
+    color: var(--primary-text) !important;
+}
+
+.module caption a:hover,
+.module h2 a:hover {
+    color: var(--accent-color) !important;
 }
 
 /* Tables */
@@ -65,7 +84,8 @@ table {
     border-spacing: 0;
 }
 
-td, th {
+td,
+th {
     border-bottom: 1px solid var(--border-color) !important;
     padding: 12px 20px !important;
     font-size: 0.9rem !important;
@@ -76,19 +96,25 @@ th {
     font-size: 0.75rem !important;
     font-weight: 600 !important;
     color: var(--sidebar-text) !important;
-    background: #F9FAFB !important; /* Gray 50 */
+    background: #F9FAFB !important;
+    /* Gray 50 */
 }
 
-tr.row1, tr.row2 {
+tr.row1,
+tr.row2 {
     background: transparent !important;
 }
 
 tr:hover td {
-    background: #F3F4F6 !important; /* Gray 100 */
+    background: #F3F4F6 !important;
+    /* Gray 100 */
 }
 
 /* Buttons */
-.button, input[type=submit], input[type=button], .submit-row input {
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input {
     background: var(--accent-color) !important;
     color: white !important;
     border: none !important;
@@ -99,11 +125,15 @@ tr:hover td {
     text-transform: none !important;
 }
 
-.button:hover, input[type=submit]:hover, input[type=button]:hover {
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover {
     background: var(--accent-hover) !important;
 }
 
-.button.default, input[type=submit].default, .submit-row input.default {
+.button.default,
+input[type=submit].default,
+.submit-row input.default {
     background: var(--accent-color) !important;
 }
 
@@ -147,7 +177,13 @@ div.breadcrumbs a {
     font-weight: 500;
 }
 
-input[type=text], input[type=password], input[type=email], input[type=url], input[type=number], textarea, select {
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=url],
+input[type=number],
+textarea,
+select {
     border: 1px solid var(--border-color) !important;
     border-radius: 0.375rem !important;
     padding: 8px 12px !important;
@@ -155,7 +191,9 @@ input[type=text], input[type=password], input[type=email], input[type=url], inpu
     color: var(--primary-text) !important;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
     border-color: var(--accent-color) !important;
     outline: none;
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
