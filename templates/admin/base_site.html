@@ -4,13 +4,13 @@
 
 {% block extrahead %}
 <link rel="stylesheet" href="/static/css/admin_theme.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block branding %}
 <h1 id="site-name">
     <a href="{% url 'admin:index' %}">
-        {{ site_header|default:_('Django administration') }}
+        UDAAN <span style="font-weight: 300; opacity: 0.8;">Administration</span>
     </a>
 </h1>
 {% endblock %}

@@ -598,19 +598,83 @@ def shared_note_create(request):
         content = request.POST.get('content')
         team_ids = request.POST.getlist('teams')
         
-        if title:
-            note = SharedNote.objects.create(title=title, content=content, owner=request.user)
-            if team_ids:
-                note.shared_with_teams.set(team_ids)
-            from django.contrib import messages
-            messages.success(request, "Note created and shared!")
-            return redirect('staff_dashboard') # or specific team
+        note = SharedNote.objects.create(
+            title=title,
+            content=content,
+            owner=request.user
+        )
+        if team_ids:
+            note.shared_with_teams.set(team_ids)
             
-    teams = request.user.teams.all()
-    if is_manager(request.user):
-        teams = Team.objects.all()
+        from django.contrib import messages
+        messages.success(request, "Note shared successfully!")
+        # Redirect to the first selected team detail or dashboard
+        if team_ids:
+            return redirect('team_detail', pk=team_ids[0])
+        return redirect('staff_dashboard')
+    
+    user_teams = Team.objects.filter(members=request.user) if not is_manager(request.user) else Team.objects.all()
+    # Pre-select team from query param
+    initial_team = request.GET.get('team')
+    return render(request, 'blood_request/shared_note_form.html', {
+        'teams': user_teams, 
+        'initial_team': int(initial_team) if initial_team else None
+    })
+
+@login_required
+def shared_note_detail(request, pk):
+    note = get_object_or_404(SharedNote, pk=pk)
+    # Check permission (Owner, Shared User, or Shared Team Member)
+    has_access = (
+        request.user == note.owner or 
+        request.user in note.shared_with_users.all() or
+        note.shared_with_teams.filter(members=request.user).exists() or
+        is_manager(request.user)
+    )
+    
+    if not has_access:
+        from django.contrib import messages
+        messages.error(request, "You do not have permission to view this note.")
+        return redirect('staff_dashboard')
         
-    return render(request, 'blood_request/shared_note_form.html', {'teams': teams})
+    return render(request, 'blood_request/shared_note_detail.html', {'note': note})
+
+@login_required
+@user_passes_test(is_manager)
+def team_add_member(request, pk):
+    team = get_object_or_404(Team, pk=pk)
+    from django.contrib.auth.models import User
+    
+    if request.method == 'POST':
+        member_ids = request.POST.getlist('members')
+        if member_ids:
+            users_to_add = User.objects.filter(id__in=member_ids)
+            team.members.add(*users_to_add)
+            from django.contrib import messages
+            messages.success(request, f"{users_to_add.count()} members added to {team.name}")
+        return redirect('team_detail', pk=pk)
+    
+    # Show users NOT in the team
+    available_users = User.objects.filter(is_active=True).exclude(id__in=team.members.values_list('id', flat=True)).exclude(is_superuser=True)
+    return render(request, 'blood_request/team_add_member.html', {
+        'team': team,
+        'available_users': available_users
+    })
+
+@login_required
+@user_passes_test(is_manager)
+def team_remove_member(request, team_pk, user_pk):
+    team = get_object_or_404(Team, pk=team_pk)
+    from django.contrib.auth.models import User
+    user_to_remove = get_object_or_404(User, pk=user_pk)
+    
+    if user_to_remove in team.members.all():
+        team.members.remove(user_to_remove)
+        from django.contrib import messages
+        messages.success(request, f"{user_to_remove.username} removed from {team.name}")
+    
+    return redirect('team_detail', pk=team_pk)
+
 
 @login_required
 def shared_note_detail(request, pk):

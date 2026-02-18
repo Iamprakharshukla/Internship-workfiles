@@ -1,0 +1,45 @@
+{% extends "portal_layout.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="bg-white rounded-xl shadow-sm p-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Add Members to {{ team.name }}</h2>
+
+        <form method="post" action="">
+            {% csrf_token %}
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Select Users to Add</label>
+                <div class="border border-gray-200 rounded-lg max-h-96 overflow-y-auto divide-y divide-gray-100">
+                    {% for user in available_users %}
+                    <div class="flex items-center p-3 hover:bg-gray-50">
+                        <input type="checkbox" name="members" value="{{ user.id }}" id="user_{{ user.id }}"
+                            class="h-4 w-4 text-brand-red focus:ring-brand-red border-gray-300 rounded cursor-pointer">
+                        <label for="user_{{ user.id }}" class="ml-3 block w-full cursor-pointer">
+                            <span class="text-sm font-medium text-gray-900">{{ user.username }}</span>
+                            <span class="text-xs text-gray-500 ml-2">{{ user.email }}</span>
+                        </label>
+                    </div>
+                    {% empty %}
+                    <div class="p-6 text-center text-gray-500 italic">
+                        All active users are already in this team!
+                    </div>
+                    {% endfor %}
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Only active users who are not already in this team are shown.</p>
+            </div>
+
+            <div class="flex justify-end space-x-3">
+                <a href="{% url 'team_detail' team.id %}"
+                    class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    Cancel
+                </a>
+                <button type="submit"
+                    class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 shadow-sm">
+                    Add Selected Members
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
