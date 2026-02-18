@@ -8,7 +8,7 @@ from .models import BloodDonor, BloodRequest
 from .schemas import DonorSchema
 from pydantic import ValidationError
 # from django.shortcuts import render
-from .models import Blog, Project
+from .models import Blog, Project, Task
 from django.shortcuts import get_object_or_404
 
 @ensure_csrf_cookie
@@ -236,7 +236,14 @@ def manager_dashboard(request):
     from datetime import date
     
     # 1. Task Overview
-    tasks = Task.objects.all().order_by('status', '-created_at')
+    all_tasks = Task.objects.all().order_by('-created_at')
+    
+    # Kanban Buckets
+    todo_tasks = all_tasks.filter(status='To Do')
+    inprogress_tasks = all_tasks.filter(status='In Progress')
+    done_tasks = all_tasks.filter(status='Done')
+    
+    tasks = all_tasks # Keep for table if needed or backward compat
     
     # 2. Project Progress (Phase 7.1)
     # Calculate % completion for each project
@@ -566,7 +573,20 @@ def team_detail(request, pk):
          messages.error(request, "Access Denied")
          return redirect('staff_dashboard')
          
-    return render(request, 'blood_request/team_detail.html', {'team': team})
+    # Kanban Data for Team
+    team_members = team.members.all()
+    all_team_tasks = Task.objects.filter(assigned_to__in=team_members).order_by('-updated_at')
+    
+    todo_tasks = all_team_tasks.filter(status='To Do')
+    inprogress_tasks = all_team_tasks.filter(status='In Progress')
+    done_tasks = all_team_tasks.filter(status='Done')
+
+    return render(request, 'blood_request/team_detail.html', {
+        'team': team,
+        'todo_tasks': todo_tasks,
+        'inprogress_tasks': inprogress_tasks,
+        'done_tasks': done_tasks
+    })
 
 @login_required
 def shared_note_create(request):

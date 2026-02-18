@@ -76,13 +76,135 @@
             </div>
         </div>
 
-        <!-- Placeholder for Kanban -->
-        <div
-            class="bg-white rounded-xl shadow-sm p-6 min-h-[200px] flex flex-col justify-center items-center border border-dashed border-gray-300">
-            <i class="fas fa-columns text-4xl text-gray-300 mb-2"></i>
-            <h3 class="text-gray-400 font-medium">Team Kanban Board</h3>
-            <p class="text-gray-400 text-sm">Coming Soon in Phase 17.2</p>
+        <!-- KANBAN BOARD -->
+        <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+            <h3 class="font-bold text-lg mb-4 text-gray-800 flex items-center">
+                <i class="fas fa-columns text-indigo-500 mr-2"></i> Team Kanban
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                <!-- TO DO -->
+                <div class="flex flex-col bg-gray-100/50 rounded-lg p-3" data-status="To Do">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">To Do</span>
+                        <span
+                            class="bg-white text-gray-600 px-2 py-0.5 rounded text-xs font-bold shadow-sm count-badge">{{
+                            todo_tasks.count }}</span>
+                    </div>
+                    <div class="task-container space-y-3 min-h-[100px]" id="team-todo" data-status="To Do">
+                        {% for task in todo_tasks %}
+                        {% include "blood_request/partials/task_card.html" with task=task %}
+                        {% endfor %}
+                        <div
+                            class="empty-placeholder text-center py-4 text-gray-300 {% if todo_tasks %}hidden{% endif %}">
+                            <p class="text-xs italic">Empty</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IN PROGRESS -->
+                <div class="flex flex-col bg-blue-50/50 rounded-lg p-3" data-status="In Progress">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">In Progress</span>
+                        <span
+                            class="bg-white text-blue-600 px-2 py-0.5 rounded text-xs font-bold shadow-sm count-badge">{{
+                            inprogress_tasks.count }}</span>
+                    </div>
+                    <div class="task-container space-y-3 min-h-[100px]" id="team-inprogress" data-status="In Progress">
+                        {% for task in inprogress_tasks %}
+                        {% include "blood_request/partials/task_card.html" with task=task %}
+                        {% endfor %}
+                        <div
+                            class="empty-placeholder text-center py-4 text-blue-200 {% if inprogress_tasks %}hidden{% endif %}">
+                            <p class="text-xs italic">Empty</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DONE -->
+                <div class="flex flex-col bg-green-50/50 rounded-lg p-3" data-status="Done">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-bold text-green-600 uppercase tracking-wider">Done</span>
+                        <span
+                            class="bg-white text-green-600 px-2 py-0.5 rounded text-xs font-bold shadow-sm count-badge">{{
+                            done_tasks.count }}</span>
+                    </div>
+                    <div class="task-container space-y-3 min-h-[100px]" id="team-done" data-status="Done">
+                        {% for task in done_tasks %}
+                        {% include "blood_request/partials/task_card.html" with task=task %}
+                        {% endfor %}
+                        <div
+                            class="empty-placeholder text-center py-4 text-green-200 {% if done_tasks %}hidden{% endif %}">
+                            <p class="text-xs italic">Empty</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
+        <!-- SortableJS Shared Script -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const containers = document.querySelectorAll('.task-container');
+                containers.forEach(container => {
+                    new Sortable(container, {
+                        group: 'kanban',
+                        animation: 150,
+                        ghostClass: 'bg-indigo-50',
+                        dragClass: 'opacity-100',
+                        onEnd: function (evt) {
+                            const itemEl = evt.item;
+                            const newStatus = evt.to.getAttribute('data-status');
+                            const taskId = itemEl.getAttribute('data-id');
+                            if (evt.from === evt.to) return;
+
+                            checkEmptyState(evt.from);
+                            checkEmptyState(evt.to);
+                            updateBadge(evt.from);
+                            updateBadge(evt.to);
+
+                            updateTaskStatus(taskId, newStatus);
+                        }
+                    });
+                });
+
+                function checkEmptyState(container) {
+                    const items = container.querySelectorAll('.task-card');
+                    const placeholder = container.querySelector('.empty-placeholder');
+                    if (placeholder) {
+                        placeholder.style.display = items.length === 0 ? 'block' : 'none';
+                        if (items.length === 0) placeholder.classList.remove('hidden');
+                        else placeholder.classList.add('hidden');
+                    }
+                }
+
+                function updateBadge(container) {
+                    const count = container.querySelectorAll('.task-card').length;
+                    const columnDiv = container.closest('.flex-col'); // Depends on structure
+                    if (columnDiv) {
+                        const badge = columnDiv.querySelector('.count-badge');
+                        if (badge) badge.innerText = count;
+                    }
+                }
+
+                function updateTaskStatus(taskId, status) {
+                    fetch(`/admin/portal/task/${taskId}/update/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ status: status })
+                    })
+                        .then(r => r.json())
+                        .then(d => { if (d.status !== 'success') alert('Update failed'); });
+                }
+            });
+        </script>
     </div>
 </div>
 {% endblock %}

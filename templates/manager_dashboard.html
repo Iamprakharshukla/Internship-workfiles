@@ -161,77 +161,146 @@
 
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                <h2 class="text-xl font-bold text-gray-800">All Tasks</h2>
-                <a href="/admin/blood_request/task/add/"
-                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm font-medium">
-                    + Create New Task
-                </a>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-gray-50 text-gray-600 text-sm">
-                            <th class="p-4 font-semibold">Priority</th>
-                            <th class="p-4 font-semibold">Task</th>
-                            <th class="p-4 font-semibold">Assigned To</th>
-                            <th class="p-4 font-semibold">Status</th>
-                            <th class="p-4 font-semibold">Due Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        {% for task in tasks %}
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="p-4">
-                                <span class="px-2 py-1 rounded text-xs font-bold
-                  {% if task.priority == 'Critical' %} bg-red-100 text-red-700
-                  {% elif task.priority == 'High' %} bg-orange-100 text-orange-700
-                  {% elif task.priority == 'Medium' %} bg-blue-100 text-blue-700
-                  {% else %} bg-gray-100 text-gray-600 {% endif %}">
-                                    {{ task.priority }}
-                                </span>
-                            </td>
-                            <td class="p-4 font-medium text-gray-900">
-                                {{ task.title }}
-                                {% if task.remarks %}
-                                <div class="text-xs text-gray-400 mt-1">Note: {{ task.remarks|truncatechars:40 }}</div>
-                                {% endif %}
-                            </td>
-                            <td class="p-4 text-sm text-gray-600">
-                                {% if task.assigned_to %}
-                                <div class="flex items-center space-x-2">
-                                    <div
-                                        class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold">
-                                        {{ task.assigned_to.username|slice:":1"|upper }}
-                                    </div>
-                                    <span>{{ task.assigned_to.username }}</span>
-                                </div>
-                                {% else %}
-                                <span class="text-gray-400 italic">Unassigned</span>
-                                {% endif %}
-                            </td>
-                            <td class="p-4">
-                                <span class="px-3 py-1 rounded-full text-xs font-semibold
-                  {% if task.status == 'Done' %} bg-green-100 text-green-700
-                  {% elif task.status == 'In Progress' %} bg-blue-100 text-blue-700
-                  {% else %} bg-yellow-100 text-yellow-700 {% endif %}">
-                                    {{ task.status }}
-                                </span>
-                            </td>
-                            <td class="p-4 text-gray-600 text-sm">
-                                {{ task.due_date|date:"M d" }}
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5" class="p-8 text-center text-gray-500">No tasks found. Create one!</td>
-                        </tr>
+        <!-- KANBAN BOARD -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Task Board</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- TO DO Column -->
+                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200 flex flex-col h-full" data-status="To Do">
+                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-gray-400"></span>
+                            <h3 class="font-bold text-gray-700 uppercase text-sm">To Do</h3>
+                        </div>
+                        <span class="count-badge bg-white px-2 py-1 rounded text-xs font-bold text-gray-500 shadow-sm">{{ todo_tasks.count }}</span>
+                    </div>
+                    
+                    <div class="task-container space-y-3 min-h-[150px]" id="todo-list-manager" data-status="To Do">
+                        {% for task in todo_tasks %}
+                            {% include "blood_request/partials/task_card.html" with task=task %}
                         {% endfor %}
-                    </tbody>
-                </table>
+                        
+                        <!-- Empty State -->
+                        <div class="empty-placeholder text-center py-8 text-gray-400 {% if todo_tasks %}hidden{% endif %}">
+                            <p class="text-sm italic">No tasks in To Do</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IN PROGRESS Column -->
+                <div class="bg-blue-50 rounded-xl p-4 border border-blue-100 flex flex-col h-full" data-status="In Progress">
+                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-blue-200">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span>
+                            <h3 class="font-bold text-blue-800 uppercase text-sm">In Progress</h3>
+                        </div>
+                        <span class="count-badge bg-white px-2 py-1 rounded text-xs font-bold text-blue-600 shadow-sm">{{ inprogress_tasks.count }}</span>
+                    </div>
+                    
+                    <div class="task-container space-y-3 min-h-[150px]" id="inprogress-list-manager" data-status="In Progress">
+                        {% for task in inprogress_tasks %}
+                            {% include "blood_request/partials/task_card.html" with task=task %}
+                        {% endfor %}
+
+                        <div class="empty-placeholder text-center py-8 text-blue-300 {% if inprogress_tasks %}hidden{% endif %}">
+                            <p class="text-sm italic">No active tasks</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DONE Column -->
+                <div class="bg-green-50 rounded-xl p-4 border border-green-100 flex flex-col h-full" data-status="Done">
+                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-green-200">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                            <h3 class="font-bold text-green-800 uppercase text-sm">Done</h3>
+                        </div>
+                        <span class="count-badge bg-white px-2 py-1 rounded text-xs font-bold text-green-600 shadow-sm">{{ done_tasks.count }}</span>
+                    </div>
+                    
+                    <div class="task-container space-y-3 min-h-[150px]" id="done-list-manager" data-status="Done">
+                        {% for task in done_tasks %}
+                            {% include "blood_request/partials/task_card.html" with task=task %}
+                        {% endfor %}
+                        
+                        <div class="empty-placeholder text-center py-8 text-green-300 {% if done_tasks %}hidden{% endif %}">
+                            <p class="text-sm italic">No completed tasks this week</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+
+        <!-- SortableJS Shared Script (Could be externalized) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const containers = document.querySelectorAll('.task-container');
+                
+                containers.forEach(container => {
+                    new Sortable(container, {
+                        group: 'kanban', 
+                        animation: 150,
+                        ghostClass: 'bg-indigo-50',
+                        dragClass: 'opacity-100',
+                        onEnd: function (evt) {
+                            const itemEl = evt.item;
+                            const newStatus = evt.to.getAttribute('data-status');
+                            const taskId = itemEl.getAttribute('data-id');
+
+                            if (evt.from === evt.to) return;
+
+                            // Handle placehoder visibility & Badges
+                            checkEmptyState(evt.from);
+                            checkEmptyState(evt.to);
+                            updateBadge(evt.from);
+                            updateBadge(evt.to);
+
+                            // AJAX Update
+                            updateTaskStatus(taskId, newStatus);
+                        }
+                    });
+                });
+
+                function checkEmptyState(container) {
+                     const items = container.querySelectorAll('.task-card');
+                     const placeholder = container.querySelector('.empty-placeholder');
+                     if(placeholder) {
+                        placeholder.style.display = items.length === 0 ? 'block' : 'none';
+                         if (items.length === 0) placeholder.classList.remove('hidden');
+                         else placeholder.classList.add('hidden');
+                     }
+                }
+
+                function updateBadge(container) {
+                    const count = container.querySelectorAll('.task-card').length;
+                    const columnDiv = container.closest('.flex-col');
+                    if(columnDiv) {
+                         const badge = columnDiv.querySelector('.count-badge');
+                         if(badge) badge.innerText = count;
+                    }
+                }
+
+                function updateTaskStatus(taskId, status) {
+                    fetch(`/admin/portal/task/${taskId}/update/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ status: status })
+                    })
+                    .then(r => r.json())
+                    .then(d => {
+                        if (d.status !== 'success') alert('Update failed');
+                        else console.log('Updated', d);
+                    });
+                }
+            });
+        </script>
 </section>
 {% endblock %}
