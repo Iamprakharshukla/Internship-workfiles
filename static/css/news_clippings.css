@@ -1,0 +1,145 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+body {
+    background: #f7f7f7;
+    color: #222;
+}
+
+.hero {
+    height: 400px;
+    background: 
+        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+        url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200') center/cover;
+    position: relative;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+}
+
+.hero-content {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content h1 {
+    color: #fff;
+    font-size: 36px;
+    letter-spacing: 2px;
+}
+
+.breadcrumb {
+    background: #eee;
+    padding: 12px 20px;
+    font-size: 14px;
+}
+
+.main-content {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.section-title h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.section-title span {
+    border-bottom: 3px solid #f37021;
+    padding-bottom: 6px;
+}
+
+.masonry-grid {
+    columns: 3;
+    column-gap: 30px;
+}
+
+.news-card {
+    background: #fff;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.news-card:hover {
+    transform: translateY(-6px);
+}
+
+.news-card img {
+    width: 100%;
+    display: block;
+}
+
+.news-content {
+    padding: 12px;
+}
+
+.news-content h4 {
+    font-size: 15px;
+    margin-bottom: 6px;
+}
+
+.news-content p {
+    font-size: 12px;
+    color: #666;
+}
+
+#imageModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    z-index: 2000;
+}
+
+#imageModal.active {
+    display: flex;
+}
+
+#modalImage {
+    max-width: 90%;
+    max-height: 75vh;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+#modalCaption {
+    margin-top: 15px;
+    color: white;
+    text-align: center;
+}
+
+#closeModal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 32px;
+    color: white;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .masonry-grid { columns: 2; }
+}
+
+@media (max-width: 600px) {
+    .masonry-grid { columns: 1; }
+}
