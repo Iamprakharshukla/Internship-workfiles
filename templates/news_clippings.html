@@ -53,9 +53,11 @@
 </div>
 
 <div id="imageModal" class="modal">
-    <span class="close" id="closeModal" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage">
     <div id="modalCaption"></div>
+    <span class="close" id="closeModal">
+        <i class="fas fa-times"></i>
+    </span>
 </div>
 
 <script>
@@ -66,20 +68,44 @@
 
         modal.classList.add("active");
         modalImg.src = imgUrl;
-        modalCaption.innerHTML = `<h3>${title}</h3><p>${summary}</p>`;
+        modalCaption.innerText = "";
+
+        const h3 = document.createElement('h3');
+        h3.innerText = title;
+        const p = document.createElement('p');
+        p.innerText = summary;
+
+        modalCaption.appendChild(h3);
+        modalCaption.appendChild(p);
     }
 
     function closeModal() {
         document.getElementById("imageModal").classList.remove("active");
     }
 
-    // Close on outside click
-    window.onclick = function (event) {
+    // Set up event listeners when the DOM is ready
+    document.addEventListener('DOMContentLoaded', function () {
         const modal = document.getElementById("imageModal");
-        if (event.target == modal) {
-            closeModal();
+        const closeBtn = document.getElementById("closeModal");
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                closeModal();
+            });
         }
-    }
+
+        if (modal) {
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        }
+    });
+
+    // Fallback for immediate inline usage if needed (though addEventListener is better)
+    window.closeModal = closeModal;
 </script>
 
 {% endblock %}
