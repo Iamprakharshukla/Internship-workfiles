@@ -52,17 +52,17 @@
     </div>
 </div>
 
-<div id="imageModal" class="modal">
+<div id="nc-modal" class="modal" onclick="if(event.target === this) closeModal()">
     <img class="modal-content" id="modalImage">
     <div id="modalCaption"></div>
-    <span class="close" id="closeModal">
+    <span class="close" id="nc-close" onclick="closeModal()">
         <i class="fas fa-times"></i>
     </span>
 </div>
 
 <script>
     function openModal(imgUrl, title, summary) {
-        const modal = document.getElementById("imageModal");
+        const modal = document.getElementById("nc-modal");
         const modalImg = document.getElementById("modalImage");
         const modalCaption = document.getElementById("modalCaption");
 
@@ -77,35 +77,27 @@
 
         modalCaption.appendChild(h3);
         modalCaption.appendChild(p);
+
+        // Disable body scroll when modal is open
+        document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
-        document.getElementById("imageModal").classList.remove("active");
+        document.getElementById("nc-modal").classList.remove("active");
+        // Re-enable body scroll
+        document.body.style.overflow = 'auto';
     }
 
-    // Set up event listeners when the DOM is ready
-    document.addEventListener('DOMContentLoaded', function () {
-        const modal = document.getElementById("imageModal");
-        const closeBtn = document.getElementById("closeModal");
+    // Attach to window object to be globally accessible
+    window.openModal = openModal;
+    window.closeModal = closeModal;
 
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                closeModal();
-            });
-        }
-
-        if (modal) {
-            modal.addEventListener('click', function (e) {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
+    // Handle escape key
+    document.addEventListener('keydown', function (e) {
+        if (e.key === "Escape") {
+            closeModal();
         }
     });
-
-    // Fallback for immediate inline usage if needed (though addEventListener is better)
-    window.closeModal = closeModal;
 </script>
 
 {% endblock %}
