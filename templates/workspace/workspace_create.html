@@ -1,52 +1,43 @@
-{% extends "base.html" %}
+{% extends "portal_layout.html" %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50 py-12 flex flex-col justify-center sm:px-6 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create a Workspace
-        </h2>
-        <p class="mt-2 text-center text-sm text-gray-600">
-            A workspace is where your team collaborates.
-        </p>
-    </div>
-
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form class="space-y-6" action="" method="POST">
-                {% csrf_token %}
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700">
-                        Workspace Name
-                    </label>
-                    <div class="mt-1">
-                        <input id="name" name="name" type="text" required
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-red focus:border-brand-red sm:text-sm">
-                    </div>
-                </div>
-
-                <div>
-                    <label for="description" class="block text-sm font-medium text-gray-700">
-                        Description (Optional)
-                    </label>
-                    <div class="mt-1">
-                        <textarea id="description" name="description" rows="3"
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-red focus:border-brand-red sm:text-sm"></textarea>
-                    </div>
-                </div>
-
-                <div>
-                    <button type="submit"
-                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-red hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-red">
-                        Create Workspace
-                    </button>
-                    <a href="{% url 'workspace_list' %}"
-                        class="w-full flex justify-center mt-3 text-sm text-gray-500 hover:text-gray-700">
-                        Cancel
-                    </a>
-                </div>
-            </form>
+<div class="max-w-2xl mx-auto py-10">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-brand-dark p-6 text-white text-center">
+            <h2 class="text-2xl font-bold">Create a Workspace</h2>
+            <p class="text-sm text-blue-100 mt-1">A workspace is where your team collaborates.</p>
         </div>
+
+        <form class="p-8 space-y-6" action="" method="POST">
+            {% csrf_token %}
+            <div>
+                <label for="name" class="block text-sm font-bold text-gray-700 mb-1">
+                    Workspace Name
+                </label>
+                <input id="name" name="name" type="text" required placeholder="e.g. Operations Team, Blood Drive 2024"
+                    class="block w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-red focus:border-transparent transition-all outline-none">
+            </div>
+
+            <div>
+                <label for="description" class="block text-sm font-bold text-gray-700 mb-1">
+                    Description (Optional)
+                </label>
+                <textarea id="description" name="description" rows="4"
+                    placeholder="Briefly describe the purpose of this workspace..."
+                    class="block w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-red focus:border-transparent transition-all outline-none"></textarea>
+            </div>
+
+            <div class="pt-4 flex flex-col space-y-3">
+                <button type="submit"
+                    class="w-full bg-brand-red text-white py-3 rounded-xl font-bold hover:bg-red-700 transition shadow-lg shadow-red-200">
+                    Create Workspace
+                </button>
+                <a href="{% url 'workspace_list' %}"
+                    class="w-full text-center py-2 text-sm font-medium text-gray-400 hover:text-gray-600 transition">
+                    Cancel and go back
+                </a>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}
