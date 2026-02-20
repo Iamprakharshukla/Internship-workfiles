@@ -352,3 +352,14 @@ class SharedNote(models.Model):
 
     def __str__(self):
         return self.title
+
+class NewsClipping(models.Model):
+    title = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='news_clippings/')
+    newspaper = models.CharField(max_length=100)
+    date_display = models.CharField(max_length=50, help_text="e.g. June 2026")
+    summary = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

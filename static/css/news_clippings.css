@@ -131,9 +131,22 @@ body {
     position: absolute;
     top: 20px;
     right: 30px;
-    font-size: 32px;
+    font-size: 36px;
     color: white;
     cursor: pointer;
+    z-index: 2010;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+#closeModal:hover {
+    background: rgba(255,255,255,0.2);
 }
 
 @media (max-width: 900px) {

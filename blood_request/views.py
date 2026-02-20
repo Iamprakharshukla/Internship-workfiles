@@ -822,3 +822,8 @@ def user_edit_portal(request, pk):
 def volunteering(request):
     return render(request, "volunteering.html")
 
+def news_clippings(request):
+    from .models import NewsClipping
+    clippings = NewsClipping.objects.all().order_by('-created_at')
+    return render(request, 'news_clippings.html', {'clippings': clippings})
+

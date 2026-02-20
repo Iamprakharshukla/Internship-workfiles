@@ -4,7 +4,7 @@
 {% block title %}News Clippings - UDAAN Society{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'main/css/news_clippings.css' %}">
+<link rel="stylesheet" href="{% static 'css/news_clippings.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700;800&display=swap" rel="stylesheet">
 {% endblock %}
@@ -34,17 +34,56 @@
         <p>A glimpse of UDAAN Society in the headlines.</p>
     </div>
 
-    <div id="news-grid" class="masonry-grid"></div>
+    <div id="news-grid" class="masonry-grid">
+        {% for clipping in clippings %}
+        <div class="news-card"
+            onclick="openModal('{{ clipping.image.url|escapejs }}', '{{ clipping.title|escapejs }}', '{{ clipping.summary|escapejs }}')">
+            <img src="{{ clipping.image.url }}" alt="{{ clipping.title }}">
+            <div class="news-content">
+                <h4>{{ clipping.title }}</h4>
+                <p>{{ clipping.newspaper }} | {{ clipping.date_display }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <div style="text-align: center; grid-column: 1/-1; padding: 50px;">
+            <p>No news clippings found. Add some from the admin panel!</p>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
 <div id="imageModal" class="modal">
-    <span class="close" id="closeModal">&times;</span>
+    <span class="close" id="closeModal" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage">
     <div id="modalCaption"></div>
 </div>
 
+<script>
+    function openModal(imgUrl, title, summary) {
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+        const modalCaption = document.getElementById("modalCaption");
+
+        modal.classList.add("active");
+        modalImg.src = imgUrl;
+        modalCaption.innerHTML = `<h3>${title}</h3><p>${summary}</p>`;
+    }
+
+    function closeModal() {
+        document.getElementById("imageModal").classList.remove("active");
+    }
+
+    // Close on outside click
+    window.onclick = function (event) {
+        const modal = document.getElementById("imageModal");
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+</script>
+
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'main/js/news_clippings.js' %}"></script>
+{# Removed static JS dependency #}
 {% endblock %}

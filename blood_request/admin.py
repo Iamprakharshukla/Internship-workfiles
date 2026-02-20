@@ -1,11 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from .models import Blog, Project
 from .models import (
     BloodDonor, BloodRequest, Campaign, Report, Project, Task, SubTask,
     Announcement, Testimonial, StaffProfile, Interaction, Appointment,
-    PersonalNote, Team, SharedNote
+    PersonalNote, Team, SharedNote, NewsClipping, Blog
 )
 
 @admin.register(Testimonial)
@@ -95,8 +94,9 @@ class TaskAdmin(admin.ModelAdmin):
     
     # Note: Email logic moved to signals.py in Phase 5
 
-    admin.site.register(Blog)
-
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_at')
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
@@ -107,4 +107,9 @@ class TeamAdmin(admin.ModelAdmin):
 class SharedNoteAdmin(admin.ModelAdmin):
     list_display = ('title', 'owner', 'created_at')
     filter_horizontal = ('shared_with_teams', 'shared_with_users')
+
+@admin.register(NewsClipping)
+class NewsClippingAdmin(admin.ModelAdmin):
+    list_display = ('title', 'newspaper', 'date_display', 'created_at')
+    search_fields = ('title', 'newspaper')
 
