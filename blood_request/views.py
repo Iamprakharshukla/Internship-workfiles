@@ -10,6 +10,7 @@ from pydantic import ValidationError
 # from django.shortcuts import render
 from .models import Blog, Project, Task
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import permission_required
 
 @ensure_csrf_cookie
 def index(request):
@@ -549,7 +550,7 @@ def team_list(request):
     return render(request, 'blood_request/team_list.html', {'teams': teams})
 
 @login_required
-@user_passes_test(is_manager)
+@permission_required('blood_request.add_team', raise_exception=True)
 def team_create(request):
     workspace_id = request.GET.get('workspace') or request.POST.get('workspace')
     workspace = None
@@ -601,33 +602,87 @@ def team_detail(request, pk):
         'team': team,
         'todo_tasks': todo_tasks,
         'inprogress_tasks': inprogress_tasks,
-        'done_tasks': done_tasks
+        'done_tasks': done_tasks,
+        'team_members': team_members
     })
 
+# --- Phase 23: RBAC & Advanced Sharing ---
+from django.contrib.auth.decorators import permission_required
+from .forms import SharedNoteForm
+
 @login_required
+@permission_required('blood_request.add_sharednote', raise_exception=True)
 def shared_note_create(request):
+    """
+    Create a Shared Note (Manager/Admin only, Revocable).
+    """
     if request.method == 'POST':
-        title = request.POST.get('title')
-        content = request.POST.get('content')
-        team_ids = request.POST.getlist('teams')
-        
-        note = SharedNote.objects.create(
-            title=title,
-            content=content,
-            owner=request.user
-        )
-        if team_ids:
-            note.shared_with_teams.set(team_ids)
-            
-        from django.contrib import messages
-        messages.success(request, "Note shared successfully!")
-        # Redirect to the first selected team detail or dashboard
-        if team_ids:
-            return redirect('team_detail', pk=team_ids[0])
-        return redirect('staff_dashboard')
+        form = SharedNoteForm(request.POST)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.owner = request.user
+            note.save()
+            form.save_m2m() # Save ManyToMany data
+            messages.success(request, "Shared Note created successfully!")
+            return redirect('manager_dashboard')
+    else:
+        form = SharedNoteForm()
     
-    user_teams = Team.objects.filter(members=request.user) if not is_manager(request.user) else Team.objects.all()
-    # Pre-select team from query param
+    return render(request, 'blood_request/shared_note_form.html', {'form': form})
+
+@login_required
+@permission_required('blood_request.view_sharednote', raise_exception=True)
+def shared_note_list(request):
+    """
+    List all shared notes created by the user or shared with them.
+    """
+    # Notes owned by user OR shared with user OR shared with user's teams
+    shared_notes = SharedNote.objects.filter(
+        Q(owner=request.user) | 
+        Q(shared_with_users=request.user) |
+        Q(shared_with_teams__members=request.user)
+    ).distinct().order_by('-created_at')
+    
+    return render(request, 'blood_request/shared_note_list.html', {'shared_notes': shared_notes})
+
+
+@login_required
+@permission_required('blood_request.add_task', raise_exception=True)
+def task_create(request):
+    """
+    Create a Task (Manager only).
+    """
+    from .forms import TaskForm
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            # If created by manager inside a project context, link it? For now standalone or select project if added to form
+            # task.created_by = request.user # If model had this
+            task.save()
+            messages.success(request, "Task created successfully!")
+            return redirect('manager_dashboard')
+    else:
+        form = TaskForm()
+        
+
+@login_required
+@permission_required('blood_request.add_blog', raise_exception=True)
+def blog_create(request):
+    """
+    Create a Blog (Manager only).
+    """
+    from .forms import BlogForm
+    if request.method == 'POST':
+        form = BlogForm(request.POST, request.FILES)
+        if form.is_valid():
+            blog = form.save()
+            messages.success(request, "Blog post created successfully!")
+            return redirect('manager_dashboard')
+    else:
+        form = BlogForm()
+        
+    return render(request, 'blood_request/blog_form.html', {'form': form})
     initial_team = request.GET.get('team')
     return render(request, 'blood_request/shared_note_form.html', {
         'teams': user_teams, 

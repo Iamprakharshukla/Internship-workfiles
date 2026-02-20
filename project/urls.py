@@ -46,5 +46,10 @@ urlpatterns = [
     path('workspaces/create/', workspace_views.workspace_create, name='workspace_create'),
     path('w/<slug:slug>/', workspace_views.workspace_detail, name='workspace_detail'),
     path('w/<slug:slug>/invite/', workspace_views.workspace_invite, name='workspace_invite'),
+    
+    path('shared-notes/', views.shared_note_list, name='shared_note_list'),
+    path('shared-notes/create/', views.shared_note_create, name='shared_note_create'),
+    path('tasks/create/', views.task_create, name='task_create'),
+    path('blogs/create/', views.blog_create, name='blog_create'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
