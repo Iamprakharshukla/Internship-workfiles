@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}News Clippings - UDAAN Society{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'main/css/news.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700;800&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>NEWS CLIPPINGS</h1>
+    </div>
+</section>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-container">
+    <div class="breadcrumb">
+        <a href="{% url 'home' %}">Home</a>
+        <span>»</span>
+        <a href="#">Impact</a>
+        <span>»</span>
+        News Clippings
+    </div>
+</div>
+
+<!-- CONTENT -->
+<div class="main-content">
+    <div class="section-title">
+        <h2><span>MEDIA COVERAGE</span></h2>
+        <p>A glimpse of UDAAN Society in the headlines.</p>
+    </div>
+
+    <div id="news-grid" class="masonry-grid"></div>
+</div>
+
+<!-- MODAL -->
+<div id="imageModal" class="modal">
+    <span class="close" id="closeModal">&times;</span>
+    <img class="modal-content" id="modalImage">
+    <div id="modalCaption"></div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'main/js/news.js' %}"></script>
+{% endblock %}
