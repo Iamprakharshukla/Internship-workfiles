@@ -551,22 +551,34 @@ def team_list(request):
 @login_required
 @user_passes_test(is_manager)
 def team_create(request):
+    workspace_id = request.GET.get('workspace') or request.POST.get('workspace')
+    workspace = None
+    if workspace_id:
+        workspace = get_object_or_404(Workspace, id=workspace_id)
+        
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
         member_ids = request.POST.getlist('members')
         
         if name:
-            team = Team.objects.create(name=name, description=description, created_by=request.user)
+            team = Team.objects.create(name=name, description=description, created_by=request.user, workspace=workspace)
             if member_ids:
                 team.members.set(member_ids)
             from django.contrib import messages
             messages.success(request, f"Team '{name}' created successfully!")
+            if workspace:
+                return redirect('workspace_detail', slug=workspace.slug)
             return redirect('team_list')
     
     from django.contrib.auth.models import User
-    users = User.objects.filter(is_active=True).exclude(is_superuser=True)
-    return render(request, 'blood_request/team_form.html', {'users': users})
+    # Filter users based on workspace if applicable
+    if workspace:
+        users = workspace.members.all()
+    else:
+        users = User.objects.filter(is_active=True).exclude(is_superuser=True)
+        
+    return render(request, 'blood_request/team_form.html', {'users': users, 'workspace': workspace})
 
 @login_required
 def team_detail(request, pk):

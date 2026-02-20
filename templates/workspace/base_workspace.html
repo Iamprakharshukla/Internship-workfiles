@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Workspace | UDAAN{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        jira: {
+                            dark: '#0f172a', /* Global Nav */
+                            sidebar: '#f4f5f7', /* Context Nav */
+                            primary: '#0052cc',
+                            text: '#172b4d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-800 h-screen flex overflow-hidden">
+
+    <!-- 1. Global Navigation (Leftmost Strip) -->
+    <aside class="w-16 bg-jira-dark flex flex-col items-center py-4 z-30 flex-shrink-0">
+        <!-- Logo -->
+        <a href="{% url 'home' %}"
+            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white font-bold mb-6 hover:bg-white/20 transition">
+            U
+        </a>
+
+        <!-- Workspaces (Simulated Switcher) -->
+        {% for w in user.workspaces.all|slice:":3" %}
+        <a href="{% url 'workspace_detail' w.slug %}"
+            class="w-10 h-10 rounded-lg bg-blue-500 text-white flex items-center justify-center font-bold mb-3 hover:ring-2 hover:ring-white/50 transition relative group"
+            title="{{ w.name }}">
+            {{ w.name|slice:":1"|upper }}
+            <!-- Tooltip -->
+            <span
+                class="absolute left-14 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">
+                {{ w.name }}
+            </span>
+        </a>
+        {% endfor %}
+
+        <!-- Add Workspace -->
+        <a href="{% url 'workspace_create' %}"
+            class="w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-green-600 transition mt-2">
+            <i class="fas fa-plus"></i>
+        </a>
+
+        <div class="mt-auto">
+            <a href="{% url 'profile_edit' %}"
+                class="w-10 h-10 rounded-full bg-gray-700 overflow-hidden mb-4 border-2 border-transparent hover:border-white transition block">
+                <div class="w-full h-full flex items-center justify-center text-xs text-white">
+                    {{ request.user.username|slice:":1"|upper }}
+                </div>
+            </a>
+        </div>
+    </aside>
+
+    <!-- 2. Context Navigation (Sidebar) -->
+    <aside
+        class="w-64 bg-jira-sidebar border-r border-gray-200 flex flex-col h-full hidden md:flex transition-all duration-300"
+        id="context-sidebar">
+        <!-- Project/Workspace Header -->
+        <div class="h-16 flex items-center px-4 border-b border-gray-200/50">
+            <div class="flex items-center">
+                <div
+                    class="w-8 h-8 rounded bg-blue-600 text-white flex items-center justify-center font-bold mr-3 text-sm">
+                    {% block workspace_initial %}W{% endblock %}
+                </div>
+                <div class="overflow-hidden">
+                    <h2 class="text-sm font-bold text-gray-900 truncate w-40">{% block workspace_name %}Workspace{%
+                        endblock %}</h2>
+                    <p class="text-xs text-gray-500">Software Project</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu -->
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+            {% block sidebar_menu %}{% endblock %}
+        </nav>
+
+        <!-- Footer -->
+        <div class="p-4 border-t border-gray-200 text-xs text-center text-gray-400">
+            UDAAN Workspace v2.0
+        </div>
+    </aside>
+
+    <!-- 3. Main Content -->
+    <main class="flex-1 flex flex-col h-full relative min-w-0 bg-white">
+        <!-- Breadcrumb / Top Bar -->
+        <header class="h-14 border-b border-gray-100 flex items-center justify-between px-6 bg-white flex-shrink-0">
+            <div class="flex items-center text-sm text-gray-500">
+                {% block breadcrumbs %}
+                <span>Projects</span> <span class="mx-2">/</span> <span class="text-gray-900 font-medium">Board</span>
+                {% endblock %}
+            </div>
+            <div class="flex items-center space-x-4">
+                <button
+                    class="px-3 py-1.5 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition">
+                    Create
+                </button>
+            </div>
+        </header>
+
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-y-auto p-6 md:p-10">
+            {% if messages %}
+            <div class="mb-6 space-y-2">
+                {% for message in messages %}
+                <div
+                    class="p-4 rounded-md {% if message.tags == 'error' %}bg-red-50 text-red-700{% else %}bg-green-50 text-green-700{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+</body>
+
+</html>

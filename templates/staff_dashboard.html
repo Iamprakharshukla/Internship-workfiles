@@ -30,8 +30,8 @@
         <div>
             <h1 class="text-2xl font-bold text-gray-800">
                 {% now "H" as current_hour %}
-                {% if current_hour|add:"0" < 12 %}Good Morning, {% elif current_hour|add:"0" < 18 %}Good Afternoon, {%
-                    else %}Good Evening, {% endif %} {% if request.user.first_name %}{{ request.user.first_name }}{%
+                {% if current_hour|add:"0" < 12 %} Good Morning, {% elif current_hour|add:"0" < 18 %} Good Afternoon, {%
+                    else %} Good Evening, {% endif %} {% if request.user.first_name %}{{ request.user.first_name }}{%
                     else %}{{ request.user.username }}{% endif %} </h1>
                     <p class="text-sm text-gray-500">Here's what's happening in your workspace today.</p>
         </div>
@@ -67,7 +67,8 @@
         <div
             class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:-translate-y-1 hover:shadow-lg transition duration-300">
             <h3 class="text-gray-500 text-sm uppercase">Assigned Tasks</h3>
-            <p class="text-3xl font-bold text-blue-600">{{ todo_tasks|length|add:inprogress_tasks|length|default:"0" }}
+            <p class="text-3xl font-bold text-blue-600">
+                {{ todo_tasks.count|add:inprogress_tasks.count|default:"0" }}
             </p>
         </div>
 

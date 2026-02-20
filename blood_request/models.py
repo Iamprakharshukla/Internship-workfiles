@@ -303,7 +303,35 @@ class Blog(models.Model):
 
 # --- Phase 17: Team Spaces & Knowledge Sharing ---
 
+# --- Phase 22: Workspace Architecture ---
+
+class Workspace(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField(blank=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owned_workspaces')
+    members = models.ManyToManyField(User, through='WorkspaceMember', related_name='workspaces')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+class WorkspaceMember(models.Model):
+    ROLE_CHOICES = [
+        ('Admin', 'Admin'),
+        ('Member', 'Member'),
+        ('Viewer', 'Viewer'),
+    ]
+    workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='Member')
+    joined_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('workspace', 'user')
+
 class Team(models.Model):
+    workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE, related_name='teams', null=True, blank=True)
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     members = models.ManyToManyField(User, related_name='teams', blank=True)

@@ -2,29 +2,70 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --primary-color: #1D3557;     /* Brand Dark */
-    --secondary-color: #E63946;   /* Brand Red */
-    --accent-color: #457B9D;      /* Lighter Blue */
-    --bg-color: #F9FAFB;          /* Gray-50 */
-    --text-color: #1F2937;        /* Gray-800 */
+    --primary-color: #1D3557;
+    /* Brand Dark */
+    --secondary-color: #E63946;
+    /* Brand Red */
+    --accent-color: #457B9D;
+    /* Lighter Blue */
+    --bg-color: #F9FAFB;
+    /* Gray-50 */
+    --text-color: #1F2937;
+    /* Gray-800 */
     --header-color: #1D3557;
+    --card-bg: #FFFFFF;
+    --border-color: #E5E7EB;
+}
+
+/* Dark Mode Support (Django 4.2+ uses [data-theme="dark"]) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #111827;
+        /* Gray-900 */
+        --text-color: #F3F4F6;
+        /* Gray-100 */
+        --card-bg: #1F2937;
+        /* Gray-800 */
+        --border-color: #374151;
+        /* Gray-700 */
+        /* Keep Header Color branding or darken it? Branding usually stays. */
+    }
+}
+
+[data-theme="dark"] {
+    --bg-color: #111827;
+    --text-color: #F3F4F6;
+    --card-bg: #1F2937;
+    --border-color: #374151;
 }
 
 body {
     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
     background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 /* Header Overrides */
 #header {
-    background: var(--header-color);
-    color: #fff;
+    background: var(--header-color) !important;
+    color: #fff !important;
     border-bottom: 4px solid var(--secondary-color);
 }
 
-#header a:link, #header a:visited {
-    color: #fff;
+#header a:link,
+#header a:visited {
+    color: #fff !important;
 }
+
+/* Fix "Authentication" and "Administration" headings */
+/* In standard admin, these are often h1 inside #content or .login .content */
+#content h1,
+.login .content h1 {
+    color: var(--text-color);
+}
+
+/* If the background is forced white by Django Admin default, we need to override it IF we are in dark mode */
+/* But 'admin_theme.css' is loaded AFTER. */
 
 #branding h1 {
     font-weight: 700;
@@ -32,38 +73,82 @@ body {
 }
 
 /* Module Captions */
-.module caption {
-    background: var(--bg-color);
+.module caption,
+.module h2 {
+    background: var(--card-bg);
     color: var(--primary-color);
     font-weight: 600;
 }
 
+.module caption a,
+.module caption a:link,
+.module caption a:visited,
+.module h2 a,
+.module h2 a:link,
+.module h2 a:visited {
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .module caption,
+[data-theme="dark"] .module h2 {
+    color: #fff;
+}
+
+[data-theme="dark"] .module caption a,
+[data-theme="dark"] .module caption a:link,
+[data-theme="dark"] .module caption a:visited,
+[data-theme="dark"] .module h2 a,
+[data-theme="dark"] .module h2 a:link,
+[data-theme="dark"] .module h2 a:visited {
+    color: #60A5FA;
+    /* Blue-400 */
+}
+
 /* Buttons */
-.button, input[type=submit], input[type=button], .submit-row input, a.button {
-    background: var(--primary-color);
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button {
+    background: var(--primary-color) !important;
+    color: #fff !important;
     border-radius: 6px;
     padding: 10px 15px;
     transition: all 0.2s;
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 0.5px;
+    border: none;
 }
 
-.button:hover, input[type=submit]:hover, input[type=button]:hover {
-    background: var(--accent-color);
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover {
+    background: var(--accent-color) !important;
 }
 
-.button.default, input[type=submit].default, .submit-row input.default {
-    background: var(--secondary-color);
+.button.default,
+input[type=submit].default,
+.submit-row input.default {
+    background: var(--secondary-color) !important;
 }
 
-.button.default:hover, input[type=submit].default:hover {
-    background: #c32f3b; /* Darker Red */
+.button.default:hover,
+input[type=submit].default:hover {
+    background: #c32f3b !important;
+    /* Darker Red */
 }
 
 /* Links */
-a:link, a:visited {
+a:link,
+a:visited {
     color: var(--primary-color);
+}
+
+[data-theme="dark"] a:link,
+[data-theme="dark"] a:visited {
+    color: #60A5FA;
+    /* Blue-400 for dark mode */
 }
 
 a:hover {
@@ -72,16 +157,17 @@ a:hover {
 
 /* Breadcrumbs */
 .breadcrumbs {
-    background: #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    background: var(--card-bg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     padding: 15px 40px;
-    border-bottom: 1px solid #eee;
-    color: #666;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+    opacity: 0.8;
 }
 
 /* Tables */
 #changelist table thead th {
-    background: #f8f9fa;
+    background: var(--bg-color);
     color: var(--primary-color);
     font-weight: 600;
     text-transform: uppercase;
@@ -89,6 +175,49 @@ a:hover {
     letter-spacing: 0.05em;
 }
 
-#changelist table tbody tr.row1 { background: #fff; }
-#changelist table tbody tr.row2 { background: #fcfcfc; }
-#changelist table tbody tr:hover { background: #f0f4f8; }
+[data-theme="dark"] #changelist table thead th {
+    color: #fff;
+    background: #374151;
+}
+
+#changelist table tbody tr {
+    background: var(--card-bg) !important;
+}
+
+#changelist table tbody tr:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="dark"] #changelist table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+#changelist table tbody td {
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+/* Login Box Fixes specifically */
+.login #container {
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+.login .form-row {
+    border-bottom: none;
+}
+
+/* Fix Input Text Colors */
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=url],
+input[type=number],
+textarea,
+select {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: 4px;
+}

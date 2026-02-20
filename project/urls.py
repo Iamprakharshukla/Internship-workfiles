@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from blood_request.views import home_view, staff_dashboard, update_task_status, manager_dashboard, campaign_list, project_list, project_detail, report_list, blogs_page, resources_page, profile_edit, export_donors_csv, export_requests_csv
 from blood_request import views
+from blood_request import workspace_views # NEW
 
 from django.conf import settings
 from django.shortcuts import render
@@ -39,5 +40,11 @@ urlpatterns = [
     path('workplace-living/', views.workplace_living, name='workplace_living'),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
      path('volunteering/', views.volunteering, name='volunteering'),
+    
+    # Workspace URLs
+    path('workspaces/', workspace_views.workspace_list, name='workspace_list'),
+    path('workspaces/create/', workspace_views.workspace_create, name='workspace_create'),
+    path('w/<slug:slug>/', workspace_views.workspace_detail, name='workspace_detail'),
+    path('w/<slug:slug>/invite/', workspace_views.workspace_invite, name='workspace_invite'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
