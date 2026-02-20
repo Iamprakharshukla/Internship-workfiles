@@ -603,7 +603,8 @@ def team_detail(request, pk):
         'todo_tasks': todo_tasks,
         'inprogress_tasks': inprogress_tasks,
         'done_tasks': done_tasks,
-        'team_members': team_members
+        'team_members': team_members,
+        'is_manager': is_manager(request.user)
     })
 
 # --- Phase 23: RBAC & Advanced Sharing ---
