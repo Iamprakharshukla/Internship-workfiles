@@ -49,10 +49,19 @@ body {
 /* Header Overrides */
 #header,
 .header {
-    background-color: var(--header-color) !important;
-    background: var(--header-color) !important;
+    background-color: #1D3557 !important;
+    /* Fallback */
+    background: #1D3557 !important;
+    /* Force Dark Blue */
     color: #fff !important;
     border-bottom: 4px solid var(--secondary-color);
+}
+
+[data-theme="light"] #header,
+[data-theme="light"] .header {
+    background-color: #1D3557 !important;
+    background: #1D3557 !important;
+    color: #fff !important;
 }
 
 #header a:link,
