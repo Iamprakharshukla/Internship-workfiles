@@ -53,47 +53,51 @@
 </div>
 
 <div id="nc-modal" class="modal" onclick="if(event.target === this) closeModal()">
-    <img class="modal-content" id="modalImage">
-    <div id="modalCaption"></div>
-    <span class="close" id="nc-close" onclick="closeModal()">
-        <i class="fas fa-times"></i>
-    </span>
+    <div class="modal-container">
+        <img class="modal-content" id="modalImage">
+        <div id="modalCaption"></div>
+        <span id="nc-close" onclick="closeModal()">
+            <i class="fas fa-times"></i>
+        </span>
+    </div>
 </div>
 
 <script>
+    console.log("News Clipping Modal Script Loaded");
+
     function openModal(imgUrl, title, summary) {
+        console.log("Opening modal for:", title);
         const modal = document.getElementById("nc-modal");
         const modalImg = document.getElementById("modalImage");
         const modalCaption = document.getElementById("modalCaption");
 
+        if (!modal || !modalImg || !modalCaption) {
+            console.error("Modal elements not found!");
+            return;
+        }
+
         modal.classList.add("active");
         modalImg.src = imgUrl;
-        modalCaption.innerText = "";
+        modalCaption.innerHTML = `<h3>${title}</h3><p>${summary}</p>`;
 
-        const h3 = document.createElement('h3');
-        h3.innerText = title;
-        const p = document.createElement('p');
-        p.innerText = summary;
-
-        modalCaption.appendChild(h3);
-        modalCaption.appendChild(p);
-
-        // Disable body scroll when modal is open
         document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
-        document.getElementById("nc-modal").classList.remove("active");
-        // Re-enable body scroll
+        console.log("Closing modal");
+        const modal = document.getElementById("nc-modal");
+        if (modal) {
+            modal.classList.remove("active");
+        }
         document.body.style.overflow = 'auto';
     }
 
-    // Attach to window object to be globally accessible
+    // Expose functions globally
     window.openModal = openModal;
     window.closeModal = closeModal;
 
-    // Handle escape key
-    document.addEventListener('keydown', function (e) {
+    // Handle Escape key
+    window.addEventListener('keydown', function (e) {
         if (e.key === "Escape") {
             closeModal();
         }
