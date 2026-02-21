@@ -51,5 +51,8 @@ urlpatterns = [
     path('shared-notes/create/', views.shared_note_create, name='shared_note_create'),
     path('tasks/create/', views.task_create, name='task_create'),
     path('blogs/create/', views.blog_create, name='blog_create'),
+      path('admin/', admin.site.urls),
+
+    path('', include('blood_request.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

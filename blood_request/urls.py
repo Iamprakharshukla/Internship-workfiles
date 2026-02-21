@@ -22,4 +22,15 @@ urlpatterns = [
     path('locations/', views.locations, name='locations'),
     path('appointments/', views.appointment_list, name='appointment_list'),
     path('appointments/create/', views.appointment_create, name='appointment_create'),
+      path(
+        'campus-ambassador/',
+        views.campus_ambassador,
+        name='campus_ambassador'
+    ),
+    # path(
+    #     'ambassador/<int:id>/',
+    #     views.ambassador_detail,
+    #     name='ambassador_detail'
+    # ),
+
 ]

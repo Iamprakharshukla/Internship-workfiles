@@ -11,6 +11,8 @@ from pydantic import ValidationError
 from .models import Blog, Project, Task
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import permission_required
+from .models import CampusAmbassador
+
 
 @ensure_csrf_cookie
 def index(request):
@@ -821,4 +823,17 @@ def user_edit_portal(request, pk):
 
 def volunteering(request):
     return render(request, "volunteering.html")
+
+
+def campus_ambassador(request):
+
+    ambassadors = CampusAmbassador.objects.all().order_by('-id')
+
+    return render(
+        request,
+        "campus_ambassador.html",
+        {
+            "ambassadors": ambassadors
+        }
+    )
 

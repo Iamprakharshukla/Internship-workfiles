@@ -1,0 +1,1056 @@
+/* ===============================
+   CAMPUS AMBASSADOR PAGE CSS
+================================ */
+
+/* Container */
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    position: relative;
+    height: 350px;
+    overflow: hidden;
+}
+
+.hero-image,
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-image img {
+    filter: brightness(0.7);
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+}
+
+.hero-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-content h1 {
+    color: #fff;
+    font-size: 60px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 6px #000;
+}
+
+
+/* ================= BREADCRUMB ================= */
+
+.breadcrumb {
+    background: #f9fafb;
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.breadcrumb .container {
+    display: flex;
+    gap: 10px;
+    font-size: 15px;
+}
+
+.breadcrumb a,
+.breadcrumb span {
+    color: #6b21a8;
+    font-weight: 500;
+}
+
+
+/* ================= INTRO ================= */
+
+.intro {
+    padding: 60px 0 40px;
+    background: #f5f5f5;
+    text-align: center;
+}
+
+.main-title {
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 15px;
+}
+
+.main-title span {
+    color: #dc2626;
+}
+
+.description {
+    max-width: 800px;
+    margin: auto;
+    font-size: 17px;
+    color: #555;
+    line-height: 1.7;
+}
+
+
+/* ================= GRID ================= */
+
+.projects {
+    padding: 50px 0;
+    background: #f5f5f5;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 25px;
+}
+
+
+/* ================= CARD ================= */
+
+.project-card {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    transition: .3s;
+}
+
+.project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,.15);
+}
+
+
+/* IMAGE */
+
+.card-image img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+
+/* BODY */
+
+.card-body h3 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #111827;
+}
+
+.excerpt {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+
+/* BUTTON */
+
+.read-more {
+    background: #ef4444;
+    color: #fff;
+    padding: 10px 26px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    display: inline-block;
+    transition: .3s;
+}
+
+.read-more:hover {
+    background: #dc2626;
+}
+
+
+/* FOOTER */
+
+.card-footer {
+    border-top: 1px solid #ccc;
+    padding-top: 12px;
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #444;
+}
+
+
+/* ================= CTA ================= */
+
+.cta-section {
+    padding: 50px 0;
+    background: #f5f5f5;
+}
+
+.cta-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.1);
+}
+
+.cta-content h4 {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.cta-content h2 {
+    font-size: 34px;
+    font-weight: 900;
+}
+
+.cta-content .highlight {
+    color: #dc2626;
+}
+
+.read-more-link {
+    color: #dc2626;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+
+/* BUTTON */
+
+.donate-btn-large {
+    background: #2563eb;
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.donate-btn-large:hover {
+    background: #1d4ed8;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1024px){
+
+    .projects-grid{
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .cta-card{
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-content h1{
+        font-size: 46px;
+    }
+}
+
+@media(max-width:640px){
+
+    .projects-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .hero-content h1{
+        font-size: 34px;
+    }
+
+    .main-title{
+        font-size: 26px;
+    }
+}
+
+/* ===============================
+   CAMPUS AMBASSADOR INFO SECTION
+================================ */
+
+.ca-info {
+    padding: 80px 0;
+    background: #f3f4f6;
+    text-align: center;
+}
+
+/* Main Title */
+.ca-main-title {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+}
+
+.ca-main-title span {
+    color: #ef4444;
+}
+
+/* Description */
+.ca-description {
+    max-width: 900px;
+    margin: 0 auto 60px;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #333;
+}
+
+/* Sub Title */
+.ca-sub-title {
+    font-size: 42px;
+    font-weight: 900;
+    margin-bottom: 25px;
+}
+
+.ca-sub-title span {
+    color: #ef4444;
+}
+
+/* Italic line */
+.ca-italic {
+    font-style: italic;
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #444;
+}
+
+/* List */
+.ca-list {
+    max-width: 800px;
+    margin: auto;
+    text-align: left;
+    font-size: 18px;
+    line-height: 1.9;
+    color: #222;
+}
+
+.ca-list li {
+    margin-bottom: 15px;
+}
+
+/* Responsive */
+@media(max-width:768px) {
+
+    .ca-main-title {
+        font-size: 32px;
+    }
+
+    .ca-sub-title {
+        font-size: 28px;
+    }
+
+    .ca-description,
+    .ca-list {
+        font-size: 16px;
+    }
+}
+
+/* ===============================
+   ELIGIBILITY & SELECTION
+================================ */
+
+.ca-eligibility {
+    padding: 80px 0;
+    background: #ffffff;
+    text-align: center;
+}
+
+/* Section block */
+.ca-block {
+    max-width: 800px;
+    margin: 0 auto 90px;
+}
+
+/* Title */
+.ca-title {
+    font-size: 42px;
+    font-weight: 900;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.ca-title span {
+    color: #ef4444;
+}
+
+/* Text */
+.ca-text {
+    font-size: 18px;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* Points */
+.ca-points {
+    text-align: left;
+    max-width: 600px;
+    margin: auto;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #111;
+}
+
+.ca-points li {
+    margin-bottom: 12px;
+}
+
+
+/* Mobile */
+@media(max-width:768px){
+
+    .ca-title {
+        font-size: 28px;
+    }
+
+    .ca-text,
+    .ca-points {
+        font-size: 16px;
+    }
+
+    .ca-block {
+        margin-bottom: 60px;
+    }
+}
+
+/* ===============================
+   REWARDS & INCENTIVES
+================================ */
+
+.ca-rewards {
+    padding: 90px 0;
+    background: #ffffff;
+    text-align: center;
+}
+
+/* Title */
+.ca-reward-title {
+    font-size: 42px;
+    font-weight: 900;
+    color: #ef4444;
+    margin-bottom: 60px;
+}
+
+
+/* Grid */
+.ca-reward-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+
+/* Card */
+.ca-reward-card {
+    background: #f9fafb;
+    border-radius: 14px;
+    padding: 40px 20px;
+    transition: .3s;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.ca-reward-card:hover,
+.ca-reward-card.active {
+    background: #fff;
+    border: 1px solid #9ca3af;
+    box-shadow: 0 10px 20px rgba(0,0,0,.12);
+    transform: translateY(-5px);
+}
+
+
+/* Icon Circle */
+.ca-icon {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 2px solid #ef4444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto auto 15px;
+    color: #ef4444;
+    font-size: 36px;
+}
+
+
+/* Card Text */
+.ca-reward-card h4 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+/* List */
+.ca-reward-list {
+    max-width: 900px;
+    margin: auto;
+    text-align: left;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.ca-reward-list li {
+    margin-bottom: 10px;
+}
+
+
+/* Responsive */
+
+@media(max-width:1024px){
+
+    .ca-reward-grid{
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+
+    .ca-reward-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .ca-reward-title{
+        font-size: 28px;
+    }
+}
+
+/* ===== FORCE REWARDS DESIGN ===== */
+
+section.ca-rewards{
+    padding:80px 0 !important;
+    background:#fff !important;
+    text-align:center !important;
+}
+
+/* Title */
+section.ca-rewards .ca-reward-title{
+    font-size:42px !important;
+    font-weight:900 !important;
+    color:#ef4444 !important;
+    margin-bottom:50px !important;
+}
+
+
+/* Grid */
+section.ca-rewards .ca-reward-grid{
+    display:grid !important;
+    grid-template-columns:repeat(4,1fr) !important;
+    gap:25px !important;
+    margin-bottom:40px !important;
+}
+
+
+/* Card */
+section.ca-rewards .ca-reward-card{
+    background:#f9fafb !important;
+    border-radius:14px !important;
+    padding:35px 20px !important;
+    border:1px solid #e5e7eb !important;
+    transition:.3s !important;
+}
+
+section.ca-rewards .ca-reward-card:hover{
+    transform:translateY(-5px) !important;
+    box-shadow:0 10px 20px rgba(0,0,0,.12) !important;
+}
+
+
+/* Icon */
+section.ca-rewards .ca-icon{
+    width:85px !important;
+    height:85px !important;
+    border:2px solid #ef4444 !important;
+    border-radius:50% !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    margin:0 auto 15px !important;
+    color:#ef4444 !important;
+    font-size:34px !important;
+}
+
+
+/* Text */
+section.ca-rewards h4{
+    font-size:18px !important;
+    font-weight:700 !important;
+}
+
+
+/* List */
+section.ca-rewards .ca-reward-list{
+    max-width:850px !important;
+    margin:auto !important;
+    text-align:left !important;
+    font-size:17px !important;
+    line-height:1.8 !important;
+}
+
+section.ca-rewards .ca-reward-list li{
+    margin-bottom:10px !important;
+}
+
+
+/* ================= APPLY HERE ================= */
+
+.apply-section{
+    padding:80px 0;
+   background:#f5f5f5;
+    text-align:center;
+}
+
+
+/* Title */
+.apply-title{
+    font-size:42px;
+    font-weight:900;
+    margin-bottom:40px;
+}
+
+.apply-title span{
+    color:#ef4444;
+}
+
+
+/* Form Box */
+.apply-form{
+    display:flex;
+    justify-content:center;
+}
+
+
+/* Iframe */
+.apply-form iframe{
+    max-width:100%;
+    border:none;
+}
+
+/* ===============================
+   ABOUT PROGRAM SECTION
+================================ */
+
+.ca-about{
+    padding:80px 0;
+    background:#f9fafb;
+    text-align:center;
+}
+
+
+/* Title */
+.ca-about-title{
+    font-size:42px;
+    font-weight:900;
+    margin-bottom:20px;
+}
+
+.ca-about-title span{
+    color:#ef4444;
+}
+
+
+/* Subtitle */
+.ca-about-sub{
+    font-size:18px;
+    font-style:italic;
+    margin-bottom:40px;
+    color:#333;
+}
+
+
+/* Points */
+.ca-about-points{
+    max-width:900px;
+    margin:auto;
+    text-align:left;
+}
+
+.ca-about-points p{
+    font-size:18px;
+    line-height:1.9;
+    margin-bottom:18px;
+    color:#111827;
+}
+
+
+/* Responsive */
+@media(max-width:768px){
+
+    .ca-about-title{
+        font-size:28px;
+    }
+
+    .ca-about-points p{
+        font-size:16px;
+    }
+}
+
+/* ===============================
+   CAMPUS AMBASSADOR PROGRAM
+================================ */
+
+.ca-program{
+    padding:90px 0;
+    background:#f3f4f6;
+}
+
+
+/* MAIN TITLE */
+.ca-main-title{
+    text-align:center;
+    font-size:48px;
+    font-weight:900;
+    letter-spacing:1px;
+    margin-bottom:20px;
+}
+
+.ca-main-title span{
+    color:#ef4444;
+}
+
+
+/* MAIN DESCRIPTION */
+.ca-main-desc{
+    text-align:center;
+    max-width:1000px;
+    margin:0 auto 60px;
+    font-size:18px;
+    line-height:1.8;
+    color:#1f2937;
+}
+
+
+/* ABOUT TITLE */
+.ca-about-title{
+    text-align:center;
+    font-size:42px;
+    font-weight:900;
+    margin-bottom:20px;
+}
+
+.ca-about-title span{
+    color:#ef4444;
+}
+
+
+/* SUBTITLE */
+.ca-subtitle{
+    max-width:1000px;
+    margin:0 auto 30px;
+    padding-left:10px;   /* list ke saath align */
+    font-size:18px;
+    color:#111827;
+}
+
+
+
+/* NUMBERED LIST */
+.ca-list{
+    max-width:1000px;
+    margin:0 auto;
+    padding-left:40px;
+    font-size:18px;
+    line-height:1.9;
+    list-style:decimal;
+}
+
+.ca-list li{
+    margin-bottom:18px;
+}
+
+
+/* RESPONSIVE */
+@media(max-width:768px){
+
+    .ca-main-title{
+        font-size:32px;
+    }
+
+    .ca-about-title{
+        font-size:28px;
+    }
+
+    .ca-list{
+        font-size:16px;
+        padding-left:25px;
+    }
+}
+
+/* ===============================
+   WHO CAN APPLY SECTION
+================================ */
+
+.ca-apply{
+    padding:90px 0;
+    background:#fdfdfd;
+}
+
+
+/* Title */
+.ca-apply-title{
+    text-align:center;
+    font-size:42px;
+    font-weight:900;
+    margin-bottom:25px;
+}
+
+.ca-apply-title span{
+    color:#ef4444;
+}
+
+
+/* Subtitle */
+.ca-apply-sub{
+    max-width:1000px;
+    margin:0 auto 25px;
+    padding-left:40px;
+    font-size:18px;
+    color:#111827;
+}
+
+
+/* List */
+.ca-apply-list{
+    max-width:1000px;
+    margin:0 auto;
+    padding-left:40px;
+    font-size:18px;
+    line-height:1.9;
+    list-style:decimal;
+}
+
+.ca-apply-list li{
+    margin-bottom:15px;
+}
+
+
+/* Responsive */
+@media(max-width:768px){
+
+    .ca-apply-title{
+        font-size:28px;
+    }
+
+    .ca-apply-list,
+    .ca-apply-sub{
+        font-size:16px;
+        padding-left:25px;
+    }
+}
+/* ===============================
+   SELECTION PROCEDURE
+================================ */
+
+.ca-selection{
+    padding:90px 0;
+    background:#f5f5f5;
+}
+
+
+/* Title */
+.ca-selection-title{
+    text-align:center;
+    font-size:42px;
+    font-weight:900;
+    margin-bottom:35px;
+}
+
+.ca-selection-title span{
+    color:#ef4444;
+}
+
+
+/* List */
+.ca-selection-list{
+    max-width:1000px;
+    margin:0 auto;
+    padding-left:40px;
+    font-size:18px;
+    line-height:1.9;
+    list-style:decimal;
+}
+
+.ca-selection-list li{
+    margin-bottom:15px;
+}
+
+
+/* Responsive */
+@media(max-width:768px){
+
+    .ca-selection-title{
+        font-size:28px;
+    }
+
+    .ca-selection-list{
+        font-size:16px;
+        padding-left:25px;
+    }
+}
+
+/* ===============================
+   REWARDS & INCENTIVES
+================================ */
+
+.ca-rewards{
+    padding:90px 0;
+    background:#fff;
+}
+
+
+/* Title */
+.ca-rewards-title{
+    text-align:center;
+    font-size:42px;
+    font-weight:900;
+    margin-bottom:60px;
+}
+
+.ca-rewards-title span{
+    color:#ef4444;
+}
+
+
+/* Grid */
+.ca-rewards-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:30px;
+    margin-bottom:50px;
+}
+
+
+/* Card */
+.ca-reward-card{
+    background:#fafafa;
+    border-radius:16px;
+    padding:40px 20px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    transition:all 0.3s ease;
+    border:1px solid #e5e7eb;
+}
+
+.ca-reward-card:hover{
+    transform:translateY(-6px);
+}
+
+
+/* Active Card */
+.ca-reward-card.active{
+    background:#fff;
+    box-shadow:0 10px 25px rgba(0,0,0,0.12);
+}
+
+
+/* Icon */
+.ca-reward-icon{
+    width:90px;
+    height:90px;
+    border:2px solid #ef4444;
+    border-radius:50%;
+    margin:0 auto 20px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#ef4444;
+    font-size:34px;
+}
+
+
+/* Card Text */
+.ca-reward-card h4{
+    font-size:20px;
+    font-weight:700;
+    color:#111827;
+}
+
+
+/* List */
+.ca-rewards-list{
+    max-width:900px;
+    margin:0 auto;
+    padding-left:40px;
+    font-size:18px;
+    line-height:1.9;
+    list-style:decimal;
+}
+
+.ca-rewards-list li{
+    margin-bottom:15px;
+}
+
+
+/* Responsive */
+@media(max-width:1024px){
+
+    .ca-rewards-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+
+    .ca-rewards-grid{
+        grid-template-columns:1fr;
+    }
+
+    .ca-rewards-title{
+        font-size:28px;
+    }
+
+    .ca-rewards-list{
+        font-size:16px;
+        padding-left:25px;
+    }
+}
+
+/* ===============================
+   FIX REWARDS LIST ALIGNMENT
+================================ */
+
+.ca-rewards-list{
+    max-width:900px;
+    margin:40px auto 0;
+    padding-left:40px;
+
+    /* RESET */
+    display:block !important;
+    list-style:decimal !important;
+    text-align:left !important;
+}
+
+.ca-rewards-list li{
+    display:list-item !important;
+    list-style:decimal !important;
+
+    margin-bottom:15px;
+    font-size:18px;
+    line-height:1.8;
+
+    /* RESET ALIGNMENT */
+    float:none !important;
+    position:static !important;
+    text-align:left !important;
+}

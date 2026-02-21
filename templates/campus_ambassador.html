@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Campus Ambassador - UDAAN Society{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/campus_ambassador.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+    <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=500&fit=crop" alt="Campus Ambassador">
+        <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+        <h1>CAMPUS AMBASSADOR</h1>
+    </div>
+</section>
+
+<!-- ================= BREADCRUMB ================= -->
+<div class="breadcrumb">
+    <div class="container">
+        <a href="{% url 'home' %}">Home</a>
+        <span class="sep">»</span>
+        <span class="current">Campus Ambassador</span>
+    </div>
+</div>
+
+<!-- ================= INTRO ================= -->
+<!-- ================= CAMPUS AMBASSADOR PROGRAM ================= -->
+<section class="ca-program">
+
+    <div class="container">
+
+        <!-- Main Title -->
+        <h1 class="ca-main-title">
+            CAMPUS <span>AMBASSADOR</span> PROGRAM
+        </h1>
+
+        <!-- Description -->
+        <p class="ca-main-desc">
+            Campus Ambassadors (CA) act as the connection between a company and the university they are studying in.
+            They are the main and direct contact with the company and are the voice of the company on their campus.
+        </p>
+
+        <!-- About Title -->
+        <h2 class="ca-about-title">
+            ABOUT THE <span>PROGRAM</span>
+        </h2>
+
+        <!-- Subtitle -->
+        <p class="ca-subtitle">
+            <em>Selected Campus Ambassadors day-to-day responsibilities include:</em>
+        </p>
+
+        <!-- Numbered List -->
+        <ol class="ca-list">
+
+            <li>To enroll Volunteers</li>
+
+            <li>
+                To conduct social activities within and around the campus,
+                Who Is A Campus Ambassador?
+            </li>
+
+            <li>
+                Campus Ambassadors (CA) act as the connection between a company
+                and the university they are studying in. They are the main and direct
+                contact with the company and are the voice of the company on their campus.
+            </li>
+
+            <li>To create social responsibility scenario.</li>
+
+        </ol>
+
+    </div>
+
+</section>
+
+
+<!-- ================= AMBASSADOR GRID ================= -->
+
+<!-- ================= ELIGIBILITY SECTION ================= -->
+<!-- ================= WHO CAN APPLY ================= -->
+<section class="ca-apply">
+
+    <div class="container">
+
+        <!-- Title -->
+        <h2 class="ca-apply-title">
+            WHO CAN <span>APPLY</span>
+        </h2>
+
+        <!-- Subtitle -->
+        <p class="ca-apply-sub">
+            Only those candidates can apply who:
+        </p>
+
+        <!-- List -->
+        <ol class="ca-apply-list">
+
+            <li>Have relevant skills and interests.</li>
+
+            <li>Could take some time out for social activities.</li>
+
+        </ol>
+
+    </div>
+
+</section>
+
+
+<!-- ================= SELECTION PROCEDURE ================= -->
+<section class="ca-selection">
+
+    <div class="container">
+
+        <!-- Title -->
+        <h2 class="ca-selection-title">
+            SELECTION <span>PROCEDURE</span>
+        </h2>
+
+        <!-- List -->
+        <ol class="ca-selection-list">
+
+            <li>Good Counseling ability.</li>
+
+            <li>Command over Local and English language.</li>
+
+            <li>Report Writing for Coordination among activities.</li>
+
+        </ol>
+
+    </div>
+
+</section>
+
+
+<!-- ================= REWARDS ================= -->
+<section class="ca-rewards">
+
+    <div class="container">
+
+        <!-- Title -->
+        <h2 class="ca-rewards-title">
+            REWARDS AND <span>INCENTIVES</span>
+        </h2>
+
+        <!-- Cards -->
+        <div class="ca-rewards-grid">
+
+            <div class="ca-reward-card active">
+                <div class="ca-reward-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h4>Certificate</h4>
+            </div>
+
+            <div class="ca-reward-card">
+                <div class="ca-reward-icon">
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
+                <h4>Recommendation</h4>
+            </div>
+
+            <div class="ca-reward-card">
+                <div class="ca-reward-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h4>Learning</h4>
+            </div>
+
+            <div class="ca-reward-card">
+                <div class="ca-reward-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h4>Exposure</h4>
+            </div>
+
+        </div>
+
+        <!-- List -->
+        <ol class="ca-rewards-list">
+
+            <li>Certificate of completion.</li>
+
+            <li>Letter of recommendation.</li>
+
+            <li>Learning opportunities.</li>
+
+            <li>
+                The candidate will get exposure to working with social organisation
+                and will get an opportunity to learn more about in society.
+            </li>
+
+        </ol>
+
+    </div>
+
+</section>
+
+
+<!-- ================= APPLY HERE ================= -->
+<section class="apply-section">
+
+    <h2 class="apply-title">
+        <span>APPLY</span> HERE
+    </h2>
+
+    <div class="apply-form">
+
+        <iframe
+            src="https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true"
+            width="640"
+            height="900"
+            frameborder="0"
+            marginheight="0"
+            marginwidth="0">
+            Loading…
+        </iframe>
+
+    </div>
+
+</section>
+
+<!-- ================= CTA ================= -->
+
+
+{% endblock %}
