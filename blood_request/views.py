@@ -605,7 +605,8 @@ def team_detail(request, pk):
         'todo_tasks': todo_tasks,
         'inprogress_tasks': inprogress_tasks,
         'done_tasks': done_tasks,
-        'team_members': team_members
+        'team_members': team_members,
+        'is_manager': is_manager(request.user)
     })
 
 # --- Phase 23: RBAC & Advanced Sharing ---
@@ -825,6 +826,7 @@ def volunteering(request):
     return render(request, "volunteering.html")
 
 
+
 def campus_ambassador(request):
 
     ambassadors = CampusAmbassador.objects.all().order_by('-id')
@@ -836,4 +838,10 @@ def campus_ambassador(request):
             "ambassadors": ambassadors
         }
     )
+
+def news_clippings(request):
+    from .models import NewsClipping
+    clippings = NewsClipping.objects.all().order_by('-created_at')
+    return render(request, 'news_clippings.html', {'clippings': clippings})
+
 

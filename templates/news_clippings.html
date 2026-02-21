@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}News Clippings - UDAAN Society{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/news_clippings.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700;800&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>NEWS CLIPPINGS</h1>
+    </div>
+</section>
+
+<div class="breadcrumb-container">
+    <div class="breadcrumb">
+        <a href="{% url 'home' %}">Home</a>
+        <span>»</span>
+        <a href="#">Impact</a>
+        <span>»</span>
+        News Clippings
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="section-title">
+        <h2><span>MEDIA COVERAGE</span></h2>
+        <p>A glimpse of UDAAN Society in the headlines.</p>
+    </div>
+
+    <div id="news-grid" class="masonry-grid">
+        {% for clipping in clippings %}
+        <div class="news-card"
+            onclick="openModal('{{ clipping.image.url|escapejs }}', '{{ clipping.title|escapejs }}', '{{ clipping.summary|escapejs }}')">
+            <img src="{{ clipping.image.url }}" alt="{{ clipping.title }}">
+            <div class="news-content">
+                <h4>{{ clipping.title }}</h4>
+                <p>{{ clipping.newspaper }} | {{ clipping.date_display }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <div style="text-align: center; grid-column: 1/-1; padding: 50px;">
+            <p>No news clippings found. Add some from the admin panel!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="nc-modal" class="modal" onclick="if(event.target === this) closeModal()">
+    <div class="modal-container">
+        <img class="modal-content" id="modalImage">
+        <div id="modalCaption"></div>
+        <span id="nc-close" onclick="closeModal()">
+            <i class="fas fa-times"></i>
+        </span>
+    </div>
+</div>
+
+<script>
+    console.log("News Clipping Modal Script Loaded");
+
+    function openModal(imgUrl, title, summary) {
+        console.log("Opening modal for:", title);
+        const modal = document.getElementById("nc-modal");
+        const modalImg = document.getElementById("modalImage");
+        const modalCaption = document.getElementById("modalCaption");
+
+        if (!modal || !modalImg || !modalCaption) {
+            console.error("Modal elements not found!");
+            return;
+        }
+
+        modal.classList.add("active");
+        modalImg.src = imgUrl;
+        modalCaption.innerHTML = `<h3>${title}</h3><p>${summary}</p>`;
+
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        console.log("Closing modal");
+        const modal = document.getElementById("nc-modal");
+        if (modal) {
+            modal.classList.remove("active");
+        }
+        document.body.style.overflow = 'auto';
+    }
+
+    // Expose functions globally
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+
+    // Handle Escape key
+    window.addEventListener('keydown', function (e) {
+        if (e.key === "Escape") {
+            closeModal();
+        }
+    });
+</script>
+
+{% endblock %}
+
+{% block extra_js %}
+{# Removed static JS dependency #}
+{% endblock %}
