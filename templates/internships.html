@@ -1,0 +1,430 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Internships - UDAAN Society{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/internships.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+    <div class="hero-image">
+         <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=500&fit=crop" alt="Internship">
+        <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+        <h1>INTERNSHIPS</h1>
+    </div>
+</section>
+
+<!-- ================= BREADCRUMB ================= -->
+<div class="breadcrumb">
+    <div class="container">
+        <a href="{% url 'home' %}">Home</a>
+        <span class="sep">»</span>
+        <span class="current">Internships</span>
+    </div>
+</div>
+
+
+<!-- ================= WHY INTERNSHIP ================= -->
+
+<section class="why-internship">
+  <div class="container">
+
+    <div class="why-content">
+
+      <!-- Left Image -->
+      <div class="why-image">
+        <img src="{% static 'assets/internship-banner.png' %}" alt="Internship">
+      </div>
+
+      <!-- Right Text -->
+      <div class="why-text">
+
+        <h3>Interning at an NGO will help to sharpen social skills.</h3>
+
+        <p>
+          Udaan Society provides the most exciting and auspicious internship
+          opportunities for students across India throughout the year. During the
+          Internship Programme, students can take the opportunity to work for the
+          good faith of society.
+        </p>
+
+        <p>
+          They also get certification for the hard work they put in during their
+          internship term. This programme helps students gain prior knowledge of
+          working conditions and enables them to get ahead in competition.
+        
+
+          So what are you waiting for? Grab this opportunity to work under Udaan
+          Society for vulnerable and neglected communities.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= INTERNSHIP TIPS ================= -->
+
+<section class="internship-tips">
+  <div class="container">
+
+    <!-- Heading -->
+    <h2 class="tips-title">
+      TIPS TO MAKE THE MOST OF THE <span>EXPERIENCE</span>
+    </h2>
+
+    <!-- Grid -->
+    <div class="tips-grid">
+
+      <!-- Item -->
+      <div class="tip-item">
+        <div class="tip-icon"><i class="fas fa-user-tie"></i></div>
+        <p>Be Professional</p>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-icon"><i class="fas fa-lightbulb"></i></div>
+        <p>Watch & Learn</p>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-icon"><i class="fas fa-tasks"></i></div>
+        <p>Set Goals</p>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-icon"><i class="fas fa-clock"></i></div>
+        <p>Reflect on your experience</p>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-icon"><i class="fas fa-handshake"></i></div>
+        <p>Meet Coworkers</p>
+      </div>
+
+      <!-- Row 2 -->
+
+      <div class="tip-item">
+        <div class="tip-icon"><i class="fas fa-briefcase"></i></div>
+        <p>Keep Busy</p>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-icon"><i class="fas fa-sitemap"></i></div>
+        <p>Stay Organized</p>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-icon"><i class="fas fa-brain"></i></div>
+        <p>Manage Time Wisely</p>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-icon"><i class="fas fa-project-diagram"></i></div>
+        <p>Keep track of your projects</p>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-icon"><i class="fas fa-user-check"></i></div>
+        <p>Reflect on your experience</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= APPLY SECTION ================= -->
+
+<section class="apply-section">
+  <div class="container">
+
+    <!-- Heading -->
+    <h2 class="apply-title">
+      APPLY HERE FOR <span>INTERNSHIP</span>
+    </h2>
+
+    <!-- Google Form Container -->
+    <div class="apply-card">
+
+      <!-- Purple Top Line -->
+      <div class="apply-header"></div>
+
+      <!-- Form Body -->
+      <div class="apply-body">
+
+        <h3>Internship @UDAAN Society</h3>
+
+        <p class="apply-desc">
+          Fill the form below to apply for the internship program at UDAAN Society.
+          Make sure all details are correct before submitting.
+        </p>
+
+        <!-- Google Form Embed Area -->
+        <div class="google-form-box">
+
+          <!-- 👇 Yahan baad me apna Google Form iframe paste karna -->
+          <!-- Example:
+          <iframe src="YOUR_FORM_LINK"
+                  width="100%"
+                  height="700"
+                  frameborder="0"
+                  marginheight="0"
+                  marginwidth="0">
+          </iframe>
+          -->
+
+          <p class="form-placeholder">
+            Google Form will be displayed here.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= DO & DONT SECTION ================= -->
+
+<section class="do-dont-section">
+  <div class="container">
+
+    <div class="do-dont-grid">
+
+      <!-- DO's -->
+      <div class="do-card">
+
+        <div class="do-icon">
+          <i class="fas fa-check"></i>
+        </div>
+
+        <h3>5 DO’S:</h3>
+
+        <ol class="do-list">
+
+          <li>
+            <strong>Be prepared</strong>
+            <p>
+              First impressions count so make the effort to dress appropriately
+              and professionally for work to leave a positive impression.
+            </p>
+          </li>
+
+          <li>
+            <strong>Ask questions</strong>
+            <p>
+              Never be afraid to ask questions and clarify any doubts you may have.
+            </p>
+          </li>
+
+          <li>
+            <strong>Be proactive</strong>
+            <p>
+              Take initiative and support your teammates whenever possible.
+            </p>
+          </li>
+
+          <li>
+            <strong>Add value</strong>
+            <p>
+              Offer suggestions and help your team accomplish their goals.
+            </p>
+          </li>
+
+          <li>
+            <strong>Get involved</strong>
+            <p>
+              Participate in social events and build strong connections.
+            </p>
+          </li>
+
+        </ol>
+
+      </div>
+
+
+      <!-- DON'Ts -->
+      <div class="dont-card">
+
+        <div class="dont-icon">
+          <i class="fas fa-times"></i>
+        </div>
+
+        <h3>5 DON’T’S:</h3>
+
+        <ol class="dont-list">
+
+          <li>
+            <strong>Don’t be unprofessional</strong>
+            <p>
+              Maintain professionalism and avoid inappropriate behavior.
+            </p>
+          </li>
+
+          <li>
+            <strong>Don’t be a pessimist</strong>
+            <p>
+              Accept feedback positively and improve continuously.
+            </p>
+          </li>
+
+          <li>
+            <strong>Don’t be late</strong>
+            <p>
+              Be punctual and manage your time efficiently.
+            </p>
+          </li>
+
+          <li>
+            <strong>Don’t be stressed</strong>
+            <p>
+              Stay calm and seek help when needed.
+            </p>
+          </li>
+
+          <li>
+            <strong>Don’t lose your temper</strong>
+            <p>
+              Handle difficult situations calmly and professionally.
+            </p>
+          </li>
+
+        </ol>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= EXECUTION & CERTIFICATION ================= -->
+
+<section class="exec-cert-section">
+  <div class="container">
+
+    <div class="exec-cert-grid">
+
+      <!-- EXECUTION -->
+      <div class="exec-card">
+
+        <h3>EXECUTION PROCEDURE</h3>
+
+        <p>
+          The following general procedure shall be adopted for the execution
+          of the internship:
+        </p>
+
+        <p>
+          <strong>Step 1:</strong> Request Letter/Email should be sent to the mail id:
+          <strong>mail@udaansociety.com</strong> for the internship program, email should include:
+        </p>
+
+        <ol>
+          <li>Name</li>
+          <li>Father’s Name</li>
+          <li>Educational Qualification</li>
+          <li>Permanent Address</li>
+          <li>Contact Number</li>
+          <li>Time period for the internship (exact date should be mentioned)</li>
+          <li>Area under which he/she wants to do internship</li>
+        </ol>
+
+        <p>
+          <strong>Step 2:</strong> Organization will confirm the internship slots
+          in that particular area under which he/she wants to do the internship
+          via Confirmation Letter/Email.
+        </p>
+
+        <p>
+          <strong>Step 3:</strong> Students should only take the confirmation
+          letter/Email as their offer letter for their internship program.
+        </p>
+
+        <p>
+          <strong>Step 4:</strong> Students are advised to meet Dr. Gyanendra Mishra
+          (President Director of UDAAN Society) for further queries and internship terms.
+        </p>
+
+        <p>
+          <strong>Step 5:</strong> Interns will submit an internship report in the
+          format provided below after completion of the internship for the issuance
+          of the certificate.
+        </p>
+
+      </div>
+
+
+      <!-- CERTIFICATION -->
+      <div class="cert-card">
+
+        <h3>CERTIFICATION</h3>
+
+        <p>Dated :</p>
+
+        <p class="cert-title">
+          <u>TO WHOMSOEVER IT MAY CONCERN</u>
+        </p>
+
+        <p>
+          This is to certify that …………, a student of ………… from University ………… has
+          conducted and completed his Social Internship at UDAAN Society, Aligarh,
+          from ………… to ………… as part of his curriculum and course fulfillment.
+        </p>
+
+        <p>
+          During this period he performed office work as well as field work with
+          our team. He has done the following tasks: –
+        </p>
+
+        <p>
+          We congratulate him for conducting the internship in our institution
+          and heartily wish all success in his studies.
+        </p>
+
+        <p class="sign">
+          (Gyanendra Mishra)<br>
+          President
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= PROMO IMAGE CARDS ================= -->
+
+<section class="promo-section">
+  <div class="container">
+
+    <div class="promo-grid">
+
+      <!-- Card 1 -->
+      <a href="#" class="promo-card">
+        <img src="{% static 'assets/blood-card.jpg' %}" alt="Donate Blood">
+      </a>
+
+      <!-- Card 2 -->
+      <a href="#" class="promo-card">
+        <img src="{% static 'assets/campus-card.jpg' %}" alt="Campus Ambassador">
+      </a>
+
+    </div>
+
+  </div>
+</section>
+{% endblock %}

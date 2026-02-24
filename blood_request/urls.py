@@ -28,6 +28,7 @@ urlpatterns = [
         name='campus_ambassador'
     ),
     path("jobs/", views.jobs, name="jobs"),
+    path('internships/', views.internships, name='internships'),
 
     # path(
     #     'ambassador/<int:id>/',

@@ -839,3 +839,5 @@ def news_clippings(request):
     clippings = NewsClipping.objects.all().order_by('-created_at')
     return render(request, 'news_clippings.html', {'clippings': clippings})
 
+def internships(request):
+    return render(request, 'internships.html')
