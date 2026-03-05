@@ -457,21 +457,40 @@ from django.http import JsonResponse
 
 @login_required
 def personal_notes_api(request):
-    """API to get/save personal notes"""
-    # Use get_or_create to ensure a note exists
+    """API to get/save personal notes. Parses @mentions and creates Notifications."""
     note, created = PersonalNote.objects.get_or_create(user=request.user)
-    
+
     if request.method == 'POST':
-        import json
+        import json, re
         try:
             data = json.loads(request.body)
-            note.content = data.get('content', '')
+            new_content = data.get('content', '')
+            note.content = new_content
             note.save()
-            return JsonResponse({'status': 'saved', 'updated_at': note.updated_at})
+
+            # --- @mention parsing ---
+            from django.contrib.auth.models import User as AuthUser
+            from .models import Notification
+            mentions = set(re.findall(r'@(\w+)', new_content))
+            for username in mentions:
+                try:
+                    mentioned_user = AuthUser.objects.get(username=username)
+                    if mentioned_user != request.user:
+                        Notification.objects.create(
+                            user=mentioned_user,
+                            actor=request.user,
+                            message=f"{request.user.get_full_name() or request.user.username} mentioned you in a note.",
+                            link='/admin/portal/',
+                        )
+                except AuthUser.DoesNotExist:
+                    pass
+            # -------------------------
+
+            return JsonResponse({'status': 'saved', 'updated_at': str(note.updated_at)})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
-    
-    return JsonResponse({'content': note.content, 'updated_at': note.updated_at})
+
+    return JsonResponse({'content': note.content, 'updated_at': str(note.updated_at)})
 
 def resources_page(request):
     """Render the resources page"""
@@ -568,6 +587,39 @@ def export_requests_csv(request):
         writer.writerow(req)
 
     return response
+
+@login_required
+def notifications_api(request):
+    """Return the logged-in user's notifications as JSON."""
+    from .models import Notification
+    base_qs = Notification.objects.filter(user=request.user).order_by('-created_at')
+    unread_count = base_qs.filter(is_read=False).count()
+    notifs = base_qs[:30]
+    data = {
+        'unread_count': unread_count,
+        'notifications': [
+            {
+                'id': n.id,
+                'message': n.message,
+                'link': n.link,
+                'is_read': n.is_read,
+                'created_at': n.created_at.strftime('%b %d, %Y %H:%M'),
+            }
+            for n in notifs
+        ],
+    }
+    return JsonResponse(data)
+
+
+@login_required
+def mark_notifications_read(request):
+    """Mark all notifications for the current user as read."""
+    if request.method == 'POST':
+        from .models import Notification
+        Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+        return JsonResponse({'status': 'ok'})
+    return JsonResponse({'error': 'POST required'}, status=405)
+
 
 @login_required
 def calendar_events_api(request):

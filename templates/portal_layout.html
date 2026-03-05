@@ -247,22 +247,49 @@
                 </svg>
                 <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Sign Out</span>
             </a>
+            <!-- Desktop Notification Bell -->
+            <button onclick="toggleNotifPanel()"
+                class="relative mt-2 flex items-center justify-center w-full px-4 py-2 text-xs font-medium text-gray-500 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group-[.collapsed]/sidebar:px-2"
+                title="Notifications">
+                <svg class="w-4 h-4 mr-2 group-[.collapsed]/sidebar:mr-0" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 17h5l-1.405-2.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                    </path>
+                </svg>
+                <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Notifications</span>
+                <span id="notif-count-badge"
+                    class="ml-auto bg-brand-red text-white text-[10px] rounded-full px-1.5 py-0.5 hidden">0</span>
+            </button>
         </div>
     </aside>
 
     <!-- MAIN CONTENT AREA -->
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-gray-50 relative animate-fade-in w-full">
-        <!-- Mobile Header -->
         <div
             class="md:hidden h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4 z-10 flex-shrink-0">
             <span class="font-bold text-lg text-gray-800">UDAAN Workspace</span>
-            <button onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')"
-                class="text-gray-500 hover:text-gray-800">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
-                    </path>
-                </svg>
-            </button>
+            <div class="flex items-center gap-3">
+                <!-- Notification Bell (mobile) -->
+                <button id="notif-bell-mobile" onclick="toggleNotifPanel()"
+                    class="relative text-gray-500 hover:text-brand-dark focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-2.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                        </path>
+                    </svg>
+                    <span id="notif-count-badge-mobile"
+                        class="absolute -top-1 -right-1 bg-brand-red text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
+                </button>
+                <button onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')"
+                    class="text-gray-500 hover:text-gray-800">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16">
+                        </path>
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <!-- Scrollable Content -->
@@ -298,6 +325,33 @@
         <div class="p-3 bg-gray-50 border-t border-gray-100 text-xs text-gray-400 flex justify-between">
             <span id="save-status">All changes saved</span>
             <span class="font-mono">Markdown Supported</span>
+        </div>
+    </div>
+
+    <!-- NOTIFICATIONS DRAWER (Hidden by default) -->
+    <div id="notif-drawer"
+        class="fixed inset-y-0 right-0 w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 flex flex-col border-l border-gray-200">
+        <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-blue-50">
+            <h3 class="font-bold text-brand-dark flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 17h5l-1.405-2.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                    </path>
+                </svg>
+                Notifications
+            </h3>
+            <div class="flex items-center gap-2">
+                <button onclick="markAllRead()" class="text-xs text-brand-red hover:underline">Mark all read</button>
+                <button onclick="toggleNotifPanel()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="notif-list" class="flex-1 overflow-y-auto divide-y divide-gray-50">
+            <p class="text-center text-sm text-gray-400 p-8">Loading…</p>
         </div>
     </div>
 
@@ -407,6 +461,56 @@
                     }).catch(e => console.error("Notes unavailable or not logged in"));
             }
         }
+
+        // ─── NOTIFICATIONS ──────────────────────────────────────────────────────────
+        function toggleNotifPanel() {
+            const drawer = document.getElementById('notif-drawer');
+            drawer.classList.toggle('translate-x-full');
+            if (!drawer.classList.contains('translate-x-full')) {
+                fetchNotifications();
+            }
+        }
+
+        function fetchNotifications() {
+            fetch('/api/notifications/')
+                .then(r => r.json())
+                .then(data => {
+                    const list = document.getElementById('notif-list');
+                    if (!data.notifications || data.notifications.length === 0) {
+                        list.innerHTML = '<p class="text-center text-sm text-gray-400 p-8">You\'re all caught up! 🎉</p>';
+                    } else {
+                        list.innerHTML = data.notifications.map(n => `
+                            <div class="px-4 py-3 ${n.is_read ? 'bg-white' : 'bg-blue-50'} hover:bg-gray-50 transition-colors">
+                                <p class="text-sm text-gray-800 font-medium">${n.message}</p>
+                                <p class="text-xs text-gray-400 mt-1">${n.created_at}</p>
+                                ${n.link ? `<a href="${n.link}" class="text-xs text-brand-red hover:underline mt-1 block">View →</a>` : ''}
+                            </div>
+                        `).join('');
+                    }
+                    // Update badge counts
+                    const unread = data.unread_count || 0;
+                    ['notif-count-badge', 'notif-count-badge-mobile'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) {
+                            el.textContent = unread;
+                            el.classList.toggle('hidden', unread === 0);
+                        }
+                    });
+                }).catch(() => { });
+        }
+
+        function markAllRead() {
+            fetch('/api/notifications/mark-read/', {
+                method: 'POST',
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+            }).then(() => fetchNotifications());
+        }
+
+        // Poll for new notifications every 60 seconds
+        setInterval(fetchNotifications, 60000);
+        // Load count on page load
+        document.addEventListener('DOMContentLoaded', fetchNotifications);
+        // ────────────────────────────────────────────────────────────────────────────
 
         let timeout = null;
         const noteEl = document.getElementById('personal-note-content');

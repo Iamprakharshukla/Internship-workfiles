@@ -29,6 +29,8 @@ urlpatterns = [
     path("admin/export/donors/", views.export_donors_csv, name="export_donors_csv"),
     path("admin/export/requests/", views.export_requests_csv, name="export_requests_csv"),
     path("api/calendar/events/", views.calendar_events_api, name="calendar_events_api"),
+    path("api/notifications/", views.notifications_api, name="notifications_api"),
+    path("api/notifications/mark-read/", views.mark_notifications_read, name="mark_notifications_read"),
 
     path("admin/", admin.site.urls),
     path("", home_view, name="home"),
