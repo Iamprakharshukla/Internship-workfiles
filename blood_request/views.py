@@ -872,19 +872,22 @@ def team_remove_member(request, team_pk, user_pk):
 
 
 @login_required
-def shared_note_detail(request, pk):
+def shared_note_delete(request, pk):
     note = get_object_or_404(SharedNote, pk=pk)
-    # Access check: Owner OR in shared_with_teams members OR shared_with_users
-    has_access = (note.owner == request.user) or \
-                 (note.shared_with_users.filter(id=request.user.id).exists()) or \
-                 (note.shared_with_teams.filter(members=request.user).exists())
-                 
-    if not has_access and not is_manager(request.user):
+    
+    # Only owner or manager can delete
+    if not (request.user == note.owner or is_manager(request.user)):
         from django.contrib import messages
-        messages.error(request, "Access Denied")
-        return redirect('staff_dashboard')
+        messages.error(request, "Only the owner or a manager can delete this note.")
+        return redirect('shared_note_detail', pk=pk)
         
-    return render(request, 'blood_request/shared_note_detail.html', {'note': note})
+    if request.method == 'POST':
+        note.delete()
+        from django.contrib import messages
+        messages.success(request, "Wiki page deleted successfully.")
+        return redirect('shared_note_list')
+        
+    return render(request, 'blood_request/shared_note_confirm_delete.html', {'note': note})
 
 # --- Phase 18: Portal User Management ---
 @login_required

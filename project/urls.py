@@ -54,6 +54,7 @@ urlpatterns = [
     
     path('shared-notes/', views.shared_note_list, name='shared_note_list'),
     path('shared-notes/create/', views.shared_note_create, name='shared_note_create'),
+    path('shared-notes/<int:pk>/delete/', views.shared_note_delete, name='shared_note_delete'),
     path('tasks/create/', views.task_create, name='task_create'),
     path('blogs/create/', views.blog_create, name='blog_create'),
 

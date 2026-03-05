@@ -26,17 +26,14 @@
 
 {% block content %}
 <section class="max-w-7xl mx-auto">
-    <div class="flex justify-between items-center mb-8">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-800 uppercase">
-                HELLO {% if request.user.first_name %}{{ request.user.first_name }}{% else %}{{ request.user.username
-                }}{% endif %}
-            </h1>
-            <p class="text-sm text-gray-500">Here's what's happening in your workspace today.</p>
-        </div>
-        <div class="text-sm text-gray-500 bg-white px-3 py-1 rounded-full shadow-sm border border-gray-100">
-            {% now "l, F jS" %}
-        </div>
+    <div class="flex items-center space-x-4 mb-4 mt-8">
+        <h1 class="text-[40px] font-bold text-[#37352f] tracking-tight leading-tight">
+            Dashboard
+        </h1>
+    </div>
+    <div class="text-[15px] text-[#505050] mb-8 border-b border-[#ededed] pb-4">
+        Welcome back, {% if request.user.first_name %}{{ request.user.first_name }}{% else %}{{ request.user.username
+        }}{% endif %}. Here's what's happening today.
     </div>
 
     <!-- STAFF BULLETIN BOARD -->
@@ -64,31 +61,46 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div
-            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:-translate-y-1 hover:shadow-lg transition duration-300">
-            <h3 class="text-gray-500 text-sm uppercase">Assigned Tasks</h3>
-            <p class="text-3xl font-bold text-blue-600">
+            class="bg-white p-5 rounded-lg border border-[#e5e5e5] hover:bg-[#fafafa] transition-colors flex flex-col justify-between">
+            <h3 class="text-[#505050] text-[13px] font-medium flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Assigned Tasks
+            </h3>
+            <p class="text-[28px] font-bold text-[#37352f] mt-2">
                 {{ todo_tasks.count|add:inprogress_tasks.count|default:"0" }}
             </p>
         </div>
 
         <!-- IMPACT TRACKER (PDF Requirement) -->
         <div
-            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:-translate-y-1 hover:shadow-lg transition duration-300">
-            <h3 class="text-gray-500 text-sm uppercase">Impact: Donors</h3>
-            <p class="text-3xl font-bold text-red-600">{{ total_donors|default:"0" }}</p>
+            class="bg-white p-5 rounded-lg border border-[#e5e5e5] hover:bg-[#fafafa] transition-colors flex flex-col justify-between">
+            <h3 class="text-[#505050] text-[13px] font-medium flex items-center">
+                <svg class="w-4 h-4 mr-2 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                    </path>
+                </svg>
+                Impact: Donors
+            </h3>
+            <p class="text-[28px] font-bold text-[#37352f] mt-2">{{ total_donors|default:"0" }}</p>
         </div>
 
         <!-- APPOINTMENTS LINK -->
         <a href="{% url 'appointment_list' %}"
-            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:-translate-y-1 hover:shadow-lg transition duration-300 group">
-            <h3 class="text-gray-500 text-sm uppercase group-hover:text-brand-red transition">Schedule</h3>
-            <div class="flex items-center mt-2 text-brand-red font-bold">
-                <span>View Appointments</span>
-                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3">
+            class="bg-white p-5 rounded-lg border border-[#e5e5e5] hover:bg-[#fafafa] transition-colors flex flex-col justify-between group">
+            <h3 class="text-[#505050] text-[13px] font-medium flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                     </path>
                 </svg>
+                Schedule
+            </h3>
+            <div class="flex items-center mt-2 text-[#37352f] text-[14px]">
+                <span>View Appointments &rarr;</span>
             </div>
         </a>
     </div>
@@ -130,14 +142,15 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-[calc(100vh-250px)]">
 
         <!-- TO DO COLUMN -->
-        <div class="bg-gray-100 rounded-xl flex flex-col h-full ring-4 ring-gray-100/50">
+        <div class="bg-white rounded-lg flex flex-col h-full ring-1 ring-[#e5e5e5]">
             <div
-                class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-100 rounded-t-xl sticky top-0 z-10">
-                <h3 class="text-gray-500 font-bold uppercase text-sm flex items-center">
-                    To Do <span class="ml-2 bg-gray-200 px-2 rounded-full text-xs py-1 text-gray-600 count-badge">{{
+                class="px-4 py-3 border-b border-[#e5e5e5] flex justify-between items-center bg-[#fafafa] rounded-t-lg sticky top-0 z-10">
+                <h3 class="text-[#37352f] font-semibold text-[14px] flex items-center">
+                    To Do <span
+                        class="ml-2 bg-[#e5e5e5] px-1.5 rounded-full text-[12px] py-0.5 text-[#505050] count-badge">{{
                         todo_tasks|length }}</span>
                 </h3>
-                <button class="text-gray-400 hover:text-gray-600">
+                <button class="text-[#999] hover:bg-[#e1e1e0] rounded p-0.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -202,12 +215,12 @@
                 </div>
 
                 <!-- IN PROGRESS COLUMN -->
-                <div class="bg-blue-50/50 rounded-xl flex flex-col h-full ring-4 ring-blue-50">
+                <div class="bg-white rounded-lg flex flex-col h-full ring-1 ring-[#e5e5e5]">
                     <div
-                        class="p-4 border-b border-blue-100 flex justify-between items-center bg-blue-50 rounded-t-xl sticky top-0 z-10">
-                        <h3 class="text-blue-700 font-bold uppercase text-sm flex items-center">
+                        class="px-4 py-3 border-b border-[#e5e5e5] flex justify-between items-center bg-[#fafafa] rounded-t-lg sticky top-0 z-10">
+                        <h3 class="text-[#37352f] font-semibold text-[14px] flex items-center">
                             In Progress <span
-                                class="ml-2 bg-blue-100 px-2 rounded-full text-xs py-1 text-blue-700 count-badge">{{
+                                class="ml-2 bg-[#e5e5e5] px-1.5 rounded-full text-[12px] py-0.5 text-[#505050] count-badge">{{
                                 inprogress_tasks|length }}</span>
                         </h3>
                     </div>
@@ -253,12 +266,12 @@
                 </div>
 
                 <!-- DONE COLUMN -->
-                <div class="bg-green-50/50 rounded-xl flex flex-col h-full ring-4 ring-green-50">
+                <div class="bg-white rounded-lg flex flex-col h-full ring-1 ring-[#e5e5e5]">
                     <div
-                        class="p-4 border-b border-green-100 flex justify-between items-center bg-green-50 rounded-t-xl sticky top-0 z-10">
-                        <h3 class="text-green-700 font-bold uppercase text-sm flex items-center">
+                        class="px-4 py-3 border-b border-[#e5e5e5] flex justify-between items-center bg-[#fafafa] rounded-t-lg sticky top-0 z-10">
+                        <h3 class="text-[#37352f] font-semibold text-[14px] flex items-center">
                             Done <span
-                                class="ml-2 bg-green-100 px-2 rounded-full text-xs py-1 text-green-700 count-badge">{{
+                                class="ml-2 bg-[#e5e5e5] px-1.5 rounded-full text-[12px] py-0.5 text-[#505050] count-badge">{{
                                 done_tasks|length }}</span>
                         </h3>
                     </div>

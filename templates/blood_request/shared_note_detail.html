@@ -38,7 +38,16 @@
                 <i class="fa-solid fa-lock text-gray-400 mr-2 text-xs"></i> Private
             </span>
             {% endif %}
-            <a href="{% url 'staff_dashboard' %}" class="text-gray-400 hover:text-gray-800 transition pl-2">
+
+            {% if request.user == note.owner or request.user.is_superuser %}
+            <a href="{% url 'shared_note_delete' note.pk %}"
+                class="text-red-400 hover:text-red-600 hover:bg-red-50 px-2 py-1 rounded transition text-xs font-medium border border-transparent hover:border-red-100"
+                title="Delete Page">
+                <i class="fa-regular fa-trash-can"></i>
+            </a>
+            {% endif %}
+
+            <a href="{% url 'staff_dashboard' %}" class="text-gray-400 hover:text-gray-800 transition pl-1">
                 <i class="fas fa-times text-lg"></i>
             </a>
         </div>

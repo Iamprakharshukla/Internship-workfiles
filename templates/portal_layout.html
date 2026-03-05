@@ -7,12 +7,12 @@
     <title>{% block title %}Workspace v2 | UDAAN Society{% endblock %}</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
                         glass: { 100: 'rgba(255, 255, 255, 0.1)', 200: 'rgba(255, 255, 255, 0.2)', 300: 'rgba(255, 255, 255, 0.3)' },
                         brand: { red: '#E63946', dark: '#1D3557' }
@@ -22,9 +22,8 @@
         }
     </script>
     <style>
-        .glass-sidebar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+        .notion-sidebar {
+            background-color: #f7f7f5;
             border-right: 1px solid rgba(0, 0, 0, 0.05);
         }
 
@@ -73,130 +72,105 @@
 </head>
 
 <body
-    class="bg-gray-50 h-screen flex overflow-hidden text-gray-800 antialiased selection:bg-brand-red selection:text-white">
+    class="bg-white h-screen flex overflow-hidden text-[#37352f] antialiased selection:bg-[#2eaaef33] selection:text-[#37352f]">
 
     <!-- SIDEBAR -->
     <aside
-        class="glass-sidebar flex flex-col h-full bg-white z-20 flex-shrink-0 transition-all duration-300 transform -translate-x-full md:translate-x-0 fixed md:relative w-64 group/sidebar"
+        class="notion-sidebar flex flex-col h-full z-20 flex-shrink-0 transition-all duration-300 transform -translate-x-full md:translate-x-0 fixed md:relative w-64 group/sidebar"
         id="sidebar">
 
-        <!-- Logo Area -->
-        <div class="h-16 flex items-center px-6 border-b border-gray-100 justify-between shrink-0">
-            <span
-                class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-dark to-brand-red overflow-hidden whitespace-nowrap transition-all duration-300 group-[.collapsed]/sidebar:w-0 group-[.collapsed]/sidebar:opacity-0">
-                UDAAN <span class="font-light text-gray-400">Workspace</span>
-            </span>
-            <span class="text-xl font-bold text-brand-dark hidden group-[.collapsed]/sidebar:block">U</span>
-
-            <button onclick="toggleSidebar()"
-                class="text-gray-400 hover:text-brand-dark focus:outline-none hidden md:block">
-                <svg class="w-5 h-5 transform transition-transform duration-300 group-[.collapsed]/sidebar:rotate-180"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path>
-                </svg>
-            </button>
-        </div>
-
-        <!-- User Profile Mini -->
-        <div
-            class="p-6 border-b border-gray-50 shrink-0 group-[.collapsed]/sidebar:p-4 group-[.collapsed]/sidebar:flex group-[.collapsed]/sidebar:justify-center">
-            <div class="flex items-center space-x-3 group-[.collapsed]/sidebar:space-x-0">
+        <!-- Workspace Switcher (Notion-style Top Nav) -->
+        <div class="h-[45px] hover:bg-[#efefed] transition-colors flex items-center px-4 cursor-pointer mt-2 mx-2 rounded-md justify-between shrink-0 group/workspace"
+            onclick="toggleProfileDropdown()">
+            <div class="flex items-center space-x-2 truncate">
                 <div
-                    class="w-10 h-10 rounded-full bg-brand-dark text-white flex items-center justify-center font-bold text-lg shrink-0">
+                    class="w-[22px] h-[22px] rounded bg-white border border-[#e1e1e0] shadow-sm text-[#37352f] flex items-center justify-center font-bold text-[11px] shrink-0">
                     {{ request.user.username|slice:":1"|upper }}
                 </div>
-                <div class="group-[.collapsed]/sidebar:hidden overflow-hidden whitespace-nowrap">
-                    <h4 class="text-sm font-bold text-gray-800 leading-tight">
-                        {% if request.user.first_name %}{{ request.user.first_name }}{% else %}{{ request.user.username
-                        }}{% endif %}
-                    </h4>
-                    <p class="text-xs text-gray-400 mt-0.5">
-                        {% if request.user.is_superuser %}Administrator
-                        {% elif request.user.groups.all.0.name == 'Managers' %}Manager
-                        {% else %}Staff Member{% endif %}
-                    </p>
-                </div>
+                <span class="text-[14px] font-medium text-[#37352f] truncate leading-tight mt-0.5"
+                    style="font-family: 'Inter', sans-serif;">
+                    {% if request.user.first_name %}{{ request.user.first_name }}'s Workspace{% else %}{{
+                    request.user.username }}'s Workspace{% endif %}
+                </span>
             </div>
-            <a href="{% url 'profile_edit' %}"
-                class="text-xs text-brand-red font-medium hover:underline mt-2 block ml-14 group-[.collapsed]/sidebar:hidden whitespace-nowrap">Edit
-                Profile &rarr;</a>
+
+            <!-- Caret that appears on hover -->
+            <div class="flex items-center space-x-1">
+                <button type="button"
+                    class="text-[#999] hover:bg-[#e1e1e0] p-0.5 rounded opacity-0 group-hover/workspace:opacity-100 transition-opacity"
+                    title="Collapse Sidebar" onclick="toggleSidebar(); event.stopPropagation();">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <!-- Navigation -->
-        <nav class="flex-1 overflow-y-auto overflow-x-hidden py-4 px-3 space-y-1">
+        <nav class="flex-1 overflow-y-auto overflow-x-hidden py-2 px-3 space-y-0.5 text-[#505050]">
             <!-- Search / Quick Switcher Trigger -->
-            <div class="mb-4 group-[.collapsed]/sidebar:hidden">
-                <button onclick="openQuickSwitcher()"
-                    class="w-full flex items-center justify-between px-3 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-transparent">
-                    <span class="flex items-center">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                        Search...
-                    </span>
-                    <kbd
-                        class="hidden xl:inline-block px-1.5 py-0.5 rounded border border-gray-300 bg-white shadow-sm text-[10px] font-mono text-gray-500 font-bold">Ctrl+K</kbd>
-                </button>
-            </div>
-            <p
-                class="px-3 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 mt-2 group-[.collapsed]/sidebar:hidden">
-                Main</p>
-            <div
-                class="border-b border-gray-100 mb-2 pb-2 md:hidden group-[.collapsed]/sidebar:border-b group-[.collapsed]/sidebar:border-gray-100 group-[.collapsed]/sidebar:mb-2 group-[.collapsed]/sidebar:pb-2 block">
-            </div>
-
-            <a href="{% url 'staff_dashboard' %}" class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors hover:bg-gray-50 text-gray-600 hover:text-gray-900 group relative
-               {% if request.resolver_match.url_name == 'staff_dashboard' %}active{% endif %}" title="Dashboard">
-                <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-brand-dark transition-colors shrink-0 group-[.collapsed]/sidebar:mr-0"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onclick="openQuickSwitcher()"
+                class="w-full flex items-center px-2 py-1 hover:bg-[#efefed] rounded-md text-[14px] transition-colors focus:outline-none">
+                <svg class="w-4 h-4 mr-2.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <span class="flex-1 text-left font-medium">Search</span>
+            </button>
+
+            <a href="{% url 'staff_dashboard' %}"
+                class="w-full flex items-center px-2 py-1 hover:bg-[#efefed] rounded-md text-[14px] transition-colors {% if request.resolver_match.url_name == 'staff_dashboard' %}bg-[#efefed] font-medium text-[#37352f]{% else %}font-medium{% endif %}"
+                title="Home">
+                <svg class="w-4 h-4 mr-2.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
                     </path>
                 </svg>
-                <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Dashboard</span>
+                <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Home</span>
             </a>
 
-            <a href="{% url 'workspace_list' %}" class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors hover:bg-gray-50 text-gray-600 hover:text-gray-900 group relative
-               {% if 'workspaces' in request.path or '/w/' in request.path %}active{% endif %}" title="Workspaces">
-                <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-brand-dark transition-colors shrink-0 group-[.collapsed]/sidebar:mr-0"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <a href="{% url 'workspace_list' %}"
+                class="w-full flex items-center px-2 py-1 hover:bg-[#efefed] rounded-md text-[14px] transition-colors {% if 'workspaces' in request.path or '/w/' in request.path %}bg-[#efefed] font-medium text-[#37352f]{% else %}font-medium{% endif %}"
+                title="Inbox">
+                <svg class="w-4 h-4 mr-2.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                        d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
                     </path>
                 </svg>
-                <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Workspaces</span>
+                <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Inbox</span>
             </a>
 
             {% if perms.blood_request.add_task %}
-            <a href="{% url 'manager_dashboard' %}" class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors hover:bg-gray-50 text-gray-600 hover:text-gray-900 group relative
-               {% if request.resolver_match.url_name == 'manager_dashboard' %}active{% endif %}" title="Team Overview">
-                <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-brand-dark transition-colors shrink-0 group-[.collapsed]/sidebar:mr-0"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <a href="{% url 'manager_dashboard' %}"
+                class="w-full flex items-center px-2 py-1 hover:bg-[#efefed] rounded-md text-[14px] transition-colors {% if request.resolver_match.url_name == 'manager_dashboard' %}bg-[#efefed] font-medium text-[#37352f]{% else %}font-medium{% endif %}"
+                title="Settings">
+                <svg class="w-4 h-4 mr-2.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
                     </path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 </svg>
-                <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Team Overview</span>
+                <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Settings & Members</span>
             </a>
 
-            <a href="{% url 'user_list' %}" class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors hover:bg-gray-50 text-gray-600 hover:text-gray-900 group relative
-               {% if 'users' in request.path %}active{% endif %}" title="User Management">
-                <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-brand-dark transition-colors shrink-0 group-[.collapsed]/sidebar:mr-0"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <a href="{% url 'user_list' %}"
+                class="w-full flex items-center px-2 py-1 hover:bg-[#efefed] rounded-md text-[14px] transition-colors {% if 'users' in request.path %}bg-[#efefed] font-medium text-[#37352f]{% else %}font-medium{% endif %}"
+                title="User Management">
+                <svg class="w-4 h-4 mr-2.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
                     </path>
                 </svg>
-                <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">User Management</span>
+                <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Members</span>
             </a>
             {% endif %}
 
-            <a href="{% url 'appointment_list' %}" class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors hover:bg-gray-50 text-gray-600 hover:text-gray-900 group relative
-               {% if 'appointments' in request.path %}active{% endif %}" title="Calendar & Appointments">
-                <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-brand-dark transition-colors shrink-0 group-[.collapsed]/sidebar:mr-0"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <a href="{% url 'appointment_list' %}"
+                class="w-full flex items-center px-2 py-1 hover:bg-[#efefed] rounded-md text-[14px] transition-colors {% if 'appointments' in request.path %}bg-[#efefed] font-medium text-[#37352f]{% else %}font-medium{% endif %}"
+                title="Calendar & Appointments">
+                <svg class="w-4 h-4 mr-2.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                     </path>
@@ -204,19 +178,22 @@
                 <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Calendar & Appointments</span>
             </a>
 
-            <p
-                class="px-3 text-[11px] font-bold text-gray-400/80 uppercase tracking-wider mb-1 mt-6 group-[.collapsed]/sidebar:hidden">
-                Private
-            </p>
-            <div
-                class="border-b border-gray-100 mb-1 pb-1 md:hidden group-[.collapsed]/sidebar:border-b group-[.collapsed]/sidebar:border-gray-100 group-[.collapsed]/sidebar:mb-2 group-[.collapsed]/sidebar:pb-2 block">
+            <div class="mt-4 mb-1">
+                <div
+                    class="flex items-center justify-between px-2 group/header hover:bg-[#efefed] rounded-sm cursor-pointer py-0.5">
+                    <span
+                        class="text-[12px] font-semibold text-[#91918e] group-hover/header:text-[#505050] transition-colors">Workspace</span>
+                    <button
+                        class="opacity-0 group-hover/header:opacity-100 text-[#91918e] hover:bg-[#e1e1e0] rounded p-0.5"><i
+                            class="fa-solid fa-plus text-[10px]"></i></button>
+                </div>
             </div>
 
             <!-- Legacy Personal Notes Icon (Top level) -->
             <a href="#" onclick="toggleNotes()"
-                class="flex items-center px-3 py-1.5 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 text-gray-600 hover:text-gray-900 group relative mb-3"
+                class="flex items-center px-2 py-1 rounded-md text-[13px] font-medium transition-colors hover:bg-[#efefed] text-[#505050] hover:text-[#37352f] group relative mb-3"
                 title="Personal Scratchpad">
-                <svg class="w-5 h-5 mr-3 text-gray-400 group-hover:text-yellow-500 transition-colors shrink-0 group-[.collapsed]/sidebar:mr-0"
+                <svg class="w-4 h-4 mr-2.5 text-gray-400 group-hover:text-yellow-500 transition-colors shrink-0 group-[.collapsed]/sidebar:mr-0"
                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
@@ -226,34 +203,34 @@
             </a>
 
             <!-- Shared Notes / Wiki Tree -->
-            <div class="group-[.collapsed]/sidebar:hidden px-2 mb-4">
+            <div class="group-[.collapsed]/sidebar:hidden mb-4">
                 {% if shared_notes_tree %}
                 <div class="mt-0.5 space-y-0.5">
                     {% for note in shared_notes_tree %}
                     <div>
                         <div
-                            class="flex items-center justify-between px-1.5 py-1 rounded-md text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer group/item">
+                            class="flex items-center justify-between px-2 py-1 rounded-md text-[14px] text-[#505050] hover:bg-[#efefed] transition-colors cursor-pointer group/item {% if note.pk|stringformat:'s' in request.path %}bg-[#efefed] text-[#37352f] font-medium{% endif %}">
                             {% if note.child_notes.exists %}
                             <button type="button"
-                                class="text-gray-400 hover:text-gray-600 focus:outline-none w-5 h-5 flex items-center justify-center rounded-sm hover:bg-gray-200 transition-colors mr-1 shrink-0"
+                                class="text-[#999] hover:text-[#505050] focus:outline-none w-5 h-5 flex items-center justify-center rounded-sm hover:bg-[#e1e1e0] transition-colors mr-1.5 shrink-0"
                                 onclick="toggleTree('note-tree-{{ note.pk }}', this); event.preventDefault();">
-                                <i class="fa-solid fa-caret-right text-xs transition-transform duration-200"
+                                <i class="fa-solid fa-play text-[10px] transition-transform duration-200"
                                     id="icon-{{ note.pk }}"></i>
                             </button>
                             {% else %}
-                            <div class="w-5 h-5 mr-1 shrink-0"></div>
+                            <div class="w-5 h-5 mr-1.5 shrink-0"></div>
                             {% endif %}
 
                             <a href="{% url 'shared_note_detail' note.pk %}"
-                                class="flex-1 truncate inline-flex items-center font-medium" title="{{ note.title }}">
-                                <i class="fa-solid fa-book text-xs text-brand-blue opacity-70 mr-2"></i>
+                                class="flex-1 truncate inline-flex items-center" title="{{ note.title }}">
+                                <i class="fa-regular fa-file-lines text-[14px] opacity-70 mr-2.5"></i>
                                 <span class="truncate">{{ note.title }}</span>
                             </a>
 
                             <a href="{% url 'shared_note_create' %}?parent={{ note.pk }}"
-                                class="opacity-0 group-hover/item:opacity-100 text-gray-400 hover:text-gray-600 transition-opacity p-1 rounded-sm hover:bg-gray-200 ml-1"
+                                class="opacity-0 group-hover/item:opacity-100 text-[#999] hover:text-[#505050] transition-opacity p-0.5 rounded-sm hover:bg-[#e1e1e0] ml-1"
                                 title="Add Page Inside">
-                                <i class="fa-solid fa-plus text-[10px]"></i>
+                                <i class="fa-solid fa-plus text-[12px]"></i>
                             </a>
                         </div>
 
@@ -269,13 +246,38 @@
                 <p class="text-[11px] text-gray-400 italic px-2">No pages inside</p>
                 {% endif %}
 
-                <a href="{% url 'shared_note_create' %}"
-                    class="mt-2 flex items-center px-1.5 py-1 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors font-medium">
-                    <i class="fa-solid fa-plus w-5 h-5 flex items-center justify-center text-xs mr-1 opacity-70"></i>
-                    Add a page
-                </a>
+
+                <div class="mt-4 mb-1">
+                    <div
+                        class="flex items-center justify-between px-2 group/header hover:bg-[#efefed] rounded-sm cursor-pointer py-0.5">
+                        <span
+                            class="text-[12px] font-semibold text-[#91918e] group-hover/header:text-[#505050] transition-colors">Shared</span>
+                        <button
+                            class="opacity-0 group-hover/header:opacity-100 text-[#91918e] hover:bg-[#e1e1e0] rounded p-0.5"><i
+                                class="fa-solid fa-plus text-[10px]"></i></button>
+                    </div>
+                </div>
             </div>
+
         </nav>
+
+        <!-- Dropdown Menu for Profile -->
+        <div id="profileDropdown"
+            class="hidden absolute top-[50px] left-2 w-64 bg-white border border-[#e1e1e0] shadow-lg rounded-lg py-1 z-50 text-[14px] text-[#37352f]">
+            <div class="px-4 py-2 text-[12px] text-[#91918e]">{{ request.user.email|default:"admin@gmail.com"
+                }}</div>
+            <div class="flex items-center px-4 py-1.5 hover:bg-[#efefed] cursor-pointer text-[#37352f] justify-between">
+                <div class="flex items-center">
+                    <div
+                        class="w-5 h-5 rounded bg-white border border-[#e1e1e0] flex items-center justify-center font-bold text-[10px] mr-2">
+                        P</div><span>Workspace</span>
+                </div>
+                <i class="fa-solid fa-check text-xs"></i>
+            </div>
+            <div class="border-t border-[#f1f1f0] my-1"></div>
+            <a href="{% url 'profile_edit' %}" class="block px-4 py-1.5 hover:bg-[#efefed] text-[#37352f]">Settings</a>
+            <a href="{% url 'admin:logout' %}" class="block px-4 py-1.5 hover:bg-[#efefed] text-[#37352f]">Log out</a>
+        </div>
 
         <!-- Footer Actions -->
         <div class="p-4 border-t border-gray-100 shrink-0 group-[.collapsed]/sidebar:p-2">
@@ -288,17 +290,6 @@
                         d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                 </svg>
                 <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Visit Public Site</span>
-            </a>
-            <a href="{% url 'admin:logout' %}"
-                class="flex items-center justify-center w-full px-4 py-2 text-xs font-bold text-white bg-brand-red rounded-lg hover:bg-red-700 transition-colors shadow-sm group-[.collapsed]/sidebar:px-2"
-                title="Sign Out">
-                <svg class="w-4 h-4 hidden group-[.collapsed]/sidebar:block" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                    </path>
-                </svg>
-                <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Sign Out</span>
             </a>
             <!-- Desktop Notification Bell -->
             <button onclick="toggleNotifPanel()"
@@ -709,6 +700,28 @@
             });
             qsResults.innerHTML = html;
         }
+
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            if (dropdown.classList.contains('hidden')) {
+                dropdown.classList.remove('hidden');
+            } else {
+                dropdown.classList.add('hidden');
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (event) {
+            const dropdown = document.getElementById('profileDropdown');
+            const workspaceBtn = document.querySelector('.group\\/workspace');
+
+            if (dropdown && !dropdown.classList.contains('hidden')) {
+                // If click is outside the dropdown and outside the button that toggles it
+                if (!dropdown.contains(event.target) && (!workspaceBtn || !workspaceBtn.contains(event.target))) {
+                    dropdown.classList.add('hidden');
+                }
+            }
+        });
     </script>
 </body>
 
