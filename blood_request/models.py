@@ -406,4 +406,25 @@ class NewsClipping(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+
+
+class PolicyReport(models.Model):
+
+    CATEGORY_CHOICES = [
+        ('ethical', 'Ethical'),
+        ('finance', 'Finance'),
+        ('hr', 'HR'),
+        ('travel', 'Travel'),
+        ('posh', 'POSH'),
+    ]
+
+    title = models.CharField(max_length=200)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    pdf_file = models.FileField(upload_to='policy_reports/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.title} ({self.category})"
 

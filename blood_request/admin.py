@@ -1,12 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
+from .models import PolicyReport
+
 from .models import (
     BloodDonor, BloodRequest, Campaign, Report, Project, Task, SubTask,
     Announcement, Testimonial, StaffProfile, Interaction, Appointment,
     PersonalNote, Team, SharedNote, NewsClipping, Blog
 )
 
+admin.site.register(PolicyReport)
 @admin.register(Testimonial)
 class TestimonialAdmin(admin.ModelAdmin):
     list_display = ('author', 'role', 'is_active', 'created_at')

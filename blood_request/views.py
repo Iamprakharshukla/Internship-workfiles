@@ -12,7 +12,7 @@ from .models import Blog, Project, Task
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from .models import CampusAmbassador
-
+from .models import PolicyReport
 
 @ensure_csrf_cookie
 def index(request):
@@ -910,3 +910,24 @@ def internships(request):
 
 def our_mission_values(request):
     return render(request, 'ourmission_values.html')
+
+def our_policies(request):
+    return render(request, "our_policies.html")
+
+def our_policies(request):
+
+    ethical = PolicyReport.objects.filter(category="ethical").first()
+    finance = PolicyReport.objects.filter(category="finance").first()
+    hr = PolicyReport.objects.filter(category="hr").first()
+    travel = PolicyReport.objects.filter(category="travel").first()
+    posh = PolicyReport.objects.filter(category="posh").first()
+
+    context = {
+        "ethical": ethical,
+        "finance": finance,
+        "hr": hr,
+        "travel": travel,
+        "posh": posh,
+    }
+
+    return render(request,"our_policies.html",context)

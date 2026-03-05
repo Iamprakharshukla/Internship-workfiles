@@ -60,6 +60,7 @@ urlpatterns = [
     path('', include('blood_request.urls')),
 
     path('news-clippings/', views.news_clippings, name='news_clippings'),
+    path("policies/", views.our_policies, name="our_policies"),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

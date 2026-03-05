@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Policies - UDAAN Society{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/policies.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+    <div class="hero-image">
+         <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=500&fit=crop" alt="Policies">
+        <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+        <h1>POLICIES</h1>
+        <p>
+            A course or principle of action proposed by a UDAAN Society.
+        </p>
+    </div>
+</section>
+<!-- ================= BREADCRUMB ================= -->
+<div class="breadcrumb">
+    <div class="breadcrumb-container">
+        <a href="{% url 'home' %}">Home</a>
+        <span class="sep">»</span>
+        <span class="current">Our Policies</span>
+    </div>
+</div>
+
+<section class="policies-section">
+
+<div class="container">
+
+<h2 class="policy-title">
+    OUR <span>POLICIES</span>
+</h2>
+
+<p class="policy-sub">
+A course or principle of action proposed by a UDAAN Society.
+</p>
+
+<div class="policy-tabs">
+
+<button class="tab active" data-tab="ethical">
+<i class="fa-solid fa-scale-balanced"></i> Ethical
+</button>
+
+<button class="tab" data-tab="finance">
+<i class="fa-solid fa-chart-line"></i> Finance
+</button>
+
+<button class="tab" data-tab="hr">
+<i class="fa-solid fa-users"></i> HR
+</button>
+
+<button class="tab" data-tab="travel">
+<i class="fa-solid fa-plane"></i> Travel
+</button>
+
+<button class="tab" data-tab="posh">
+<i class="fa-solid fa-hands-holding-child"></i> POSH
+</button>
+
+<button class="tab" data-tab="privacy">
+<i class="fa-solid fa-shield-halved"></i> Privacy
+</button>
+
+<button class="tab" data-tab="refund">
+<i class="fa-solid fa-money-bill-wave"></i> Refund
+</button>
+
+</div>
+
+
+
+<!-- TAB CONTENT -->
+
+<div class="policy-content">
+
+<!-- ETHICAL -->
+<div class="tab-panel active" id="ethical">
+
+{% if ethical %}
+<button class="fullscreen-btn">View Fullscreen</button>
+
+<iframe src="{{ ethical.pdf_file.url }}"
+        width="100%"
+        height="800px">
+</iframe>
+
+{% else %}
+<p>No ethical policy uploaded yet.</p>
+{% endif %}
+
+</div>
+
+
+<!-- FINANCE -->
+<div class="tab-panel" id="finance">
+
+{% if finance %}
+<button class="fullscreen-btn">View Fullscreen</button>
+
+<iframe src="{{ finance.pdf_file.url }}"
+        width="100%"
+        height="800px">
+</iframe>
+
+{% else %}
+<p>No finance policy uploaded yet.</p>
+{% endif %}
+
+</div>
+
+
+<!-- HR -->
+<div class="tab-panel" id="hr">
+
+{% if hr %}
+<iframe src="{{ hr.pdf_file.url }}" width="100%" height="800"></iframe>
+{% endif %}
+
+</div>
+
+
+<!-- TRAVEL -->
+<div class="tab-panel" id="travel">
+
+{% if travel %}
+<iframe src="{{ travel.pdf_file.url }}" width="100%" height="800"></iframe>
+{% endif %}
+
+</div>
+
+
+<!-- POSH -->
+<div class="tab-panel" id="posh">
+
+{% if posh %}
+<iframe src="{{ posh.pdf_file.url }}" width="100%" height="800"></iframe>
+{% endif %}
+
+</div>
+
+
+<!-- PRIVACY POLICY -->
+<div class="tab-panel" id="privacy">
+
+<div class="policy-document">
+
+<h3 class="policy-doc-title">Privacy Policy</h3>
+
+<div class="policy-breadcrumb">
+    Home » Privacy Policy
+</div>
+
+<p>
+The terms “We” / “Us” / “Our”/” Company” individually and collectively refer to UDAAN SOCIETY and the terms “You” /”Your” / “Yourself” refer to the users.
+</p>
+
+<p>
+This Privacy Policy is an electronic record in the form of an electronic contract formed under the information Technology Act, 2000 and the rules made thereunder and the amended provisions pertaining to electronic documents / records in various statutes as amended by the information Technology Act, 2000. This Privacy Policy does not require any physical, electronic or digital signature.
+</p>
+
+<p>
+This Privacy Policy is a legally binding document between you and UDAAN SOCIETY (both terms defined below). The terms of this Privacy Policy will be effective upon your acceptance of the same (directly or indirectly in electronic form, by clicking on the I accept tab or by use of the website or by other means) and will govern the relationship between you and UDAAN SOCIETY for your use of the website “Website” (defined below).
+</p>
+
+<p>
+This document is published and shall be construed in accordance with the provisions of the Information Technology (reasonable security practices and procedures and sensitive personal data of information) rules, 2011 under Information Technology Act, 2000; that require publishing of the Privacy Policy for collection, use, storage and transfer of sensitive personal data or information.
+</p>
+
+<p>
+Please read this Privacy Policy carefully by using the Website, you indicate that you understand, agree and consent to this Privacy Policy. If you do not agree with the terms of this Privacy Policy, please do not use this Website.
+</p>
+
+<p>
+By providing us your Information or by making use of the facilities provided by the Website, You hereby consent to the collection, storage, processing and transfer of any or all of Your Personal Information and Non-Personal Information by us as specified under this Privacy Policy. You further agree that such collection, use, storage and transfer of Your Information shall not cause any loss or wrongful gain to you or any other person.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- REFUND POLICY -->
+<div class="tab-panel" id="refund">
+
+<div class="policy-document">
+
+<h3 class="policy-doc-title">Refund Policy</h3>
+
+<div class="policy-breadcrumb">
+Home » Refund Policy
+</div>
+
+<p>
+<strong>Refund Policy – UDAAN Society</strong><br>
+UDAAN Society is grateful for your support of our mission to help underserved and neglected communities. Donations made through our website are used to directly fund our programs and services.
+</p>
+
+<p>
+Donations are generally non-refundable. However, we understand that mistakes can happen. We will consider a refund in the following limited circumstance:
+</p>
+
+<p>
+<strong>Fraudulent Transaction:</strong> If you believe a fraudulent transaction has been made on your account resulting in a donation to UDAAN Society, please contact us immediately at <strong>mail@udaansociety.org</strong>. We will investigate the situation and process a refund if we can verify that the donation was unauthorized. Please note: Refunds will only be issued to the original payment method used for the donation.
+</p>
+
+<p>
+For any questions regarding our refund policy, please do not hesitate to contact us at <strong>mail@udaansociety.org</strong>.
+</p>
+
+</div>
+
+</div>
+<!-- Scripting  -->
+<script>
+
+const tabs = document.querySelectorAll(".tab")
+const panels = document.querySelectorAll(".tab-panel")
+
+tabs.forEach(tab=>{
+    tab.addEventListener("click",()=>{
+
+        tabs.forEach(t=>t.classList.remove("active"))
+        panels.forEach(p=>p.classList.remove("active"))
+
+        tab.classList.add("active")
+
+        const target = tab.dataset.tab
+        document.getElementById(target).classList.add("active")
+
+    })
+})
+
+</script>
+{% endblock %}
