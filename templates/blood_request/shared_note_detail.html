@@ -53,6 +53,29 @@
         </div>
     </div>
 
+    {% if can_edit %}
+    <form method="post" id="note-form" class="mb-10">
+        {% csrf_token %}
+        {{ form.media }}
+        
+        <div class="flex items-center justify-between mb-4 pb-2 border-b border-gray-100">
+            <div class="flex items-center space-x-4 text-sm text-gray-400">
+                <span class="flex items-center"><i class="fas fa-user mr-1.5 opacity-70"></i> {{ note.owner.username }}</span>
+                <span class="flex items-center"><i class="fas fa-history mr-1.5 opacity-70"></i> Updated {{ note.updated_at|timesince }} ago</span>
+            </div>
+            <button type="submit" class="bg-gray-900 text-white text-xs font-medium px-3 py-1.5 rounded hover:bg-gray-800 transition shadow-sm">
+                Save Changes
+            </button>
+        </div>
+
+        <div class="mb-6">
+            {{ form.title }}
+        </div>
+        <div class="prose max-w-none w-full border-none pb-12 editor-container">
+            {{ form.content }}
+        </div>
+    </form>
+    {% else %}
     <!-- Title and Metadata -->
     <div class="mb-10">
         <h1 class="text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4"
@@ -71,6 +94,7 @@
     <div class="prose prose-lg max-w-none text-gray-800 mb-16 leading-relaxed">
         {{ note.content|safe }}
     </div>
+    {% endif %}
 
     <!-- Details footer -->
     <div class="pt-8 border-t border-gray-100">
@@ -145,6 +169,56 @@
         padding: 0.2em 0.4em;
         border-radius: 3px;
         font-size: 85%;
+    }
+
+    /* Notion Editor Overrides */
+    input[name="title"] {
+        width: 100%;
+        font-size: 2.75rem;
+        line-height: 1.2;
+        font-weight: 800;
+        border: none;
+        padding: 0;
+        background: transparent;
+        color: #111827;
+        letter-spacing: -0.02em;
+    }
+
+    input[name="title"]:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: transparent !important;
+        --tw-ring-color: transparent !important;
+    }
+
+    input[name="title"]::placeholder {
+        color: #d1d5db;
+    }
+
+    .django-ckeditor-widget {
+        width: 100% !important;
+    }
+
+    .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+        border-color: transparent !important;
+    }
+
+    .ck.ck-editor__main>.ck-editor__editable {
+        box-shadow: none !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        min-height: 50vh;
+        font-size: 1.05rem;
+        color: #374151;
+        line-height: 1.6;
+    }
+
+    .ck.ck-toolbar {
+        border: none !important;
+        border-bottom: 1px solid #f3f4f6 !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin-bottom: 8px;
     }
 </style>
 {% endblock %}

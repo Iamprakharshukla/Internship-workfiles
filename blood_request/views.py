@@ -8,9 +8,9 @@ from .models import BloodDonor, BloodRequest
 from .schemas import DonorSchema
 from pydantic import ValidationError
 # from django.shortcuts import render
-from .models import Blog, Project, Task
+from .models import Blog, Project, Task, SubTask, Team
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import permission_required, user_passes_test
 from .models import CampusAmbassador
 
 
@@ -822,6 +822,18 @@ def shared_note_detail(request, pk):
         messages.error(request, "You do not have permission to view this note.")
         return redirect('staff_dashboard')
         
+    can_edit = request.user == note.owner or is_manager(request.user)
+    
+    if request.method == 'POST' and can_edit:
+        form = SharedNoteForm(request.POST, request.FILES, instance=note)
+        if form.is_valid():
+            form.save()
+            from django.contrib import messages
+            messages.success(request, "Note updated successfully.")
+            return redirect('shared_note_detail', pk=pk)
+    else:
+        form = SharedNoteForm(instance=note) if can_edit else None
+
     # Generate Wiki Breadcrumbs (Phase 25)
     breadcrumbs = []
     current = note.parent_note
@@ -831,7 +843,9 @@ def shared_note_detail(request, pk):
 
     return render(request, 'blood_request/shared_note_detail.html', {
         'note': note,
-        'breadcrumbs': breadcrumbs
+        'breadcrumbs': breadcrumbs,
+        'form': form,
+        'can_edit': can_edit
     })
 
 @login_required
@@ -979,3 +993,99 @@ def internships(request):
 
 def our_mission_values(request):
     return render(request, 'ourmission_values.html')
+
+# --- Phase: Move Admin to Portal ---
+from django.views.generic import ListView, UpdateView, CreateView
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+
+@method_decorator(user_passes_test(is_manager), name='dispatch')
+class TaskListView(ListView):
+    model = Task
+    template_name = 'blood_request/portal_list.html'
+    context_object_name = 'items'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Manage Tasks'
+        context['create_url'] = reverse_lazy('task_create_portal')
+        context['update_url_name'] = 'task_update_portal'
+        return context
+
+@method_decorator(user_passes_test(is_manager), name='dispatch')
+class TaskUpdateView(UpdateView):
+    model = Task
+    fields = ['title', 'project', 'description', 'assigned_to', 'status', 'priority', 'due_date', 'recurrence_rule']
+    template_name = 'blood_request/portal_form.html'
+    success_url = reverse_lazy('task_list_portal')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = f'Update Task: {self.object.title}'
+        context['back_url'] = reverse_lazy('task_list_portal')
+        return context
+
+@method_decorator(user_passes_test(is_manager), name='dispatch')
+class TaskCreateView(CreateView):
+    model = Task
+    fields = ['title', 'project', 'description', 'assigned_to', 'status', 'priority', 'due_date', 'recurrence_rule']
+    template_name = 'blood_request/portal_form.html'
+    success_url = reverse_lazy('task_list_portal')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Create Task'
+        context['back_url'] = reverse_lazy('task_list_portal')
+        return context
+
+@method_decorator(user_passes_test(is_manager), name='dispatch')
+class SubTaskListView(ListView):
+    model = SubTask
+    template_name = 'blood_request/portal_list.html'
+    context_object_name = 'items'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Manage SubTasks'
+        context['create_url'] = reverse_lazy('subtask_create_portal')
+        context['update_url_name'] = 'subtask_update_portal'
+        return context
+
+@method_decorator(user_passes_test(is_manager), name='dispatch')
+class SubTaskCreateView(CreateView):
+    model = SubTask
+    fields = ['title', 'parent_task', 'assigned_to', 'status']
+    template_name = 'blood_request/portal_form.html'
+    success_url = reverse_lazy('subtask_list_portal')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Create SubTask'
+        context['back_url'] = reverse_lazy('subtask_list_portal')
+        return context
+
+@method_decorator(user_passes_test(is_manager), name='dispatch')
+class SubTaskUpdateView(UpdateView):
+    model = SubTask
+    fields = ['title', 'parent_task', 'assigned_to', 'status']
+    template_name = 'blood_request/portal_form.html'
+    success_url = reverse_lazy('subtask_list_portal')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = f'Update SubTask: {self.object.title}'
+        context['back_url'] = reverse_lazy('subtask_list_portal')
+        return context
+
+@method_decorator(user_passes_test(is_manager), name='dispatch')
+class TeamUpdateView(UpdateView):
+    model = Team
+    fields = ['name', 'description', 'workspace']
+    template_name = 'blood_request/portal_form.html'
+    success_url = reverse_lazy('team_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = f'Update Team: {self.object.name}'
+        context['back_url'] = reverse_lazy('team_list')
+        return context
