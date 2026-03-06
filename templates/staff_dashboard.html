@@ -369,7 +369,7 @@
                     <tbody class="divide-y divide-gray-100">
                         {% for task in all_tasks %}
                         <tr class="hover:bg-gray-50 transition cursor-pointer"
-                            onclick="window.location='{% url \'task_detail\' task.pk %}'">
+                            onclick="window.location='{% url 'task_detail' task.pk %}'">
                             <td class="px-6 py-4 font-medium text-gray-800 flex items-center">
                                 {% if task.status == 'Done' %}
                                 <svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor"
@@ -418,7 +418,7 @@
                 class="database-view hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
                 {% for task in all_tasks %}
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition cursor-pointer flex flex-col h-48"
-                    onclick="window.location='{% url \'task_detail\' task.pk %}'">
+                    onclick="window.location='{% url 'task_detail' task.pk %}'">
                     <!-- pseudo cover image or pattern based on priority -->
                     <div class="h-16 w-full 
                 {% if task.priority == 'Critical' %}bg-red-400
