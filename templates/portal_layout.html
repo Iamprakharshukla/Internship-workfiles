@@ -168,6 +168,15 @@
             </a>
 
             <!-- Database Management Links -->
+
+            <a href="{% url 'portal_timeline' %}"
+                class="w-full flex items-center px-2 py-1 hover:bg-[#efefed] rounded-md text-[14px] transition-colors {% if 'timeline' in request.path %}bg-[#efefed] font-medium text-[#37352f]{% else %}font-medium{% endif %}"
+                title="Activity Timeline">
+                <i
+                    class="fa-solid fa-clock-rotate-left w-4 h-4 mr-2.5 opacity-70 flex items-center justify-center text-xs"></i>
+                <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Activity Timeline</span>
+            </a>
+
             <a href="{% url 'task_list_portal' %}"
                 class="w-full flex items-center px-2 py-1 hover:bg-[#efefed] rounded-md text-[14px] transition-colors {% if 'tasks' in request.path %}bg-[#efefed] font-medium text-[#37352f]{% else %}font-medium{% endif %}"
                 title="Tasks">

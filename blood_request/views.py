@@ -139,8 +139,9 @@ def staff_dashboard(request):
     # Impact Stats
     total_donors = BloodDonor.objects.count()
 
-    # Fetch all tasks for the user
-    all_tasks = Task.objects.filter(assigned_to=request.user).order_by('due_date')
+    from django.db.models import Q
+    # Fetch tasks assigned to the user OR unassigned tasks
+    all_tasks = Task.objects.filter(Q(assigned_to=request.user) | Q(assigned_to__isnull=True)).order_by('due_date')
     
     # Simple Python-side grouping (efficient enough for <100 tasks)
     todo_tasks = [t for t in all_tasks if t.status == 'To Do']
@@ -623,6 +624,51 @@ def mark_notifications_read(request):
 
 
 @login_required
+def portal_timeline(request):
+    """
+    Phase 27.3: Unified Timeline View
+    A single view showing the history of tasks, interactions, and appointments.
+    """
+    from itertools import chain
+    from operator import attrgetter
+
+    # 1. Get recent completed/created tasks
+    tasks = Task.objects.filter(assigned_to=request.user).order_by('-updated_at')[:20]
+    for t in tasks:
+        t.timeline_type = 'task'
+        t.timeline_date = t.updated_at
+        t.timeline_icon = 'fa-check-circle text-green-500' if t.status == 'Done' else 'fa-clipboard-list text-blue-500'
+        t.timeline_title = f"{'Completed' if t.status == 'Done' else 'Updated'} Task: {t.title}"
+        t.timeline_desc = f"Priority: {t.priority}"
+
+    # 2. Get recent CRM Interactions
+    interactions = Interaction.objects.filter(staff=request.user).order_by('-created_at')[:20]
+    for i in interactions:
+        i.timeline_type = 'interaction'
+        i.timeline_date = i.created_at
+        i.timeline_icon = 'fa-phone text-purple-500' if i.interaction_type == 'Call' else 'fa-handshake text-indigo-500'
+        i.timeline_title = f"Logged {i.interaction_type} with {i.entity}"
+        i.timeline_desc = f"Outcome: {i.outcome}"
+
+    # 3. Get recent Appointments
+    appointments = Appointment.objects.filter(staff=request.user).order_by('-created_at')[:20]
+    for a in appointments:
+        a.timeline_type = 'appointment'
+        a.timeline_date = a.created_at
+        a.timeline_icon = 'fa-calendar text-brand-red'
+        a.timeline_title = f"Scheduled: {a.title}"
+        a.timeline_desc = f"For {a.start_time.strftime('%b %d, %H:%M')}"
+
+    # Combine and sort by date descending
+    timeline_events = sorted(
+        chain(tasks, interactions, appointments),
+        key=attrgetter('timeline_date'),
+        reverse=True
+    )[:50]
+
+    return render(request, 'blood_request/timeline.html', {'timeline_events': timeline_events})
+
+@login_required
 def calendar_events_api(request):
     """API for FullCalendar"""
     events = []
@@ -995,7 +1041,8 @@ def internships(request):
 def our_mission_values(request):
     return render(request, 'ourmission_values.html')
 
-
+def aboutus(request):
+    return render(request, 'aboutus.html')
 def our_policies(request):
     return render(request, "our_policies.html")
 

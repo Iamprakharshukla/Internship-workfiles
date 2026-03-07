@@ -76,13 +76,10 @@ def auto_create_followup_task(sender, instance, created, **kwargs):
     """
     Automatically creates a Task if the Interaction outcome is 'Follow-up Scheduled'.
     """
-    if instance.outcome == 'Follow-up Scheduled' and instance.next_followup_date:
-        # Check if a task already exists to avoid duplicates (optional but good practice)
-        # For this MVP, we'll just create it.
-        
+    if created and instance.outcome == 'Follow-up Scheduled' and instance.next_followup_date:
         task_title = f"Follow-up: {instance.interaction_type} with {instance.entity}"
-        
         print(f"Signals > Auto-generating Follow-up Task for {instance.staff.username}...")
+        
         Task.objects.create(
             title=task_title,
             description=f"Auto-generated from Interaction.\nNotes: {instance.notes}",

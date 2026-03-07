@@ -177,6 +177,34 @@
         <div id='calendar'></div>
     </div>
 
+    <!-- KANBAN FILTERS (Phase 27.1) -->
+    <div id="kanban-filters"
+        class="mb-4 flex flex-wrap gap-3 items-center bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+        <span class="text-sm font-semibold text-gray-600 flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
+                </path>
+            </svg>
+            Filter Tasks:
+        </span>
+        <select id="filter-priority"
+            class="text-sm border-gray-200 rounded-md focus:ring-brand-red focus:border-brand-red py-1 px-3 bg-gray-50 hover:bg-white transition-colors cursor-pointer outline-none">
+            <option value="">All Priorities</option>
+            <option value="Critical">Critical</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+        </select>
+        <select id="filter-project"
+            class="text-sm border-gray-200 rounded-md focus:ring-brand-red focus:border-brand-red py-1 px-3 bg-gray-50 hover:bg-white transition-colors cursor-pointer outline-none max-w-[200px]">
+            <option value="">All Projects</option>
+            <!-- Note: Project list is dynamically populated from existing tasks to avoid extra db hits just for the filter list -->
+        </select>
+        <button id="clear-filters" class="text-xs text-brand-red hover:underline hidden ml-auto font-medium">Clear
+            Filters</button>
+    </div>
+
     <!-- KANBAN SECTION -->
     <div id="kanban-view" class="database-view grid grid-cols-1 md:grid-cols-3 gap-6 h-[calc(100vh-250px)]">
 
@@ -200,7 +228,8 @@
             <div id="todo-list" class="flex-1 p-3 overflow-y-auto space-y-3 task-container" data-status="To Do">
                 {% for task in todo_tasks %}
                 <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-200 cursor-grab hover:shadow-md transition-shadow group task-card relative"
-                    data-id="{{ task.pk }}">
+                    data-id="{{ task.pk }}" data-priority="{{ task.priority }}"
+                    data-project="{{ task.project.title|default:'' }}">
                     <div class="flex justify-between items-start mb-2">
                         <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider
                                 {% if task.priority == 'Critical' %} bg-red-50 text-red-600 border border-red-100
@@ -268,7 +297,8 @@
                         data-status="In Progress">
                         {% for task in inprogress_tasks %}
                         <div class="bg-white p-3 rounded-lg shadow-sm border-l-4 border-blue-500 cursor-grab hover:shadow-md transition-shadow task-card"
-                            data-id="{{ task.pk }}">
+                            data-id="{{ task.pk }}" data-priority="{{ task.priority }}"
+                            data-project="{{ task.project.title|default:'' }}">
                             <div class="flex justify-between items-start mb-2">
                                 <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider
                                 {% if task.priority == 'Critical' %} bg-red-50 text-red-600
@@ -318,7 +348,8 @@
                     <div id="done-list" class="flex-1 p-3 overflow-y-auto space-y-3 task-container" data-status="Done">
                         {% for task in done_tasks %}
                         <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 opacity-60 hover:opacity-100 transition-opacity cursor-grab task-card"
-                            data-id="{{ task.pk }}">
+                            data-id="{{ task.pk }}" data-priority="{{ task.priority }}"
+                            data-project="{{ task.project.title|default:'' }}">
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-[10px] text-green-600 font-bold flex items-center">
                                     <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -336,9 +367,8 @@
                                     #{{ task.pk }}
                                     <svg class="w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" <path
-                                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10
+                                        14">
                                         </path>
                                     </svg>
                                 </a>
@@ -604,6 +634,80 @@
                     calendar.render();
                 }
             });
+        });
+    });
+
+    // KANBAN FILTERING LOGIC (Phase 27.1)
+    document.addEventListener('DOMContentLoaded', function () {
+        const priorityFilter = document.getElementById('filter-priority');
+        const projectFilter = document.getElementById('filter-project');
+        const clearBtn = document.getElementById('clear-filters');
+        const taskCards = document.querySelectorAll('.task-card');
+
+        // 1. Dynamically populate projects from existing cards
+        const projects = new Set();
+        taskCards.forEach(card => {
+            const proj = card.getAttribute('data-project');
+            if (proj) projects.add(proj);
+        });
+
+        // Sort and add to DOM
+        Array.from(projects).sort().forEach(proj => {
+            const option = document.createElement('option');
+            option.value = proj;
+            option.textContent = proj;
+            projectFilter.appendChild(option);
+        });
+
+        // 2. Filter function
+        function applyFilters() {
+            const selectedPriority = priorityFilter.value.toLowerCase();
+            const selectedProject = projectFilter.value.toLowerCase();
+            let filtersActive = selectedPriority !== '' || selectedProject !== '';
+
+            taskCards.forEach(card => {
+                const cardPriority = (card.getAttribute('data-priority') || '').toLowerCase();
+                const cardProject = (card.getAttribute('data-project') || '').toLowerCase();
+
+                let matchPriority = selectedPriority === '' || cardPriority === selectedPriority;
+                let matchProject = selectedProject === '' || cardProject === selectedProject;
+
+                if (matchPriority && matchProject) {
+                    card.style.display = ''; // Show
+                } else {
+                    card.style.display = 'none'; // Hide
+                }
+            });
+
+            // Toggle clear button visibility
+            clearBtn.style.display = filtersActive ? 'inline-block' : 'none';
+
+            // Update badges and check empty states for all columns after filtering
+            document.querySelectorAll('.task-container').forEach(container => {
+                // Custom updateBadge that only counts visible cards
+                const visibleCount = Array.from(container.querySelectorAll('.task-card')).filter(c => c.style.display !== 'none').length;
+                const header = container.previousElementSibling;
+                const badge = header.querySelector('.count-badge');
+                if (badge) badge.innerText = visibleCount;
+
+                // Empty state logic
+                const placeholder = container.querySelector('.empty-placeholder');
+                if (visibleCount === 0) {
+                    if (placeholder) placeholder.style.display = 'block';
+                } else {
+                    if (placeholder) placeholder.style.display = 'none';
+                }
+            });
+        }
+
+        // 3. Event Listeners
+        priorityFilter.addEventListener('change', applyFilters);
+        projectFilter.addEventListener('change', applyFilters);
+
+        clearBtn.addEventListener('click', () => {
+            priorityFilter.value = '';
+            projectFilter.value = '';
+            applyFilters();
         });
     });
 

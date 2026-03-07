@@ -1,0 +1,53 @@
+{% extends 'portal_layout.html' %}
+{% load static %}
+
+{% block content %}
+<section class="max-w-4xl mx-auto py-8">
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-800">Activity Timeline</h1>
+        <p class="text-sm text-gray-500 mt-1">A unified history of your tasks, interactions, and appointments.</p>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        {% if timeline_events %}
+        <div class="relative wrap overflow-hidden p-4 h-full">
+            <div class="border-2-2 absolute border-opacity-20 border-gray-700 h-full border border-dashed rounded-md"
+                style="left: 50%;"></div>
+
+            {% for event in timeline_events %}
+            <!-- right timeline -->
+            <div
+                class="mb-8 flex justify-between items-center w-full {% if forloop.counter|divisibleby:2 %}flex-row-reverse left-timeline{% else %}right-timeline{% endif %}">
+                <div class="order-1 w-5/12"></div>
+
+                <div
+                    class="z-20 flex items-center order-1 bg-white shadow-xl w-10 h-10 rounded-full border-2 border-white ring-4 ring-gray-50">
+                    <i class="fas {{ event.timeline_icon }} text-lg mx-auto"></i>
+                </div>
+
+                <div
+                    class="order-1 bg-gray-50 rounded-lg shadow-sm w-5/12 px-6 py-4 border border-gray-100 hover:shadow-md transition">
+                    <h3 class="font-bold text-gray-800 text-sm mb-1">{{ event.timeline_title }}</h3>
+                    <p class="text-xs leading-snug tracking-wide text-gray-600 opacity-90 mb-2">{{ event.timeline_desc
+                        }}</p>
+                    <div class="text-[10px] text-gray-400 font-mono flex items-center">
+                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        {{ event.timeline_date|date:"M d, Y H:i" }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+        {% else %}
+        <div class="text-center py-16 text-gray-400">
+            <i class="fas fa-history text-4xl mb-4 text-gray-200"></i>
+            <p>No recent activity found in your workspace.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

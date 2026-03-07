@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from blood_request.views import home_view, staff_dashboard, update_task_status, manager_dashboard, campaign_list, project_list, project_detail, report_list, blogs_page, resources_page, profile_edit, export_donors_csv, export_requests_csv
+from blood_request.views import home_view, staff_dashboard, update_task_status, manager_dashboard, campaign_list, project_list, project_detail, report_list, blogs_page, resources_page, profile_edit, export_donors_csv, export_requests_csv, portal_timeline
 from blood_request import views
 from blood_request import workspace_views # NEW
 
@@ -10,6 +10,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/portal/manager/", manager_dashboard, name="manager_dashboard"), # New Team View
+    path("admin/portal/timeline/", portal_timeline, name="portal_timeline"), # Unified Timeline View
     path("admin/portal/users/", views.user_list, name="user_list"),
     path("admin/portal/users/add/", views.user_add, name="user_add"),
     path("admin/portal/users/<int:pk>/", views.user_edit_portal, name="user_edit_portal"),
