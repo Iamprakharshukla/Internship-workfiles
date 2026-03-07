@@ -1,0 +1,411 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us - UDAAN Society{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<header class="hero-section">
+    <div class="hero-overlay">
+        <h1>ABOUT UDAAN SOCIETY</h1>
+    </div>
+</header>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+    <div class="container">
+        <p><a href="{% url 'home' %}">Home</a> » <span class="active">About</span></p>
+    </div>
+</div>
+
+<!-- Who We Are -->
+<section class="who-we-are">
+    <div class="container text-center">
+        <h2 class="section-heading">ABOUT US</h2>
+        <p class="section-subheading">
+            We are shelter homes providing NGO in Aligarh, also working in Jal Jeevan Mission, and Atal Bhujal Yojna
+        </p>
+
+        <div class="team-image-wrapper">
+            <img src="https://udaansociety.org/wp-content/uploads/2024/02/298442242_6799445290083397_8907950820117963692_n.jpg">
+        </div>
+    </div>
+</section>
+
+<!-- Content Section -->
+<section class="content-section">
+    <div class="container">
+
+        <div class="text-block italic-lead">
+            <p>
+                We are voluntary, non-profitable, registered organization with a vision to succor in restoration of
+                lost dignity, livelihood, equality, justice and peace in favor of downtrodden communities.
+            </p>
+        </div>
+
+        <div class="text-block">
+            <h3>Brief About UDAAN Society</h3>
+
+            <p>
+                We have supported governmental programmes dealt with child labor, routine immunization,
+                pulse polio programme, HIV/AIDS etc. The emphasis of our work is on awareness generation
+                in terms of health education, rights and duties of the people, poverty alleviation,
+                social issues and dissemination of schemes.
+            </p>
+
+            <p>
+                Our team of volunteers organizes health camps, rallies, wall writing,
+                group meetings, awareness camps and other activities of mass mobilization.
+            </p>
+
+            <p>
+                We now run shelter homes, working in Jal Jeevan Mission and Atal Bhujal Yojna
+                and help individuals overcome difficulties in education and livelihood.
+            </p>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- Mission Vision Values -->
+<section class="mvv-section">
+<div class="container">
+
+<div class="mvv-grid">
+
+<div class="mvv-card">
+<h3>OUR MISSION</h3>
+
+<div class="card-content">
+<p class="highlight-text">
+Our mission is to make sure all young people and children get all the support they need.
+</p>
+
+<p>
+Whether it is a reassuring conversation, financial help, education,
+professional training, or simply the assurance that they are not alone.
+</p>
+</div>
+
+<a href="#" class="btn-know-more">KNOW MORE <i class="fas fa-arrow-circle-right"></i></a>
+
+</div>
+
+
+<div class="mvv-card">
+<h3>OUR VISION</h3>
+
+<div class="card-content">
+<p class="highlight-text">
+We want to build a world where no child or youth feels alone.
+</p>
+
+<p>
+Our entire team wants to see a world where every youngster struggling
+in any way feels able to reach out and has people who’ll help them.
+</p>
+</div>
+
+<a href="#" class="btn-know-more">KNOW MORE <i class="fas fa-arrow-circle-right"></i></a>
+
+</div>
+
+
+<div class="mvv-card">
+<h3>OUR VALUES</h3>
+
+<div class="card-content">
+
+<ul class="values-list">
+<li><strong>Service:</strong> The best way to find yourself is to lose yourself in the service of others.</li>
+<li><strong>Responsibility:</strong> You can’t escape the responsibility of tomorrow by evading it today.</li>
+<li><strong>Determination:</strong> A dream doesn’t become reality through magic; it takes sweat and hard work.</li>
+<li><strong>Happiness:</strong> Love is when the other person’s happiness is more important than your own.</li>
+<li><strong>Contribution:</strong> Giving yourself to others is the essence of living.</li>
+</ul>
+
+</div>
+
+<a href="#" class="btn-know-more">KNOW MORE <i class="fas fa-arrow-circle-right"></i></a>
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section" id="stats">
+
+<div class="stats-overlay"></div>
+
+<div class="container relative-z">
+
+<h2 class="section-heading text-white">OUR NUMBERS THAT SPEAK</h2>
+
+<p class="section-subheading text-white-70">
+We have numbers that push us to give in our best and break our own records.
+</p>
+
+<div class="stats-grid">
+
+<div class="stat-card">
+<div class="icon-box"><i class="fas fa-map-marked-alt"></i></div>
+<div class="stat-info">
+<span class="stat-number" data-target="1000">0</span>
+<span class="stat-label">Across India</span>
+</div>
+</div>
+
+<div class="stat-card">
+<div class="icon-box"><i class="fas fa-child"></i></div>
+<div class="stat-info">
+<span class="stat-number" data-target="9500">0</span><span class="symbol">+</span>
+<span class="stat-label">Children Helped</span>
+</div>
+</div>
+
+<div class="stat-card">
+<div class="icon-box"><i class="fas fa-hand-holding-usd"></i></div>
+<div class="stat-info">
+<span class="symbol">₹</span><span class="stat-number" data-target="300">0</span><span class="symbol">k+</span>
+<span class="stat-label">Funds Raised</span>
+</div>
+</div>
+
+<div class="stat-card">
+<div class="icon-box"><i class="fas fa-utensils"></i></div>
+<div class="stat-info">
+<span class="stat-number" data-target="50">0</span><span class="symbol">k+</span>
+<span class="stat-label">Food Provided</span>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Partners -->
+<section class="partners-section">
+<div class="container text-center">
+
+<h2 class="section-heading">OUR PARTNERS</h2>
+
+<p class="section-subheading">
+UDAAN Society has collaborated with over 50 institutes like Aligarh Muslim University and government bodies.
+</p>
+
+<div class="partners-logo-grid">
+
+<div class="partner-item">
+<img src="https://udaansociety.org/wp-content/uploads/2024/01/AMU_Logo-removebg-preview.png.webp">
+</div>
+
+<div class="partner-item">
+<img src="https://udaansociety.org/wp-content/uploads/2024/01/png-clipart-symbiosis-law-school-symbiosis-institute-of-business-management-savitribai-phule-pune-university-fergusson-college-university-miscellaneous-text-removebg-preview.png.webp">
+</div>
+
+<div class="partner-item">
+<img src="https://udaansociety.org/wp-content/uploads/2024/01/download-2.png.webp">
+</div>
+
+<div class="partner-item">
+<img src="https://udaansociety.org/wp-content/uploads/2024/03/sharda-university-logo.webp">
+</div>
+
+<div class="partner-item">
+<img src="https://udaansociety.org/wp-content/uploads/2024/01/Amar-Ujala.jpg.webp">
+</div>
+
+<div class="partner-item">
+<img src="https://udaansociety.org/wp-content/uploads/2024/01/unicef-logo.jpg.webp">
+</div>
+
+<div class="partner-item">
+<img src="https://udaansociety.org/wp-content/uploads/2024/03/bill-melinda-gates-foundation-logo-png-transparent-e1710309669270-2048x1536.png">
+</div>
+
+<div class="partner-item">
+<img src="https://udaansociety.org/wp-content/uploads/2024/01/LIC-of-India-Aligarh-Division-Aligarh.png.webp">
+</div>
+
+<div class="partner-item">
+<img src="https://udaansociety.org/wp-content/uploads/2024/01/Population-Services-International.png.webp">
+</div>
+
+<div class="partner-item">
+<img src="https://udaansociety.org/wp-content/uploads/2024/02/Childline-India-Foundation-through-Ministry-of-Woman-and-Child-Development-New-Delhi.jpg.webp">
+</div>
+
+</div>
+
+</div>
+</section>
+
+<!-- Approach Section -->
+<section class="approach-section">
+
+<div class="container">
+
+<h2 class="section-heading text-center">OUR APPROACH</h2>
+
+<p class="section-subheading text-center">
+We are happy to be growing and helping more day by day.
+</p>
+
+<div class="approach-grid">
+
+{% for i in "123456789101112"|make_list %}
+{% endfor %}
+
+<div class="approach-card">
+<div class="card-num">01</div>
+<h4>Client Centred</h4>
+<ul>
+<li>Focus on well-being.</li>
+<li>Tailor interventions.</li>
+<li>Empower individuals.</li>
+<li>Respect client decisions.</li>
+</ul>
+</div>
+
+<div class="approach-card">
+<div class="card-num">02</div>
+<h4>Holistic Perspective</h4>
+<ul>
+<li>Consider full life situations.</li>
+<li>Understand environment connections.</li>
+<li>Address root causes.</li>
+<li>Focus on community systems.</li>
+</ul>
+</div>
+
+<div class="approach-card">
+<div class="card-num">03</div>
+<h4>Cultural Competence</h4>
+<ul>
+<li>Respect cultural diversity.</li>
+<li>Understand cultural backgrounds.</li>
+<li>Provide culturally sensitive services.</li>
+<li>Promote inclusivity.</li>
+</ul>
+</div>
+
+<div class="approach-card">
+<div class="card-num">04</div>
+<h4>Strengths-Based</h4>
+<ul>
+<li>Focus on strengths.</li>
+<li>Encourage resilience.</li>
+<li>Support growth.</li>
+<li>Build self confidence.</li>
+</ul>
+</div>
+
+<div class="approach-card">
+<div class="card-num">05</div>
+<h4>Community Engage</h4>
+<ul>
+<li>Encourage community involvement.</li>
+<li>Identify needs.</li>
+<li>Promote cooperation.</li>
+<li>Strengthen relationships.</li>
+</ul>
+</div>
+
+<div class="approach-card">
+<div class="card-num">06</div>
+<h4>Collaboration</h4>
+<ul>
+<li>Work with professionals.</li>
+<li>Share resources.</li>
+<li>Coordinate services.</li>
+<li>Build partnerships.</li>
+</ul>
+</div>
+
+<div class="approach-card">
+<div class="card-num">07</div>
+<h4>Advocacy & Justice</h4>
+<ul>
+<li>Support rights.</li>
+<li>Address inequality.</li>
+<li>Advocate policies.</li>
+<li>Promote justice.</li>
+</ul>
+</div>
+
+<div class="approach-card">
+<div class="card-num">08</div>
+<h4>Evidence-Informed</h4>
+<ul>
+<li>Use research.</li>
+<li>Apply proven methods.</li>
+<li>Evaluate outcomes.</li>
+<li>Improve services.</li>
+</ul>
+</div>
+
+<div class="approach-card">
+<div class="card-num">09</div>
+<h4>Professional Dev</h4>
+<ul>
+<li>Continuous learning.</li>
+<li>Skill improvement.</li>
+<li>Professional supervision.</li>
+<li>Maintain standards.</li>
+</ul>
+</div>
+
+<div class="approach-card">
+<div class="card-num">10</div>
+<h4>Ethical Standards</h4>
+<ul>
+<li>Follow ethical codes.</li>
+<li>Maintain confidentiality.</li>
+<li>Respect dignity.</li>
+<li>Act with integrity.</li>
+</ul>
+</div>
+
+<div class="approach-card">
+<div class="card-num">11</div>
+<h4>Trauma-Informed</h4>
+<ul>
+<li>Recognize trauma.</li>
+<li>Create safe environments.</li>
+<li>Avoid re-traumatization.</li>
+<li>Promote healing.</li>
+</ul>
+</div>
+
+<div class="approach-card">
+<div class="card-num">12</div>
+<h4>Preventive Initiative</h4>
+<ul>
+<li>Provide awareness programs.</li>
+<li>Prevent social problems.</li>
+<li>Promote healthy lifestyles.</li>
+<li>Empower communities.</li>
+</ul>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- CTA -->
+
+<script src="{% static 'js/about.js' %}"></script>
+
+{% endblock %}
