@@ -3,6 +3,8 @@
 /* Example: Add a subtle texture or gradient if needed, though Tailwind controls most of it */
 body {
     background-color: #f8fafc;
+    padding-top: 80px;
+    /* Account for global fixed navbar */
 }
 
 /* Smooth scrolling */

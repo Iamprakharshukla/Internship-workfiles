@@ -134,11 +134,11 @@ button {
 .hero {
     position: relative;
     height: 400px;
-    margin-top: 80px;
-    /* Account for fixed navbar */
-    background:
+    background-image:
         linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-        url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200') center/cover;
+        url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200');
+    background-position: center;
+    background-size: cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -538,6 +538,7 @@ button {
     margin-bottom: var(--space-sm);
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -549,6 +550,7 @@ button {
     margin-bottom: var(--space-md);
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }

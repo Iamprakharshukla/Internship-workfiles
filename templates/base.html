@@ -35,16 +35,15 @@
         }
     </script>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}?v=4">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=4">
     {% block extra_css %}{% endblock %}
 </head>
 
 <body class="bg-gray-50 text-gray-800 font-sans antialiased">
 
     <!-- Navigation -->
-    <!-- Navigation -->
-    <nav>
+    <nav class="main-nav">
         <div class="nav-container">
             <div class="logo">
                 <a href="{% url 'home' %}">
