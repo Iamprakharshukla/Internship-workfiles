@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UDAAN Society - FAQs</title>
+
+<link rel="stylesheet" href="{% static 'css/faq.css' %}">
+
+</head>
+
+<body>
+
+<div class="header">
+<h1>Frequently Asked Questions</h1>
+<p>Learn more about UDAAN Society and how you can support our mission.</p>
+</div>
+
+<div class="container">
+
+<div class="faq-item">
+<div class="question">What does UDAAN stand for? <span>+</span></div>
+<div class="answer">
+UDAAN stands for Unified Development Association for Amelioration of Neglected.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">When was UDAAN Society registered? <span>+</span></div>
+<div class="answer">
+UDAAN Society was registered under the Societies Registration Act 1860 on 13 December 2004.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">Where is the headquarters of UDAAN Society? <span>+</span></div>
+<div class="answer">
+The head office of UDAAN Society is located in Aligarh, Uttar Pradesh, India.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">In which states does UDAAN Society work? <span>+</span></div>
+<div class="answer">
+Currently UDAAN works across several districts in Uttar Pradesh including Aligarh, Bulandshahr, Firozabad, Banda and Mahoba, and previously worked in Rajasthan, Chhattisgarh, Madhya Pradesh and NCR region.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">What are the main focus areas of UDAAN Society? <span>+</span></div>
+<div class="answer">
+The organization focuses on women and children development, water and sanitation, livelihood, environment protection, health awareness, and community training programs.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">How can I contribute to UDAAN Society? <span>+</span></div>
+<div class="answer">
+You can support UDAAN Society by donating through the website donation page or by contributing to their official fundraising campaigns.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">Do donors get tax exemption? <span>+</span></div>
+<div class="answer">
+Yes, donations made to UDAAN Society are eligible for 80G tax exemption certificates.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">How can I join or volunteer with UDAAN Society? <span>+</span></div>
+<div class="answer">
+You can join as a volunteer, intern, or fellow by applying through the career and fellowship section on the official website.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">How can I contact UDAAN Society? <span>+</span></div>
+<div class="answer">
+You can contact the organization through the contact form on the website, email, or the official office located in Aligarh, Uttar Pradesh.
+</div>
+</div>
+
+</div>
+
+<footer>
+© 2026 UDAAN Society | All Rights Reserved
+</footer>
+
+<script>
+const faqs = document.querySelectorAll(".faq-item");
+
+faqs.forEach(item=>{
+item.querySelector(".question").addEventListener("click",()=>{
+item.classList.toggle("active");
+});
+});
+</script>
+
+</body>
+</html>
