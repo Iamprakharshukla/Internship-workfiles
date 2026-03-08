@@ -1199,3 +1199,6 @@ class ExpenseUpdateView(UpdateView):
         context['back_url'] = reverse_lazy('expense_list_portal')
         return context
 
+
+def our_team(request):
+    return render(request,"our_team.html")

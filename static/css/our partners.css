@@ -1,0 +1,85 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    background: #FFF4EE;
+    color: #333;
+}
+header {
+    background: #C94C3D;
+    padding: 30px 20px;
+    text-align: center;
+    color: white;
+}
+header h1 { font-size: 2.2em; margin: 0; }
+
+.section {
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+.section h2 {
+    text-align: center;
+    color: #FF6F3C;
+    font-size: 1.9em;
+    margin-bottom: 15px;
+}
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+    gap: 18px;
+}
+.partner-card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 3px 8px rgba(255,111,60,0.25);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.partner-card img {
+    max-width: 100px;
+    margin-bottom: 8px;
+}
+.partner-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(201,76,61,0.4);
+}
+.partner-card h3 {
+    color: #C94C3D;
+    font-size: 1em;
+    margin: 6px 0 2px;
+}
+.partner-card p {
+    font-size: 0.85em;
+    color: #555;
+}
+.impact {
+    background: #FF6F3C;
+    color: white;
+    text-align: center;
+    padding: 30px 15px;
+    border-radius: 10px;
+    margin: 35px 15px;
+}
+.cta-section {
+    background: #C94C3D;
+    color: white;
+    text-align: center;
+    padding: 35px 15px;
+    border-radius: 8px;
+    margin: 30px 15px;
+}
+.cta-btn {
+    background: #FF6F3C;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+}
+.cta-btn:hover {
+    background: #FFF4EE;
+    color: #C94C3D;
+    border: 2px solid #C94C3D;
+}
