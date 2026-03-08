@@ -1160,3 +1160,8 @@ class TeamUpdateView(UpdateView):
         context['back_url'] = reverse_lazy('team_list')
         return context
 
+def contact_us(request):
+    return render(request,"contact_us.html")
+
+def our_team(request):
+    return render(request,"our_team.html")

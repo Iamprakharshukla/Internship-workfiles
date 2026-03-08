@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Team - UDAAN Society{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/team.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+    <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=500&fit=crop" alt="Our Team">
+        <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+        <h1>OUR TEAM</h1>
+    </div>
+</section>
+
+<!-- ================= BREADCRUMB ================= -->
+<div class="breadcrumb">
+    <div class="container">
+        <a href="{% url 'home' %}">Home</a>
+        <span class="sep">»</span>
+        <span class="current">Our Team</span>
+    </div>
+</div>
+
+
+<section class="team-intro">
+
+    <div class="container">
+
+        <h2 class="team-title">
+            MEET OUR <span>DYNAMIC TEAM</span>
+        </h2>
+
+        <p class="team-description">
+            UDAAN Society is driven by a dedicated team united by a common goal: 
+            <strong>creating a brighter future for all.</strong> Our diverse team brings a wealth of experience in social work, community development, education, and advocacy. 
+            Our team members are passionate individuals committed to empowering communities and fostering positive change. 
+            Explore our team page to learn more about their expertise and the shared vision that motivates us to make a difference. 
+            Also read – <a href="#">Our Partners</a>
+        </p>
+
+    </div>
+
+</section>
+
+<section class="team-member-section">
+
+    <div class="team-container">
+
+        <div class="team-member">
+
+            <div class="team-photo">
+                <img src="/static/assets/gyanendra_mishra.jpg" alt="Dr Gyanendra Mishra">
+            </div>
+
+            <div class="team-content">
+
+                <h2>Dr. Gyanendra Mishra</h2>
+
+                <ul>
+                    <li><strong>Designation-</strong> President</li>
+                    <li><strong>Area of Expertise-</strong> Social Worker</li>
+                    <li><strong>Qualification-</strong> MSW, PhD</li>
+                    <li>
+                        Experience in Community development and intervention with individuals,
+                        group and societies. Expert in Project Planning, Management,
+                        Communication and Team Management.
+                    </li>
+                </ul>
+
+                <div class="team-social">
+                    <i class="fab fa-facebook"></i> Facebook
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="team-member-section">
+
+<div class="team-container">
+
+<div class="team-member reverse">
+
+<div class="team-content">
+
+<h2>Dr. Lalit Upadhyaya</h2>
+
+<ul>
+<li><strong>Designation-</strong> Secretary</li>
+<li><strong>Area of Expertise-</strong> Education</li>
+<li><strong>Qualification –</strong> Ph D</li>
+<li>Currently working as Assistant Professor at Gyan Mahavidhyalala</li>
+</ul>
+
+<div class="team-social">
+<i class="fab fa-facebook"></i> Facebook
+</div>
+
+</div>
+
+
+<div class="team-photo">
+<img src="/static/assets/Dr Lalit Upadhyaya.webp" alt="Dr Lalit Upadhyaya">
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="team-member-section">
+
+<div class="team-container">
+
+<div class="team-member">
+
+<div class="team-photo">
+<img src="/static/assets/Dr Jitendra Singh.png" alt="Dr Jitendra Singh">
+</div>
+
+<div class="team-content">
+
+<h2>Dr. Jitendra Singh</h2>
+
+<ul>
+<li><strong>Designation-</strong> Vice President</li>
+<li><strong>Area of Expertise-</strong> Teaching (Mass Communication)</li>
+<li><strong>Qualification –</strong> UGC NET MPhil PHD</li>
+<li>
+Currently Working as Professor and Head Department of Mass
+Communication at Lovely Professional University
+</li>
+</ul>
+
+<div class="team-social">
+<i class="fab fa-facebook"></i> Facebook
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="team-member-section">
+
+<div class="team-container">
+
+<div class="team-member reverse">
+
+<div class="team-content">
+
+<h2>Dr. Shyna Saif</h2>
+
+<ul>
+<li><strong>Designation-</strong> Executive Memeber</li>
+<li><strong>Area of Expertise-</strong> Academics (Social Work)</li>
+<li><strong>Qualification –</strong> Phd M Phil MSW</li>
+<li>
+Currently working as Assistant Professor Department of
+Social Work AMU Aligarh.
+</li>
+</ul>
+
+<div class="team-social">
+<i class="fab fa-facebook"></i> Facebook
+</div>
+
+</div>
+
+<div class="team-photo">
+<img src="/static/assets/Dr Shyna Saif.webp" alt="Dr Shyna Saif">
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}
