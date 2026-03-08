@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django_ckeditor_5.fields import CKEditor5Field
+from simple_history.models import HistoricalRecords
 
 class BloodDonor(models.Model):
     BLOOD_GROUP_CHOICES = [
@@ -22,6 +23,7 @@ class BloodDonor(models.Model):
     donation_count = models.IntegerField(default=0)
     score = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    history = HistoricalRecords()
 
     def get_best_call_time(self):
         """
@@ -83,6 +85,7 @@ class BloodRequest(models.Model):
     ]
 
     status = FSMField(default=STATUS_RECEIVED, choices=STATUS_CHOICES, protected=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return f"Request: {self.blood_group} by {self.contact_person} in {self.city} ({self.status})"
@@ -183,6 +186,7 @@ class Task(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return f"{self.title} ({self.status}) - {self.priority}"
@@ -441,3 +445,33 @@ class PolicyReport(models.Model):
     def __str__(self):
         return f"{self.title} ({self.category})"
 
+
+# --- Phase 27: MIS Analytics ---
+class Expense(models.Model):
+    CATEGORY_CHOICES = [
+        ('Logistics', 'Logistics'),
+        ('Marketing', 'Marketing'),
+        ('Operations', 'Operations'),
+        ('Medical', 'Medical'),
+        ('Other', 'Other'),
+    ]
+
+    title = models.CharField(max_length=200)
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    date = models.DateField()
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='Operations')
+    
+    # Link to existing structures
+    campaign = models.ForeignKey('Campaign', on_delete=models.SET_NULL, null=True, blank=True, related_name='expenses')
+    project = models.ForeignKey('Project', on_delete=models.SET_NULL, null=True, blank=True, related_name='expenses')
+    
+    logged_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='logged_expenses')
+    receipt_image = models.ImageField(upload_to='expenses/receipts/', blank=True, null=True)
+    notes = models.TextField(blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return f"{self.title} - \u20b9{self.amount} ({self.date})"

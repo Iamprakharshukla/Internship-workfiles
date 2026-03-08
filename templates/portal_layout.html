@@ -201,6 +201,14 @@
                 <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Teams</span>
             </a>
 
+            <a href="{% url 'expense_list_portal' %}"
+                class="w-full flex items-center px-2 py-1 hover:bg-[#efefed] rounded-md text-[14px] transition-colors {% if 'expenses' in request.path %}bg-[#efefed] font-medium text-[#37352f]{% else %}font-medium{% endif %}"
+                title="Expenses">
+                <i
+                    class="fa-solid fa-file-invoice-dollar w-4 h-4 mr-2.5 opacity-70 flex items-center justify-center text-[12px]"></i>
+                <span class="group-[.collapsed]/sidebar:hidden whitespace-nowrap">Expenses</span>
+            </a>
+
             <a href="{% url 'shared_note_list' %}"
                 class="w-full flex items-center px-2 py-1 hover:bg-[#efefed] rounded-md text-[14px] transition-colors {% if 'shared-notes' in request.path %}bg-[#efefed] font-medium text-[#37352f]{% else %}font-medium{% endif %}"
                 title="Shared Notes">

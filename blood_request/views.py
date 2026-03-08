@@ -1160,3 +1160,42 @@ class TeamUpdateView(UpdateView):
         context['back_url'] = reverse_lazy('team_list')
         return context
 
+@method_decorator(user_passes_test(is_manager), name='dispatch')
+class ExpenseListView(ListView):
+    model = Expense
+    template_name = 'blood_request/portal_list.html'
+    context_object_name = 'items'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Manage Expenses'
+        context['create_url'] = 'expense_create_portal'
+        context['update_url_name'] = 'expense_update_portal'
+        return context
+
+@method_decorator(user_passes_test(is_manager), name='dispatch')
+class ExpenseCreateView(CreateView):
+    model = Expense
+    fields = ['title', 'amount', 'date', 'category', 'campaign', 'project', 'logged_by', 'receipt_image', 'notes']
+    template_name = 'blood_request/portal_form.html'
+    success_url = reverse_lazy('expense_list_portal')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Log New Expense'
+        context['back_url'] = reverse_lazy('expense_list_portal')
+        return context
+
+@method_decorator(user_passes_test(is_manager), name='dispatch')
+class ExpenseUpdateView(UpdateView):
+    model = Expense
+    fields = ['title', 'amount', 'date', 'category', 'campaign', 'project', 'logged_by', 'receipt_image', 'notes']
+    template_name = 'blood_request/portal_form.html'
+    success_url = reverse_lazy('expense_list_portal')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = f'Update Expense: {self.object.title}'
+        context['back_url'] = reverse_lazy('expense_list_portal')
+        return context
+

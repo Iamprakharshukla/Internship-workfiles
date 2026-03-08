@@ -6,7 +6,7 @@ from .models import PolicyReport
 from .models import (
     BloodDonor, BloodRequest, Campaign, Report, Project, Task, SubTask,
     Announcement, Testimonial, StaffProfile, Interaction, Appointment,
-    PersonalNote, Team, SharedNote, NewsClipping, Blog
+    PersonalNote, Team, SharedNote, NewsClipping, Blog, Expense
 )
 
 @admin.register(PolicyReport)
@@ -87,6 +87,12 @@ class CampaignAdmin(admin.ModelAdmin):
     
     def target_vs_raised(self, obj):
         return f"{obj.raised_amount} / {obj.goal_amount}"
+
+@admin.register(Expense)
+class ExpenseAdmin(admin.ModelAdmin):
+    list_display = ('title', 'amount', 'date', 'category', 'campaign', 'logged_by')
+    list_filter = ('category', 'date', 'campaign')
+    search_fields = ('title', 'notes')
 
 # Note: Internal workspace tools (Project, Task, SubTask, Team, SharedNote) 
 # have been explicitly removed from the Admin panel and migrated to the UDAAN Portal 

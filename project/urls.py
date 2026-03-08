@@ -35,6 +35,10 @@ urlpatterns = [
     path("admin/portal/task/<int:pk>/update/", update_task_status, name="update_task_status"),
     path("admin/portal/task/<int:pk>/subtask/add/", views.subtask_add, name="subtask_add"),
     path("admin/portal/subtask/<int:sub_pk>/update/", views.subtask_update, name="subtask_update"),
+    
+    path("admin/portal/expenses/", views.ExpenseListView.as_view(), name="expense_list_portal"),
+    path("admin/portal/expenses/create/", views.ExpenseCreateView.as_view(), name="expense_create_portal"),
+    path("admin/portal/expenses/<int:pk>/edit/", views.ExpenseUpdateView.as_view(), name="expense_update_portal"),
     path("admin/portal/", staff_dashboard, name="staff_dashboard"),
     path("admin/portal/profile/", profile_edit, name="profile_edit"),
     path("admin/export/donors/", export_donors_csv, name="export_donors_csv"),
