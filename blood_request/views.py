@@ -4,7 +4,10 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.db.models import Q
 from django.views.decorators.csrf import ensure_csrf_cookie
-from .models import BloodDonor, BloodRequest, Expense
+from .models import (
+    BloodDonor, BloodRequest, ContactMessage, Report, Campaign, Task, StaffProfile, SubTask, 
+    Interaction, Project, NewsClipping, Team, SharedNote, Workspace, Notification, Expense, TaskComment
+)
 from .schemas import DonorSchema
 from pydantic import ValidationError
 # from django.shortcuts import render
@@ -230,6 +233,44 @@ def task_detail(request, pk):
     task = get_object_or_404(Task, pk=pk)
     # Both assigned users and managers can view
     return render(request, 'blood_request/task_detail.html', {'task': task})
+
+@login_required
+@require_POST
+def add_task_comment(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    content = request.POST.get('content')
+    
+    if content and content.strip():
+        # Handle @mentions if they exist in the text
+        import re
+        from .utils import create_notification
+        
+        # Check permissions (either assigned to the task, or a manager)
+        if task.assigned_to == request.user or request.user.groups.filter(name='Managers').exists() or request.user.is_superuser:
+            comment = TaskComment.objects.create(
+                task=task,
+                author=request.user,
+                content=content.strip()
+            )
+            
+            # Simple @mention parsing
+            mentions = re.findall(r'@(\w+)', content)
+            for username in mentions:
+                try:
+                    mentioned_user = User.objects.get(username=username)
+                    create_notification(
+                        user=mentioned_user,
+                        message=f"{request.user.username} mentioned you in a comment on task '{task.title}'",
+                        link=f"/admin/portal/task/{task.id}/"
+                    )
+                except User.DoesNotExist:
+                    pass
+            
+            messages.success(request, "Comment added successfully.")
+        else:
+            messages.error(request, "You do not have permission to comment on this task.")
+            
+    return redirect('task_detail', pk=task.pk)
 
 @login_required
 @require_POST

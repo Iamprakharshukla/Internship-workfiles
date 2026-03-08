@@ -32,6 +32,7 @@ urlpatterns = [
     path("admin/portal/subtasks/<int:pk>/edit/", views.SubTaskUpdateView.as_view(), name="subtask_update_portal"),
     
     path("admin/portal/task/<int:pk>/", views.task_detail, name="task_detail"),
+    path("admin/portal/task/<int:pk>/comment/", views.add_task_comment, name="add_task_comment"),
     path("admin/portal/task/<int:pk>/update/", update_task_status, name="update_task_status"),
     path("admin/portal/task/<int:pk>/subtask/add/", views.subtask_add, name="subtask_add"),
     path("admin/portal/subtask/<int:sub_pk>/update/", views.subtask_update, name="subtask_update"),
