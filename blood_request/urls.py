@@ -45,4 +45,6 @@ urlpatterns = [
     path('our-team/', views.our_team, name='our_team'),
     path('faq/', views.faq, name='faq'),
     path('our-partners/', views.our_partners, name='our_partners'),
+    path('appreciation-and-accolades/', views.appreciationandaccolades, name='appreciationandaccolades'),
+    path('our-activities/', views.our_activities, name='our_activities'),
 ]

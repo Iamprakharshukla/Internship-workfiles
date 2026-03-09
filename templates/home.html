@@ -25,7 +25,7 @@
           <div class="dropdown-menu">
             <a href="{% url 'aboutus' %}" class="dropdown-item">About</a>
             <a href="{% url 'our_mission_values' %}" class="dropdown-item">Our Mission & Values</a>
-            <a href="#" class="dropdown-item">Appreciation and Accolades</a>
+            <a href="{% url 'appreciationandaccolades' %}" class="dropdown-item">Appreciation and Accolades</a>
             <a href="{% url 'our_partners' %}" class="dropdown-item">Our Partners</a>
             <a href="{% url 'our_policies' %}" class="dropdown-item">Our Policies</a>
             <a href="{% url 'contact_us' %}" class="dropdown-item">
@@ -80,7 +80,7 @@
             <a href="{% url 'report_list' %}" class="dropdown-item">Annual Report</a>
             <a href="{% url 'locations' %}" class="dropdown-item">Our Locations</a>
             <a href="{% url 'project_list' %}" class="dropdown-item">Projects</a>
-            <a href="#" class="dropdown-item">Our Activities</a>
+            <a href="{% url 'our_activities' %}" class="dropdown-item">Our Activities</a>
             <a href="{% url 'blogs' %}" class="dropdown-item">Blogs</a>
             <a href="{% url 'news_clippings' %}" class="dropdown-item">News Clippings</a>
             <a href="{% url 'resources' %}" class="dropdown-item">Resources</a>
@@ -144,10 +144,12 @@
           flourish in life.
         </p>
 
-        <a href="#" class="activities-btn">
+        <button class="activities-btn open-modal-btn bg-transparent border-none cursor-pointer text-left"
+                data-title="Our Activities"
+                data-content="UDAAN Society hosts various activities year-round ranging from environmental protection, health camps, and educational awareness programs. We strive to empower our community in every step we take.">
           Read More
           <span>›</span>
-        </a>
+        </button>
       </div>
 
       <!-- Right Image -->

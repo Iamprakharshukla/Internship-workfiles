@@ -65,7 +65,7 @@
                     <div class="dropdown-menu">
                         <a href="{% url 'aboutus' %}" class="dropdown-item">About</a>
                         <a href="{% url 'our_mission_values' %}" class="dropdown-item">Our Mission & Values</a>
-                        <a href="#" class="dropdown-item">Appreciation and Accolades</a>
+                        <a href="{% url 'appreciationandaccolades' %}" class="dropdown-item">Appreciation and Accolades</a>
                         <a href="{% url 'our_partners' %}" class="dropdown-item">Our Partners</a>
                         <a href="{% url 'our_policies' %}" class="dropdown-item">Our Policies</a>
                         <a href="{% url 'contact_us' %}" class="dropdown-item">
@@ -120,7 +120,7 @@
                         <a href="{% url 'report_list' %}" class="dropdown-item">Annual Report</a>
                         <a href="{% url 'locations' %}" class="dropdown-item">Our Locations</a>
                         <a href="{% url 'project_list' %}" class="dropdown-item">Projects</a>
-                        <a href="#" class="dropdown-item">Our Activities</a>
+                        <a href="{% url 'our_activities' %}" class="dropdown-item">Our Activities</a>
                         <a href="{% url 'blogs' %}" class="dropdown-item">Blogs</a>
                         <a href="{% url 'news_clippings' %}" class="dropdown-item">News Clippings</a>
                         <a href="{% url 'resources' %}" class="dropdown-item">Resources</a>
@@ -161,8 +161,11 @@
                             <span class="text-brand-red">Support Us</span> And Change The <br class="hidden md:block">
                             Course Of A Child's Life Today!
                         </h2>
-                        <a href="#" class="text-brand-red font-medium text-sm hover:underline mt-2 inline-block">Read
-                            more...</a>
+                        <button class="text-brand-red font-medium text-sm hover:underline mt-2 inline-block open-modal-btn bg-transparent border-none p-0 cursor-pointer"
+                                data-title="Change a Child's Life"
+                                data-content="Your support helps construct entirely new paradigms for the children in our core areas. With proper education, mentorship, and life skills, every child can carve out their own future.">
+                            Read more...
+                        </button>
                     </div>
                     <div>
                         <button
@@ -305,6 +308,101 @@
     <!-- Global Workspace FAB Removed -->
     {% if request.user.is_authenticated %}
     {% endif %}
+    <!-- Global Read More Modal -->
+    <div id="globalReadMoreModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity duration-300">
+        <div class="relative w-full max-w-2xl mx-4 bg-white rounded-xl shadow-2xl transform scale-95 transition-transform duration-300">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-5 border-b border-gray-200">
+                <h3 id="modalTitle" class="text-2xl font-bold text-gray-900"></h3>
+                <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 max-h-[70vh] overflow-y-auto">
+                <img id="modalImage" src="" alt="Modal Image" class="w-full h-auto mb-4 rounded-lg hidden object-cover max-h-64">
+                <div id="modalContent" class="text-gray-700 leading-relaxed text-lg"></div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="p-5 border-t border-gray-200 flex justify-end">
+                <button id="closeModalFooterBtn" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300 transition-colors">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('globalReadMoreModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const modalImage = document.getElementById('modalImage');
+            const closeBtns = [document.getElementById('closeModalBtn'), document.getElementById('closeModalFooterBtn')];
+            
+            // Function to open modal
+            window.openReadMoreModal = function(title, content, imageUrl = null) {
+                modalTitle.textContent = title || 'Details';
+                modalContent.innerHTML = content || '';
+                
+                if (imageUrl) {
+                    modalImage.src = imageUrl;
+                    modalImage.classList.remove('hidden');
+                } else {
+                    modalImage.src = '';
+                    modalImage.classList.add('hidden');
+                }
+                
+                modal.classList.remove('hidden');
+                // Trigger reflow for transition
+                void modal.offsetWidth;
+                modal.classList.remove('opacity-0');
+                modal.querySelector('div').classList.remove('scale-95');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            };
+
+            // Function to close modal
+            const closeModal = () => {
+                modal.classList.add('opacity-0');
+                modal.querySelector('div').classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }, 300); // Wait for transition
+            };
+
+            closeBtns.forEach(btn => {
+                if(btn) btn.addEventListener('click', closeModal);
+            });
+
+            // Close on outside click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Handle ESC key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+            
+            // Auto-bind to elements with generic class if they provide data attributes
+            document.querySelectorAll('.open-modal-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Stop propagation so parent link clicks aren't triggered
+                    e.stopPropagation();
+                    const title = btn.getAttribute('data-title');
+                    const content = btn.getAttribute('data-content');
+                    const image = btn.getAttribute('data-image');
+                    window.openReadMoreModal(title, content, image);
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

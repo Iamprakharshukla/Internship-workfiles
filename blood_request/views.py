@@ -1298,3 +1298,11 @@ def faq(request):
 
 def our_partners(request):
     return render(request, "our_partners.html")
+
+def appreciationandaccolades(request):
+    return render(request, "appreciationandaccolades.html")
+
+def our_activities(request):
+    from .models import Activity
+    activities = Activity.objects.filter(is_active=True)
+    return render(request, "ouractivites.html", {"activities": activities})
