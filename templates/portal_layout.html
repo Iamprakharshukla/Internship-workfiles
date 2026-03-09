@@ -168,7 +168,7 @@
                         d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
                     </path>
                 </svg>
-                <span class="sidebar-label whitespace-nowrap">Home</span>
+                <span class="sidebar-label whitespace-nowrap">My Workspace</span>
             </a>
 
             <a href="{% url 'workspace_list' %}"
@@ -191,7 +191,7 @@
                         d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
                     </path>
                 </svg>
-                <span class="sidebar-label whitespace-nowrap">Dashboard</span>
+                <span class="sidebar-label whitespace-nowrap">Admin Overview</span>
             </a>
             {% endif %}
 
@@ -206,7 +206,7 @@
                 <span class="sidebar-label whitespace-nowrap">Calendar & Appointments</span>
             </a>
 
-            <!-- Database Management Links -->
+            <!-- Database Management Links (Manager only) -->
 
             <a href="{% url 'portal_timeline' %}"
                 class="w-full flex items-center px-2 py-1 hover:bg-[#efefed] rounded-md text-[14px] transition-colors {% if 'timeline' in request.path %}bg-[#efefed] font-medium text-[#37352f]{% else %}font-medium{% endif %}"
@@ -216,6 +216,7 @@
                 <span class="sidebar-label whitespace-nowrap">Activity Timeline</span>
             </a>
 
+            {% if request.user.is_superuser or request.user.groups.all.0.name == 'Managers' %}
             <a href="{% url 'task_list_portal' %}"
                 class="w-full flex items-center px-2 py-1 hover:bg-[#efefed] rounded-md text-[14px] transition-colors {% if 'tasks' in request.path %}bg-[#efefed] font-medium text-[#37352f]{% else %}font-medium{% endif %}"
                 title="Tasks">
@@ -247,13 +248,16 @@
                     class="fa-solid fa-file-invoice-dollar w-4 h-4 mr-2.5 opacity-70 flex items-center justify-center text-[12px]"></i>
                 <span class="sidebar-label whitespace-nowrap">Expenses</span>
             </a>
+            {% endif %}
 
+            {% if perms.blood_request.view_sharednote %}
             <a href="{% url 'shared_note_list' %}"
                 class="w-full flex items-center px-2 py-1 hover:bg-[#efefed] rounded-md text-[14px] transition-colors {% if 'shared-notes' in request.path %}bg-[#efefed] font-medium text-[#37352f]{% else %}font-medium{% endif %}"
                 title="Shared Notes">
                 <i class="fa-solid fa-book-open w-4 h-4 mr-2.5 opacity-70 flex items-center justify-center text-xs"></i>
                 <span class="sidebar-label whitespace-nowrap">Shared Notes</span>
             </a>
+            {% endif %}
 
             <div class="sidebar-section-header mt-4 mb-1">
                 <div

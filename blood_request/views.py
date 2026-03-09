@@ -177,7 +177,10 @@ def update_task_status(request, pk):
     # Check if this is an AJAX/JSON request
     is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.content_type == 'application/json'
     
-    task = get_object_or_404(Task, pk=pk, assigned_to=request.user)
+    task = get_object_or_404(Task, pk=pk)
+    # Only allow the assigned user or staff to update; also allow if unassigned
+    if task.assigned_to and task.assigned_to != request.user and not request.user.is_staff:
+        return JsonResponse({'status': 'error', 'message': 'Permission denied'}, status=403)
     
     new_status = None
     

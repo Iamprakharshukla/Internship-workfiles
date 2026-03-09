@@ -28,12 +28,12 @@
 <section class="max-w-7xl mx-auto">
     <div class="flex items-center space-x-4 mb-4 mt-8">
         <h1 class="text-[40px] font-bold text-[#37352f] tracking-tight leading-tight">
-            Dashboard
+            My Workspace
         </h1>
     </div>
     <div class="text-[15px] text-[#505050] mb-8 border-b border-[#ededed] pb-4">
         Welcome back, {% if request.user.first_name %}{{ request.user.first_name }}{% else %}{{ request.user.username
-        }}{% endif %}. Here's what's happening today.
+        }}{% endif %}. Here's your personal task board.
     </div>
 
     <!-- STAFF BULLETIN BOARD -->
@@ -206,10 +206,10 @@
     </div>
 
     <!-- KANBAN SECTION -->
-    <div id="kanban-view" class="database-view grid grid-cols-1 md:grid-cols-3 gap-6 h-[calc(100vh-250px)]">
+    <div id="kanban-view" class="database-view grid grid-cols-1 md:grid-cols-3 gap-6 min-h-[400px]">
 
         <!-- TO DO COLUMN -->
-        <div class="bg-white rounded-lg flex flex-col h-full ring-1 ring-[#e5e5e5]">
+        <div class="bg-white rounded-lg flex flex-col ring-1 ring-[#e5e5e5]">
             <div
                 class="px-4 py-3 border-b border-[#e5e5e5] flex justify-between items-center bg-[#fafafa] rounded-t-lg sticky top-0 z-10">
                 <h3 class="text-[#37352f] font-semibold text-[14px] flex items-center">
@@ -217,172 +217,71 @@
                         class="ml-2 bg-[#e5e5e5] px-1.5 rounded-full text-[12px] py-0.5 text-[#505050] count-badge">{{
                         todo_tasks|length }}</span>
                 </h3>
-                <button class="text-[#999] hover:bg-[#e1e1e0] rounded p-0.5">
+                <a href="{% url 'task_create' %}" class="text-[#999] hover:bg-[#e1e1e0] rounded p-0.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                </button>
+                </a>
             </div>
-
             <div id="todo-list" class="flex-1 p-3 overflow-y-auto space-y-3 task-container" data-status="To Do">
                 {% for task in todo_tasks %}
-                <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-200 cursor-grab hover:shadow-md transition-shadow group task-card relative"
-                    data-id="{{ task.pk }}" data-priority="{{ task.priority }}"
-                    data-project="{{ task.project.title|default:'' }}">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider
-                                {% if task.priority == 'Critical' %} bg-red-50 text-red-600 border border-red-100
-                                {% elif task.priority == 'High' %} bg-orange-50 text-orange-600 border border-orange-100
-                                {% elif task.priority == 'Medium' %} bg-blue-50 text-blue-600 border border-blue-100
-                                {% else %} bg-gray-50 text-gray-500 border border-gray-100 {% endif %}">
-                            {{ task.priority }}
-                        </span>
-                        {% if task.due_date %}
-                        <span
-                            class="text-[10px] {% if task.is_overdue %}text-red-500 font-bold{% else %}text-gray-400{% endif %} flex items-center">
-                            {% if task.is_overdue %}
-                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            {% endif %}
-                            {{ task.due_date|date:"M d" }}
-                        </span>
-                        {% endif %}
-                    </div>
-
-                    <h4 class="font-semibold text-gray-800 text-sm mb-1 leading-tight">{{ task.title }}</h4>
-
-                    <div class="flex justify-between items-end mt-3">
-                        <div class="flex -space-x-2">
-                            {% if task.assigned_to %}
-                            <div class="w-6 h-6 rounded-full bg-brand-dark text-white flex items-center justify-center text-[10px] font-bold ring-2 ring-white"
-                                title="{{ task.assigned_to.username }}">
-                                {{ task.assigned_to.username|slice:":1"|upper }}
-                            </div>
-                            {% endif %}
-                            <a href="{% url 'task_detail' task.pk %}"
-                                class="text-[10px] text-gray-400 font-mono hover:text-brand-red transition-colors flex items-center group-hover:underline">
-                                #{{ task.pk }}
-                                <svg class="w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
-                                    </path>
-                                </svg>
-                            </a>
-                        </div>
-                        {% empty %}
-                        <div
-                            class="empty-placeholder text-center py-10 text-gray-400 text-sm border-2 border-dashed border-gray-200 rounded-lg">
-                            No tasks to do
-                        </div>
-                        {% endfor %}
-                    </div>
+                {% include "blood_request/partials/task_card.html" with task=task %}
+                {% empty %}
+                <div
+                    class="empty-placeholder text-center py-10 text-gray-400 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                    No tasks to do
                 </div>
-
-                <!-- IN PROGRESS COLUMN -->
-                <div class="bg-white rounded-lg flex flex-col h-full ring-1 ring-[#e5e5e5]">
-                    <div
-                        class="px-4 py-3 border-b border-[#e5e5e5] flex justify-between items-center bg-[#fafafa] rounded-t-lg sticky top-0 z-10">
-                        <h3 class="text-[#37352f] font-semibold text-[14px] flex items-center">
-                            In Progress <span
-                                class="ml-2 bg-[#e5e5e5] px-1.5 rounded-full text-[12px] py-0.5 text-[#505050] count-badge">{{
-                                inprogress_tasks|length }}</span>
-                        </h3>
-                    </div>
-
-                    <div id="inprogress-list" class="flex-1 p-3 overflow-y-auto space-y-3 task-container"
-                        data-status="In Progress">
-                        {% for task in inprogress_tasks %}
-                        <div class="bg-white p-3 rounded-lg shadow-sm border-l-4 border-blue-500 cursor-grab hover:shadow-md transition-shadow task-card"
-                            data-id="{{ task.pk }}" data-priority="{{ task.priority }}"
-                            data-project="{{ task.project.title|default:'' }}">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider
-                                {% if task.priority == 'Critical' %} bg-red-50 text-red-600
-                                {% else %} bg-blue-50 text-blue-600 {% endif %}">
-                                    {{ task.priority }}
-                                </span>
-                                <div class="animate-pulse w-2 h-2 bg-blue-500 rounded-full"></div>
-                            </div>
-                            <h4 class="font-semibold text-gray-800 text-sm mb-1 leading-tight">{{ task.title }}</h4>
-                            <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ task.description|default:"" }}</p>
-
-                            <div class="flex justify-between items-end mt-3">
-                                <span class="text-[10px] text-gray-400">Started {{ task.updated_at|timesince }}
-                                    ago</span>
-                                <a href="{% url 'task_detail' task.pk %}"
-                                    class="text-[10px] text-gray-400 font-mono hover:text-brand-red transition-colors flex items-center group-hover:underline">
-                                    #{{ task.pk }}
-                                    <svg class="w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
-                                        </path>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                        {% empty %}
-                        <div
-                            class="empty-placeholder text-center py-10 text-gray-400 text-sm border-2 border-dashed border-blue-200 rounded-lg">
-                            Drag tasks here
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <!-- DONE COLUMN -->
-                <div class="bg-white rounded-lg flex flex-col h-full ring-1 ring-[#e5e5e5]">
-                    <div
-                        class="px-4 py-3 border-b border-[#e5e5e5] flex justify-between items-center bg-[#fafafa] rounded-t-lg sticky top-0 z-10">
-                        <h3 class="text-[#37352f] font-semibold text-[14px] flex items-center">
-                            Done <span
-                                class="ml-2 bg-[#e5e5e5] px-1.5 rounded-full text-[12px] py-0.5 text-[#505050] count-badge">{{
-                                done_tasks|length }}</span>
-                        </h3>
-                    </div>
-
-                    <div id="done-list" class="flex-1 p-3 overflow-y-auto space-y-3 task-container" data-status="Done">
-                        {% for task in done_tasks %}
-                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 opacity-60 hover:opacity-100 transition-opacity cursor-grab task-card"
-                            data-id="{{ task.pk }}" data-priority="{{ task.priority }}"
-                            data-project="{{ task.project.title|default:'' }}">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-[10px] text-green-600 font-bold flex items-center">
-                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Completed
-                                </span>
-                                <span class="text-[10px] text-gray-400">{{ task.updated_at|date:"M d" }}</span>
-                            </div>
-                            <h4 class="font-medium text-gray-500 line-through text-sm mb-1">{{ task.title }}</h4>
-                            <div class="flex justify-end mt-2">
-                                <a href="{% url 'task_detail' task.pk %}"
-                                    class="text-[10px] text-gray-400 font-mono hover:text-brand-red transition-colors flex items-center group-hover:underline">
-                                    #{{ task.pk }}
-                                    <svg class="w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10
-                                        14">
-                                        </path>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                        {% empty %}
-                        <div
-                            class="empty-placeholder text-center py-10 text-gray-400 text-sm border-2 border-dashed border-gray-200 rounded-lg">
-                            No done tasks
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
+                {% endfor %}
             </div>
+        </div>
+
+        <!-- IN PROGRESS COLUMN -->
+        <div class="bg-white rounded-lg flex flex-col ring-1 ring-[#e5e5e5]">
+            <div
+                class="px-4 py-3 border-b border-[#e5e5e5] flex justify-between items-center bg-[#fafafa] rounded-t-lg sticky top-0 z-10">
+                <h3 class="text-[#37352f] font-semibold text-[14px] flex items-center">
+                    In Progress <span
+                        class="ml-2 bg-[#e5e5e5] px-1.5 rounded-full text-[12px] py-0.5 text-[#505050] count-badge">{{
+                        inprogress_tasks|length }}</span>
+                </h3>
+            </div>
+            <div id="inprogress-list" class="flex-1 p-3 overflow-y-auto space-y-3 task-container"
+                data-status="In Progress">
+                {% for task in inprogress_tasks %}
+                {% include "blood_request/partials/task_card.html" with task=task %}
+                {% empty %}
+                <div
+                    class="empty-placeholder text-center py-10 text-gray-400 text-sm border-2 border-dashed border-blue-200 rounded-lg">
+                    Drag tasks here
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- DONE COLUMN -->
+        <div class="bg-white rounded-lg flex flex-col ring-1 ring-[#e5e5e5]">
+            <div
+                class="px-4 py-3 border-b border-[#e5e5e5] flex justify-between items-center bg-[#fafafa] rounded-t-lg sticky top-0 z-10">
+                <h3 class="text-[#37352f] font-semibold text-[14px] flex items-center">
+                    Done <span
+                        class="ml-2 bg-[#e5e5e5] px-1.5 rounded-full text-[12px] py-0.5 text-[#505050] count-badge">{{
+                        done_tasks|length }}</span>
+                </h3>
+            </div>
+            <div id="done-list" class="flex-1 p-3 overflow-y-auto space-y-3 task-container" data-status="Done">
+                {% for task in done_tasks %}
+                {% include "blood_request/partials/task_card.html" with task=task %}
+                {% empty %}
+                <div
+                    class="empty-placeholder text-center py-10 text-gray-400 text-sm border-2 border-dashed border-gray-200 rounded-lg">
+                    No done tasks
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
 
             <!-- LIST SECTION -->
             <div id="list-view"
