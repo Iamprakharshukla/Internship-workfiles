@@ -512,3 +512,38 @@ class Activity(models.Model):
 
     def __str__(self):
         return self.title
+
+# --- Phase 29: Task Automation Rules (Monday.com Style) ---
+class TaskAutomationRule(models.Model):
+    TRIGGER_CHOICES = [
+        ('task_created', 'When a Task is Created'),
+        ('status_changed_done', 'When Task Status Changes to Done'),
+        ('status_changed_in_progress', 'When Task Status Changes to In Progress'),
+        ('priority_set_critical', 'When Priority is Set to Critical'),
+        ('task_overdue', 'When a Task Becomes Overdue'),
+    ]
+    
+    ACTION_CHOICES = [
+        ('send_email_assignee', 'Send Email to Assignee'),
+        ('send_email_manager', 'Send Email to Manager/Creator'),
+        ('create_notification', 'Create Portal Notification'),
+        ('auto_assign_user', 'Auto-Assign to a Specific User'),
+    ]
+    
+    name = models.CharField(max_length=200, help_text="Human-readable name for this rule")
+    trigger_type = models.CharField(max_length=50, choices=TRIGGER_CHOICES)
+    action_type = models.CharField(max_length=50, choices=ACTION_CHOICES)
+    target_user = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL,
+        help_text="Target user for auto-assign or notification actions"
+    )
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Rule: {self.name} ({self.get_trigger_type_display()} → {self.get_action_type_display()})"
+    
+    class Meta:
+        verbose_name = "Task Automation Rule"
+        verbose_name_plural = "Task Automation Rules"
+

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Daily Task Digest</title>
+</head>
+
+<body style="margin:0;padding:0;background-color:#f4f4f4;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;">
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f4;padding:30px 0;">
+        <tr>
+            <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0"
+                    style="background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+
+                    <!-- Header -->
+                    <tr>
+                        <td
+                            style="background: linear-gradient(135deg, #1D3557, #E63946); padding:30px 40px; text-align:center;">
+                            <h1 style="margin:0;color:#fff;font-size:22px;font-weight:700;">📋 Your Daily Task Digest
+                            </h1>
+                            <p style="margin:8px 0 0;color:rgba(255,255,255,0.8);font-size:13px;">{{ today|date:"l, F d,
+                                Y" }}</p>
+                        </td>
+                    </tr>
+
+                    <!-- Greeting -->
+                    <tr>
+                        <td style="padding:30px 40px 15px;">
+                            <p style="margin:0;font-size:16px;color:#333;">
+                                Good morning, <strong>{{ user.first_name|default:user.username }}</strong>! 👋
+                            </p>
+                            <p style="margin:10px 0 0;font-size:14px;color:#666;line-height:1.6;">
+                                You have <strong style="color:#E63946;">{{ tasks.count }}</strong> pending task{{
+                                tasks.count|pluralize }} today. Here's your overview:
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Tasks Table -->
+                    <tr>
+                        <td style="padding:10px 40px 30px;">
+                            <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+                                <tr style="background:#f8f9fa;">
+                                    <th
+                                        style="text-align:left;padding:10px 12px;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #eee;">
+                                        Task</th>
+                                    <th
+                                        style="text-align:center;padding:10px 12px;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #eee;">
+                                        Priority</th>
+                                    <th
+                                        style="text-align:center;padding:10px 12px;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #eee;">
+                                        Status</th>
+                                    <th
+                                        style="text-align:center;padding:10px 12px;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #eee;">
+                                        Due</th>
+                                </tr>
+                                {% for task in tasks %}
+                                <tr>
+                                    <td
+                                        style="padding:12px;font-size:14px;color:#333;border-bottom:1px solid #f0f0f0;font-weight:500;">
+                                        {{ task.title }}
+                                    </td>
+                                    <td style="padding:12px;text-align:center;border-bottom:1px solid #f0f0f0;">
+                                        <span style="display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;
+            {% if task.priority == 'Critical' %}background:#fde8e8;color:#c0392b;
+            {% elif task.priority == 'High' %}background:#fef3e2;color:#e67e22;
+            {% elif task.priority == 'Medium' %}background:#e8f0fe;color:#2980b9;
+            {% else %}background:#f0f0f0;color:#888;{% endif %}">
+                                            {{ task.priority }}
+                                        </span>
+                                    </td>
+                                    <td style="padding:12px;text-align:center;border-bottom:1px solid #f0f0f0;">
+                                        <span style="font-size:12px;color:#666;">{{ task.status }}</span>
+                                    </td>
+                                    <td style="padding:12px;text-align:center;border-bottom:1px solid #f0f0f0;">
+                                        <span
+                                            style="font-size:12px;{% if task.is_overdue %}color:#c0392b;font-weight:bold;{% else %}color:#666;{% endif %}">
+                                            {% if task.due_date %}{{ task.due_date|date:"M d" }}{% else %}—{% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- CTA -->
+                    <tr>
+                        <td style="padding:0 40px 30px;text-align:center;">
+                            <a href="http://localhost:8000/admin/portal/"
+                                style="display:inline-block;background:#1D3557;color:#ffffff;text-decoration:none;padding:14px 40px;border-radius:8px;font-size:14px;font-weight:700;letter-spacing:0.5px;">
+                                Open Dashboard →
+                            </a>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background:#f8f9fa;padding:20px 40px;text-align:center;border-top:1px solid #eee;">
+                            <p style="margin:0;font-size:11px;color:#999;">
+                                This is an automated daily digest from UDAAN Society Portal.<br>
+                                You are receiving this because you have active tasks assigned to you.
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>

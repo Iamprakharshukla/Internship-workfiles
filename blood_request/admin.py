@@ -136,3 +136,18 @@ class ActivityAdmin(admin.ModelAdmin):
     list_display = ('title', 'date', 'is_active', 'created_at')
     list_filter = ('is_active', 'date')
     search_fields = ('title', 'description')
+
+from .models import TaskComment, TaskAutomationRule
+
+@admin.register(TaskComment)
+class TaskCommentAdmin(admin.ModelAdmin):
+    list_display = ('task', 'author', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('content',)
+
+@admin.register(TaskAutomationRule)
+class TaskAutomationRuleAdmin(admin.ModelAdmin):
+    list_display = ('name', 'trigger_type', 'action_type', 'target_user', 'is_active', 'created_at')
+    list_filter = ('trigger_type', 'action_type', 'is_active')
+    search_fields = ('name',)
+

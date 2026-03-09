@@ -88,3 +88,77 @@ def auto_create_followup_task(sender, instance, created, **kwargs):
             priority='High',
             status='To Do'
         )
+
+# --- Phase 29: Task Automation Rule Executor ---
+from .models import TaskAutomationRule, Notification
+
+@receiver(post_save, sender=Task)
+def execute_automation_rules(sender, instance, created, **kwargs):
+    """
+    Checks all active TaskAutomationRules and fires matching actions
+    when a Task is created or its status/priority changes.
+    """
+    rules = TaskAutomationRule.objects.filter(is_active=True)
+    
+    for rule in rules:
+        triggered = False
+        
+        # Check trigger conditions
+        if rule.trigger_type == 'task_created' and created:
+            triggered = True
+        elif rule.trigger_type == 'status_changed_done' and instance.status == 'Done':
+            triggered = True
+        elif rule.trigger_type == 'status_changed_in_progress' and instance.status == 'In Progress':
+            triggered = True
+        elif rule.trigger_type == 'priority_set_critical' and instance.priority == 'Critical':
+            triggered = True
+        # 'task_overdue' is handled by a cron/management command, not a signal
+        
+        if not triggered:
+            continue
+        
+        print(f"Automation > Rule '{rule.name}' triggered for Task '{instance.title}'")
+        
+        # Execute action
+        try:
+            if rule.action_type == 'send_email_assignee':
+                if instance.assigned_to and instance.assigned_to.email:
+                    send_mail(
+                        f"[Automation] {rule.name}: {instance.title}",
+                        f"Task '{instance.title}' triggered automation rule: {rule.name}.\n\nStatus: {instance.status}\nPriority: {instance.priority}",
+                        settings.DEFAULT_FROM_EMAIL or 'admin@udaan.org',
+                        [instance.assigned_to.email],
+                        fail_silently=True,
+                    )
+                    
+            elif rule.action_type == 'send_email_manager':
+                managers = Group.objects.get(name='Managers').user_set.all()
+                manager_emails = [u.email for u in managers if u.email]
+                if manager_emails:
+                    send_mail(
+                        f"[Automation] {rule.name}: {instance.title}",
+                        f"Task '{instance.title}' triggered automation rule: {rule.name}.\n\nAssigned to: {instance.assigned_to}\nStatus: {instance.status}\nPriority: {instance.priority}",
+                        settings.DEFAULT_FROM_EMAIL or 'admin@udaan.org',
+                        manager_emails,
+                        fail_silently=True,
+                    )
+                    
+            elif rule.action_type == 'create_notification':
+                # Notify the assignee OR the target user
+                notify_user = rule.target_user or instance.assigned_to
+                if notify_user:
+                    Notification.objects.create(
+                        user=notify_user,
+                        message=f"[Auto] {rule.name}: Task '{instance.title}' ({instance.status})",
+                        link=f"/admin/portal/task/{instance.id}/"
+                    )
+                    
+            elif rule.action_type == 'auto_assign_user':
+                if rule.target_user and instance.assigned_to != rule.target_user:
+                    # Avoid infinite recursion by using update() instead of save()
+                    Task.objects.filter(pk=instance.pk).update(assigned_to=rule.target_user)
+                    print(f"Automation > Auto-assigned task to {rule.target_user.username}")
+                    
+        except Exception as e:
+            print(f"Automation > Error executing rule '{rule.name}': {e}")
+
