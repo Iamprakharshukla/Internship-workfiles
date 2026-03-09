@@ -228,7 +228,12 @@
             <div class="oa-card-content">
                 <h3 class="oa-card-title">{{ activity.title }}</h3>
                 <p class="oa-card-text">{{ activity.description|truncatewords:20 }}</p>
-                <a href="#" class="oa-btn-read-more">Read More</a>
+                <button class="oa-btn-read-more open-modal-btn" 
+                        data-title="{{ activity.title|escapejs }}" 
+                        data-content="{{ activity.description|linebreaksbr|escapejs }}"
+                        {% if activity.image %}data-image="{{ activity.image.url }}"{% endif %}>
+                    Read More
+                </button>
                 <div class="oa-card-meta">
                     <span class="oa-meta-item">
                         <i class="far fa-calendar-alt"></i> {{ activity.date|date:"F j, Y" }}
