@@ -1,432 +1,309 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Appreciation and Accolades | UDAAN Society</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+{% block title %}Appreciation and Accolades | UDAAN Society{% endblock %}
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+{% block extra_css %}
 <style>
+    .aa-hero {
+        height: 50vh;
+        min-height: 400px;
+        background:
+            linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),
+            url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+    }
 
-:root {
---primary:#E67E22;
---secondary:#27AE60;
---dark:#333;
---light:#f4f4f4;
---white:#fff;
---shadow:0 5px 15px rgba(0,0,0,0.1);
-}
+    .aa-hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+    .aa-breadcrumbs {
+        padding: 15px 0;
+        background: #eee;
+        font-size: 0.85rem;
+        color: #666;
+    }
 
-body{
-font-family:'Roboto',sans-serif;
-line-height:1.6;
-color:#444;
-background:#fcfcfc;
-overflow-x:hidden;
-}
+    .aa-breadcrumbs span {
+        color: #E67E22;
+    }
 
-h1,h2,h3,h4{
-font-family:'Poppins',sans-serif;
-color:var(--dark);
-}
+    .aa-intro-section {
+        padding: 60px 0;
+        text-align: center;
+    }
 
-a{text-decoration:none;color:inherit;}
-ul{list-style:none;}
+    .aa-intro-title {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+    }
 
-header{
-background:var(--white);
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
-position:sticky;
-top:0;
-z-index:1000;
-}
+    .aa-highlight-text {
+        color: #d35400;
+        font-weight: 700;
+    }
 
-.container{
-max-width:1200px;
-margin:auto;
-padding:0 20px;
-}
+    .aa-content-block {
+        max-width: 900px;
+        margin: auto;
+        text-align: left;
+        margin-top: 30px;
+    }
 
-nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-height:80px;
-}
+    .aa-content-block p {
+        margin-bottom: 20px;
+        font-size: 1.05rem;
+    }
 
-.logo img{
-height:60px;
-}
+    .aa-content-block h3 {
+        margin-top: 30px;
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+        border-left: 4px solid #27AE60;
+        padding-left: 15px;
+    }
 
-.nav-links{
-display:flex;
-gap:25px;
-align-items:center;
-}
+    .aa-feature-list li {
+        margin-bottom: 10px;
+        padding-left: 20px;
+        position: relative;
+        list-style: none;
+    }
 
-.nav-links a{
-font-weight:500;
-font-size:0.9rem;
-transition:0.3s;
-}
+    .aa-feature-list li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+    }
 
-.nav-links a:hover{
-color:;
-}
+    .aa-cta-link {
+        color: #c0392b;
+        font-weight: 600;
+        border-bottom: 2px solid #c0392b;
+        text-decoration: none;
+    }
 
-.donate-btn{
-background:#4285F4;
-color:white!important;
-padding:10px 20px;
-border-radius:5px;
-font-weight:bold;
-display:flex;
-align-items:center;
-gap:8px;
-}
+    .aa-awards-section {
+        background: #f4f4f4;
+        padding: 60px 0 80px;
+    }
 
-.hero{
-height:50vh;
-min-height:400px;
-background:
-linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),
-url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
-background-size:cover;
-background-position:center;
-background-attachment:fixed;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-color:white;
-}
+    .aa-section-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
 
-.hero h1{
-font-size:3rem;
-font-weight:700;
-color:white;
-text-transform:uppercase;
-letter-spacing:2px;
-}
+    .aa-section-header h2 {
+        font-size: 2.5rem;
+        text-transform: uppercase;
+    }
 
-.breadcrumbs{
-padding:15px 0;
-background:#eee;
-font-size:0.85rem;
-color:#666;
-}
+    .aa-red-text {
+        color: #e74c3c;
+    }
 
-.breadcrumbs span{
-color:var(--primary);
-}
+    .aa-awards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: auto;
+        padding: 0 20px;
+    }
 
-.intro-section{
-padding:60px 0;
-text-align:center;
-}
+    .aa-award-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: 0.4s;
+        opacity: 0;
+        transform: translateY(30px);
+    }
 
-.intro-title{
-font-size:2.2rem;
-margin-bottom:10px;
-}
+    .aa-award-card:hover {
+        transform: translateY(-10px);
+    }
 
-.highlight-text{
-color:#d35400;
-font-weight:700;
-}
+    .aa-card-img {
+        height: 220px;
+        overflow: hidden;
+    }
 
-.content-block{
-max-width:900px;
-margin:auto;
-text-align:left;
-margin-top:30px;
-}
+    .aa-card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
-.content-block p{
-margin-bottom:20px;
-font-size:1.05rem;
-}
+    .aa-card-body {
+        padding: 25px;
+        text-align: center;
+    }
 
-.content-block h3{
-margin-top:30px;
-margin-bottom:15px;
-font-size:1.2rem;
-border-left:4px solid var(--secondary);
-padding-left:15px;
-}
+    .aa-card-body h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
 
-.feature-list li{
-margin-bottom:10px;
-padding-left:20px;
-position:relative;
-}
+    .aa-card-body p {
+        font-size: 0.95rem;
+        color: #666;
+    }
 
-.feature-list li::before{
-content:"•";
-position:absolute;
-left:0;
-}
+    .aa-fade-in-active {
+        animation: aaFadeInUp 0.8s forwards;
+    }
 
-.cta-link{
-color:#c0392b;
-font-weight:600;
-border-bottom:2px solid #c0392b;
-}
-
-.awards-section{
-background:var(--light);
-padding:60px 0 80px;
-}
-
-.section-header{
-text-align:center;
-margin-bottom:50px;
-}
-
-.section-header h2{
-font-size:2.5rem;
-text-transform:uppercase;
-}
-
-.section-header .red-text{
-color:#e74c3c;
-}
-
-.awards-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:30px;
-}
-
-.award-card{
-background:white;
-border-radius:10px;
-overflow:hidden;
-box-shadow:var(--shadow);
-transition:0.4s;
-opacity:0;
-transform:translateY(30px);
-}
-
-.award-card:hover{
-transform:translateY(-10px);
-}
-
-.card-img{
-height:220px;
-overflow:hidden;
-}
-
-.card-img img{
-width:100%;
-height:100%;
-object-fit:cover;
-}
-
-.card-body{
-padding:25px;
-text-align:center;
-}
-
-.card-body h3{
-font-size:1.3rem;
-margin-bottom:15px;
-}
-
-.card-body p{
-font-size:0.95rem;
-color:#666;
-}
-
-.fade-in-active{
-animation:fadeInUp 0.8s forwards;
-}
-
-@keyframes fadeInUp{
-to{opacity:1;transform:translateY(0);}
-}
-
+    @keyframes aaFadeInUp {
+        to { opacity: 1; transform: translateY(0); }
+    }
 </style>
-</head>
+{% endblock %}
 
-<body>
-
-<header>
-<div class="container">
-<nav>
-
-<div class="logo">
-<img src="https://udaansociety.org/wp-content/uploads/2023/04/removal.ai_5659b1ca-f516-4529-bb5d-88a72ad7ab58.png.webp" style="border-radius:50%">
-</div>
-
-<div class="nav-links">
-<a href="#">Who We Are</a>
-<a href="#">Make a Difference</a>
-<a href="#">Impact</a>
-<a href="#">Blood Request</a>
-<a href="#">Campaigns</a>
-<a href="#" class="donate-btn"><i class="fas fa-hand-holding-heart"></i> Donate Now</a>
-</div>
-
-</nav>
-</div>
-</header>
-
-<section class="hero">
-<div class="container">
-<h1>Appreciation and Accolades</h1>
-</div>
+{% block content %}
+<section class="aa-hero">
+    <div style="max-width:1200px; margin:auto; padding:0 20px;">
+        <h1>Appreciation and Accolades</h1>
+    </div>
 </section>
 
-<div class="breadcrumbs">
-<div class="container">
-Home » <span>Appreciation and Accolades</span>
+<div class="aa-breadcrumbs">
+    <div style="max-width:1200px; margin:auto; padding:0 20px;">
+        <a href="{% url 'home' %}">Home</a> » <span>Appreciation and Accolades</span>
+    </div>
 </div>
-</div>
 
-<section class="intro-section container">
+<section class="aa-intro-section" style="max-width:1200px; margin:auto; padding:60px 20px;">
+    <h2 class="aa-intro-title">
+        RECOGNIZED EXCELLENCE: UDAAN SOCIETY'S<br>
+        <span class="aa-highlight-text">APPRECIATION AND ACCOLADES</span> JOURNEY
+    </h2>
 
-<h2 class="intro-title">
-RECOGNIZED EXCELLENCE: UDAAN SOCIETY'S<br>
-<span class="highlight-text">APPRECIATION AND ACCOLADES</span> JOURNEY
-</h2>
+    <div class="aa-content-block">
+        <h4 style="margin-bottom:10px;">UDAAN Society's Impact Celebrated</h4>
 
-<div class="content-block">
+        <p>
+            UDAAN Society is proud of its transformative journey in empowering communities and fostering positive change. Our unwavering commitment has been recognized through prestigious awards like the Governor's Award, Commissioner's Award, Pentagon Award, Swami Vivekananda Samman, Nagar Nigam Award, and the Award for Blood Donation.
+        </p>
+        <p>UDAAN Society takes great pride in its journey of empowerment and community development, marked by a trail of prestigious awards and accolades. Our unwavering commitment to fostering positive change has been recognized and celebrated on numerous occasions. These accolades serve as a testament to the impactful initiatives, innovative programs, and dedicated efforts of UDAAN Society in uplifting communities and empowering lives. Explore our distinguished awards as we continue our mission to create a brighter and more inclusive future for all. Also take a look at our partners.</p>
 
-<h4 style="margin-bottom:10px;">UDAAN Society's Impact Celebrated</h4>
+        <h3>A Testament to Our Work</h3>
 
-<p>
-UDAAN Society is proud of its transformative journey in empowering communities and fostering positive change. Our unwavering commitment has been recognized through prestigious awards like the Governor's Award, Commissioner's Award, Pentagon Award, Swami Vivekananda Samman, Nagar Nigam Award, and the Award for Blood Donation.
-</p>
-  <p>UDAAN Society takes great pride in its journey of empowerment and community development, marked by a trail of prestigious awards and accolades. Our unwavering commitment to fostering positive change has been recognized and celebrated on numerous occasions. These accolades serve as a testament to the impactful initiatives, innovative programs, and dedicated efforts of UDAAN Society in uplifting communities and empowering lives. Explore our distinguished awards as we continue our mission to create a brighter and more inclusive future for all. Also take a look at our partners.</p>
+        <ul class="aa-feature-list">
+            <li><strong>Community Upliftment:</strong> Our programs empower communities.</li>
+            <li><strong>Empowering Lives:</strong> Giving individuals tools to thrive.</li>
+            <li><strong>Innovative Solutions:</strong> Creative approaches to challenges.</li>
+        </ul>
 
-<h3>A Testament to Our Work</h3>
+    </div>
+    <div style="margin-top: 30px;">
+        <a href="{% url 'our_partners' %}" class="aa-cta-link">Explore Our Partnerships – Click Here</a>
+    </div>
+</section>
 
-<ul class="feature-list">
-<li><strong>Community Upliftment:</strong> Our programs empower communities.</li>
-<li><strong>Empowering Lives:</strong> Giving individuals tools to thrive.</li>
-<li><strong>Innovative Solutions:</strong> Creative approaches to challenges.</li>
-</ul>
-
-</div>
- <div style="margin-top: 30px;">
-                <a href="#" class="cta-link">Explore Our Partnerships – Click Here</a>
-            </div>
+<section class="aa-awards-section">
+    <div style="max-width:1200px; margin:auto; padding:0 20px;">
+        <div class="aa-section-header">
+            <h2><span class="aa-red-text">Awards</span> Received by Udaan Society</h2>
         </div>
+
+        <div class="aa-awards-grid">
+            <!-- CARD 1 -->
+            <article class="aa-award-card aa-scroll-reveal">
+                <div class="aa-card-img">
+                    <img src="https://udaansociety.org/wp-content/uploads/2024/01/Governor-Award.jpeg" alt="Governor Award">
+                </div>
+                <div class="aa-card-body">
+                    <h3>Governor Award</h3>
+                    <p>Receiving citation by Hon'ble Governor of U.P for Exceptional work in TB Eradication.</p>
+                </div>
+            </article>
+
+            <!-- CARD 2 -->
+            <article class="aa-award-card aa-scroll-reveal">
+                <div class="aa-card-img">
+                    <img src="https://udaansociety.org/wp-content/uploads/2024/01/Commissioner-Award.jpg" alt="Commissioner Award">
+                </div>
+                <div class="aa-card-body">
+                    <h3>Commissioner Award</h3>
+                    <p>Receiving award for exemplary work by then Divisional Commissioner Shri GS Priyadarshi (IAS).</p>
+                </div>
+            </article>
+
+            <!-- CARD 3 -->
+            <article class="aa-award-card aa-scroll-reveal">
+                <div class="aa-card-img">
+                    <img src="https://udaansociety.org/wp-content/uploads/2024/01/Pantagon-Award.jpg" alt="Pentagon Award">
+                </div>
+                <div class="aa-card-body">
+                    <h3>Pentagon Award</h3>
+                    <p>Receiving Pentagon award at AMU by Dr. Zakir Hussain Foundation.</p>
+                </div>
+            </article>
+
+            <!-- CARD 4 -->
+            <article class="aa-award-card aa-scroll-reveal">
+                <div class="aa-card-img">
+                    <img src="https://udaansociety.org/wp-content/uploads/2024/01/Swami-Vievakanad-Samman.png.webp" alt="Swami Vivekananda Samman">
+                </div>
+                <div class="aa-card-body">
+                    <h3>Swami Vivekananda Samman</h3>
+                    <p>Swami Vivekananda Smriti Samman in Year 2021.</p>
+                </div>
+            </article>
+
+            <!-- CARD 5 -->
+            <article class="aa-award-card aa-scroll-reveal">
+                <div class="aa-card-img">
+                    <img src="https://udaansociety.org/wp-content/uploads/2024/01/Nagar-Nigam-Award.jpg" alt="Nagar Nigam Award">
+                </div>
+                <div class="aa-card-body">
+                    <h3>Nagar Nigam Award</h3>
+                    <p>Awarded for Contribution in Swachh Bharat Mission by Then Municipal Commissioner, Aligarh.</p>
+                </div>
+            </article>
+
+            <!-- CARD 6 -->
+            <article class="aa-award-card aa-scroll-reveal">
+                <div class="aa-card-img">
+                    <img src="https://udaansociety.org/wp-content/uploads/2024/01/Award-for-Blood-Donation.jpg" alt="Award for Blood Donation">
+                </div>
+                <div class="aa-card-body">
+                    <h3>Award for Blood Donation</h3>
+                    <p>Award for Exceptional Contribution in Blood Donation.</p>
+                </div>
+            </article>
+        </div>
+    </div>
 </section>
-
-<section class="awards-section">
-
-<div class="container">
-
-<div class="section-header">
-<h2><span class="red-text">Awards</span> Received by Udaan Society</h2>
-</div>
-
-<div class="awards-grid">
-
-<!-- CARD 1 -->
-<article class="award-card scroll-reveal">
-<div class="card-img">
-<img src="https://udaansociety.org/wp-content/uploads/2024/01/Governor-Award.jpeg">
-</div>
-<div class="card-body">
-<h3>Governor Award</h3>
-<p>Receiving citation by Hon'ble Governor of U.P for Exceptional work in TB Eradication.</p>
-</div>
-</article>
-
-<!-- CARD 2 -->
-<article class="award-card scroll-reveal">
-<div class="card-img">
-<img src="https://udaansociety.org/wp-content/uploads/2024/01/Commissioner-Award.jpg">
-</div>
-<div class="card-body">
-<h3>Commissioner Award</h3>
-<p>Receiving award for exemplary work by then Divisional Commissioner Shri GS Priyadarshi (IAS).</p>
-</div>
-</article>
-
-<!-- CARD 3 -->
-<article class="award-card scroll-reveal">
-<div class="card-img">
-<img src="https://udaansociety.org/wp-content/uploads/2024/01/Pantagon-Award.jpg">
-</div>
-<div class="card-body">
-<h3>Pentagon Award</h3>
-<p>Receiving Pentagon award at AMU by Dr. Zakir Hussain Foundation.</p>
-</div>
-</article>
-
-<!-- CARD 4 -->
-<article class="award-card scroll-reveal">
-<div class="card-img">
-<img src="https://udaansociety.org/wp-content/uploads/2024/01/Swami-Vievakanad-Samman.png.webp">
-</div>
-<div class="card-body">
-<h3>Swami Vivekananda Samman</h3>
-<p>Swami Vivekananda Smriti Samman in Year 2021.</p>
-</div>
-</article>
-
-<!-- CARD 5 -->
-<article class="award-card scroll-reveal">
-<div class="card-img">
-<img src="https://udaansociety.org/wp-content/uploads/2024/01/Nagar-Nigam-Award.jpg">
-</div>
-<div class="card-body">
-<h3>Nagar Nigam Award</h3>
-<p>Awarded for Contribution in Swachh Bharat Mission by Then Municipal Commissioner, Aligarh.</p>
-</div>
-</article>
-
-<!-- CARD 6 -->
-<article class="award-card scroll-reveal">
-<div class="card-img">
-<img src="https://udaansociety.org/wp-content/uploads/2024/01/Award-for-Blood-Donation.jpg">
-</div>
-<div class="card-body">
-<h3>Award for Blood Donation</h3>
-<p>Award for Exceptional Contribution in Blood Donation.</p>
-</div>
-</article>
-
-</div>
-</div>
-</section>
-
-
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("aa-fade-in-active");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
 
-document.addEventListener("DOMContentLoaded",function(){
-
-const observer=new IntersectionObserver((entries)=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add("fade-in-active");
-observer.unobserve(entry.target);
-}
-});
-},{threshold:0.2});
-
-document.querySelectorAll(".scroll-reveal").forEach(el=>{
-observer.observe(el);
-});
-
-});
-
+        document.querySelectorAll(".aa-scroll-reveal").forEach(el => {
+            observer.observe(el);
+        });
+    });
 </script>
-
-</body>
-</html>
+{% endblock %}
