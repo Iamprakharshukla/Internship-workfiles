@@ -128,3 +128,11 @@ class ContactMessageAdmin(admin.ModelAdmin):
     def mark_as_read(self, request, queryset):
         queryset.update(is_read=True)
     mark_as_read.short_description = "Mark selected messages as read"
+
+from .models import Activity
+
+@admin.register(Activity)
+class ActivityAdmin(admin.ModelAdmin):
+    list_display = ('title', 'date', 'is_active', 'created_at')
+    list_filter = ('is_active', 'date')
+    search_fields = ('title', 'description')

@@ -496,3 +496,19 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"Message from {self.first_name} - {self.subject}"
+
+
+class Activity(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(help_text="Short summary of the activity")
+    image = models.ImageField(upload_to='activities/', blank=True, null=True)
+    date = models.DateField(help_text="Date of the activity")
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Activities"
+        ordering = ['-date']
+
+    def __str__(self):
+        return self.title
