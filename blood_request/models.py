@@ -184,9 +184,31 @@ class Task(models.Model):
     recurrence_rule = models.CharField(max_length=20, choices=RECURRENCE_CHOICES, default='none', blank=True)
     last_recurred_at = models.DateField(null=True, blank=True)
 
+    # Task Dependencies (Phase 30)
+    dependencies = models.ManyToManyField(
+        'self', symmetrical=False, blank=True,
+        related_name='dependent_tasks',
+        help_text="Tasks that must be completed before this task can progress"
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     history = HistoricalRecords()
+
+    @property
+    def has_unmet_dependencies(self):
+        """Returns True if any dependency is not Done."""
+        return self.dependencies.exclude(status='Done').exists()
+
+    @property
+    def unmet_dependencies(self):
+        """Returns queryset of dependencies that are not yet Done."""
+        return self.dependencies.exclude(status='Done')
+
+    @property
+    def is_blocked(self):
+        """Returns True if this task is blocked by unmet dependencies."""
+        return self.dependencies.exists() and self.has_unmet_dependencies
 
     def __str__(self):
         return f"{self.title} ({self.status}) - {self.priority}"

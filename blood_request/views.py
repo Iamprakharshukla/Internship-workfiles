@@ -201,10 +201,30 @@ def update_task_status(request, pk):
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
 
+    # Dependency check: block progression if dependencies are unmet
+    target_status = new_status
+    if not target_status:
+        # Predict what the toggle would produce
+        if task.status == 'To Do':
+            target_status = 'In Progress'
+        elif task.status == 'In Progress':
+            target_status = 'Done'
+        else:
+            target_status = 'To Do'
+
+    if target_status != 'To Do' and task.is_blocked:
+        unmet = list(task.unmet_dependencies.values_list('title', flat=True)[:5])
+        msg = f"Blocked: depends on {', '.join(unmet)}"
+        if is_ajax:
+            return JsonResponse({'status': 'blocked', 'message': msg}, status=409)
+        from django.contrib import messages as django_messages
+        django_messages.warning(request, msg)
+        return redirect('staff_dashboard')
+
     # Logic
     if new_status:
         # Direct status update (Drag & Drop)
-        if new_status in ['To Do', 'In Progress', 'Done']:
+        if new_status in ['To Do', 'In Progress', 'Review', 'Done']:
             task.status = new_status
             if new_status == 'Done':
                 task.completion_timestamp = timezone.now()
@@ -1159,7 +1179,7 @@ class TaskListView(ListView):
 @method_decorator(user_passes_test(is_manager), name='dispatch')
 class TaskUpdateView(UpdateView):
     model = Task
-    fields = ['title', 'project', 'description', 'assigned_to', 'status', 'priority', 'due_date', 'recurrence_rule']
+    fields = ['title', 'project', 'description', 'assigned_to', 'status', 'priority', 'due_date', 'recurrence_rule', 'dependencies']
     template_name = 'blood_request/portal_form.html'
     success_url = reverse_lazy('task_list_portal')
 
@@ -1172,7 +1192,7 @@ class TaskUpdateView(UpdateView):
 @method_decorator(user_passes_test(is_manager), name='dispatch')
 class TaskCreateView(CreateView):
     model = Task
-    fields = ['title', 'project', 'description', 'assigned_to', 'status', 'priority', 'due_date', 'recurrence_rule']
+    fields = ['title', 'project', 'description', 'assigned_to', 'status', 'priority', 'due_date', 'recurrence_rule', 'dependencies']
     template_name = 'blood_request/portal_form.html'
     success_url = reverse_lazy('task_list_portal')
 

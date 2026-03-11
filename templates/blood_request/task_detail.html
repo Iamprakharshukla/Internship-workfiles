@@ -78,6 +78,85 @@
         </div>
     </div>
 
+    <!-- Dependencies Section -->
+    {% if task.dependencies.exists or task.dependent_tasks.exists %}
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        {% if task.is_blocked %}
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex items-center">
+            <svg class="w-5 h-5 text-amber-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div>
+                <p class="text-sm font-bold text-amber-800">This task is blocked</p>
+                <p class="text-xs text-amber-600 mt-0.5">Complete all dependencies below before progressing this task.</p>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if task.dependencies.exists %}
+        <h2 class="text-lg font-bold text-gray-800 flex items-center mb-4">
+            <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+            </svg>
+            Depends On
+            <span class="ml-2 text-xs font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ task.dependencies.count }}</span>
+        </h2>
+        <div class="space-y-2 mb-6">
+            {% for dep in task.dependencies.all %}
+            <a href="{% url 'task_detail' dep.pk %}"
+               class="flex items-center justify-between p-3 rounded-lg transition-colors
+                      {% if dep.status == 'Done' %}bg-green-50 hover:bg-green-100{% else %}bg-red-50 hover:bg-red-100{% endif %}">
+                <div class="flex items-center">
+                    {% if dep.status == 'Done' %}
+                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    {% else %}
+                    <svg class="w-5 h-5 text-red-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                    {% endif %}
+                    <span class="text-sm font-medium {% if dep.status == 'Done' %}text-green-700 line-through{% else %}text-gray-800{% endif %}">
+                        {{ dep.title }}
+                    </span>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full
+                    {% if dep.status == 'Done' %}bg-green-200 text-green-700
+                    {% elif dep.status == 'In Progress' %}bg-blue-200 text-blue-700
+                    {% else %}bg-gray-200 text-gray-600{% endif %}">
+                    {{ dep.status }}
+                </span>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if task.dependent_tasks.exists %}
+        <h2 class="text-lg font-bold text-gray-800 flex items-center mb-4">
+            <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+            Blocks
+            <span class="ml-2 text-xs font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ task.dependent_tasks.count }}</span>
+        </h2>
+        <div class="space-y-2">
+            {% for dep in task.dependent_tasks.all %}
+            <a href="{% url 'task_detail' dep.pk %}"
+               class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <span class="text-sm font-medium text-gray-700">{{ dep.title }}</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full
+                    {% if dep.status == 'Done' %}bg-green-200 text-green-700
+                    {% elif dep.status == 'In Progress' %}bg-blue-200 text-blue-700
+                    {% else %}bg-gray-200 text-gray-600{% endif %}">
+                    {{ dep.status }}
+                </span>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
     <!-- SubTasks Section -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
         <div class="flex justify-between items-center mb-6">

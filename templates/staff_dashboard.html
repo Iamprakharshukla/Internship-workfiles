@@ -490,15 +490,21 @@
                 },
                 body: JSON.stringify(payload)
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        console.log('Task updated:', data);
-                        // Optional: Toast notification
-                    } else {
-                        alert('Failed to update task status.');
-                        // Revert UI? (Complex, skipping for prototype)
+                .then(response => {
+                    if (response.status === 409) {
+                        return response.json().then(data => {
+                            alert('⚠️ ' + (data.message || 'This task is blocked by unfinished dependencies.'));
+                            location.reload(); // Revert by reloading
+                        });
                     }
+                    return response.json().then(data => {
+                        if (data.status === 'success') {
+                            console.log('Task updated:', data);
+                        } else {
+                            alert('Failed to update task status.');
+                            location.reload();
+                        }
+                    });
                 })
                 .catch(error => console.error('Error:', error));
         }
