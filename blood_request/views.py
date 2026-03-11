@@ -405,6 +405,7 @@ def manager_dashboard(request):
         'projects': projects,
         'staff_load': staff_load,
         'overdue_tasks': overdue_tasks,
+        'teams': Team.objects.all(),
     }
     return render(request, 'manager_dashboard.html', context)
 
