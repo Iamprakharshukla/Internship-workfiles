@@ -1,209 +1,113 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Annual Report - UDAAN Society</title>
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'css/annual.css' %}">
-</head>
-<body>
 
-<!-- Navigation -->
-<nav class="navbar">
-<div class="nav-container">
-<a href="#" class="logo">
-<img src="{% static 'images/logo_UDAAN_Society-removebg-preview.png' %}" alt="UDAAN Society">
-</a>
+{% block title %}Annual Report - UDAAN Society{% endblock %}
 
-<button class="mobile-menu" id="mobileMenu">
-<i class="fas fa-bars"></i>
-</button>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/annual.css' %}">
+{% endblock %}
 
-<ul class="nav-links" id="navLinks">
-
-<li class="dropdown">
-<a href="#">Who We Are <i class="fas fa-chevron-down"></i></a>
-<ul class="dropdown-content">
-<li><a href="#">About</a></li>
-<li><a href="#">Our Mission and Values</a></li>
-<li><a href="#">Appreciation and Accolades</a></li>
-<li><a href="#">Our Partners</a></li>
-<li><a href="#">Our Policies</a></li>
-<li><a href="#">Contact us</a></li>
-<li><a href="#">Our Team</a></li>
-<li><a href="#">FAQs</a></li>
-</ul>
-</li>
-
-<li class="dropdown">
-<a href="#">Make a Difference <i class="fas fa-chevron-down"></i></a>
-<ul class="dropdown-content">
-<li><a href="#">Career & Fellowship</a></li>
-<li><a href="#">Workplace Give</a></li>
-<li><a href="#">Volunteering</a></li>
-<li><a href="#">Internship</a></li>
-<li><a href="#">Campus Ambassador</a></li>
-<li><a href="#">Jobs At Udaan Society</a></li>
-</ul>
-</li>
-
-<li class="dropdown">
-<a href="#">Impact <i class="fas fa-chevron-down"></i></a>
-<ul class="dropdown-content">
-<li><a href="#">Annual Reports</a></li>
-<li><a href="#">Our Locations</a></li>
-<li><a href="#">Projects</a></li>
-<li><a href="#">Our Activities</a></li>
-<li><a href="#">Blog</a></li>
-<li><a href="#">News Clippings</a></li>
-<li><a href="#">Resources</a></li>
-</ul>
-</li>
-
-<li><a href="#">Blood Request</a></li>
-<li><a href="#" class="active">Campaigns</a></li>
-
-<li>
-<a href="#" class="donate-btn">
-<div class="donate-text">
-<span>📱Donate Now</span>
-<small>Secured by Razorpay</small>
-</div>
-</a>
-</li>
-
-</ul>
-</div>
-</nav>
-
+{% block content %}
 <!-- Hero Section -->
 <section class="hero">
-<div class="hero-overlay"></div>
-<div class="hero-content">
-<h1>Annual Report</h1>
-<p>Our Annual Reports</p>
-</div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Annual Report</h1>
+        <p>Our Annual Reports</p>
+    </div>
 </section>
 
 <!-- Breadcrumb -->
 <div class="breadcrumb">
-<div class="container">
-Home <span>&raquo;</span> Annual Report
-</div>
+    <div class="container">
+        Home <span>&raquo;</span> Annual Report
+    </div>
 </div>
 
 <!-- Main Content -->
 <div class="main-content">
 
-<div class="section-title">
-<h2>ANNUAL <span>REPORTS</span></h2>
-<p>A course or principle of action proposed by UDAAN Society.</p>
+    <div class="section-title">
+        <h2>ANNUAL <span>REPORTS</span></h2>
+        <p>A course or principle of action proposed by UDAAN Society.</p>
+    </div>
+
+    <div class="report-viewer-wrapper" id="reportViewer">
+
+        <!-- Year Tabs -->
+        <div class="year-tabs">
+
+            <div class="year-tab active" data-year="2020-2021" data-file="{% static 'pdfs/2020-21.pdf' %}">2020-2021
+            </div>
+            <div class="year-tab" data-year="2019-2020" data-file="{% static 'pdfs/2019-20.pdf' %}">2019-2020</div>
+            <div class="year-tab" data-year="2018-2019" data-file="{% static 'pdfs/2018-19.pdf' %}">2018-2019</div>
+            <div class="year-tab" data-year="2017-2018" data-file="{% static 'pdfs/2017-18.pdf' %}">2017-2018</div>
+            <div class="year-tab" data-year="2016-2017" data-file="{% static 'pdfs/2016-17.pdf' %}">2016-2017</div>
+            <div class="year-tab" data-year="2015-2016" data-file="{% static 'pdfs/2015-16.pdf' %}">2015-2016</div>
+            <div class="year-tab" data-year="2014-2015" data-file="{% static 'pdfs/2014-15.pdf' %}">2014-2015</div>
+            <div class="year-tab" data-year="2013-2014" data-file="{% static 'pdfs/2013-14.pdf' %}">2013-2014</div>
+            <div class="year-tab" data-year="2012-2013" data-file="{% static 'pdfs/2012-13.pdf' %}">2012-2013</div>
+            <div class="year-tab" data-year="2011-2012" data-file="{% static 'pdfs/2011-12.pdf' %}">2011-2012</div>
+            <div class="year-tab" data-year="2010-2011" data-file="{% static 'pdfs/2010-11.pdf' %}">2010-2011</div>
+            <div class="year-tab" data-year="2009-2010" data-file="{% static 'pdfs/2009-10.pdf' %}">2009-2010</div>
+            <div class="year-tab" data-year="2008-2009" data-file="{% static 'pdfs/2008-09.pdf' %}">2008-2009</div>
+            <div class="year-tab" data-year="2007-2008" data-file="{% static 'pdfs/2007-08.pdf' %}">2007-2008</div>
+            <div class="year-tab" data-year="2006-2007" data-file="{% static 'pdfs/2006-07.pdf' %}">2006-2007</div>
+            <div class="year-tab" data-year="2005-2006" data-file="{% static 'pdfs/2005-06.pdf' %}">2005-2006</div>
+            <div class="year-tab" data-year="2004-2005" data-file="{% static 'pdfs/2004-05.pdf' %}">2004-2005</div>
+
+        </div>
+
+        <!-- Toolbar -->
+        <div class="viewer-toolbar">
+
+            <div class="toolbar-group">
+                <button class="toolbar-btn" id="prevBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="page-indicator">
+                    <input type="number" id="pageInput" value="1" min="1">
+                    <span>of <span id="totalPages">--</span></span>
+                </div>
+
+                <button class="toolbar-btn" id="nextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="toolbar-group zoom-controls">
+                <button class="toolbar-btn" id="zoomOut"><i class="fas fa-minus"></i></button>
+                <span id="zoomLevel">100%</span>
+                <button class="toolbar-btn" id="zoomIn"><i class="fas fa-plus"></i></button>
+            </div>
+
+            <div class="toolbar-group">
+                <button class="toolbar-btn icon-btn" id="downloadBtn">
+                    <i class="fas fa-download"></i>
+                </button>
+
+                <button class="toolbar-btn icon-btn" id="fullscreenBtn">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- PDF Container -->
+        <div class="pdf-container" id="pdfContainer">
+            <div class="pdf-loading" id="pdfLoading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>Loading PDF...</span>
+            </div>
+
+            <canvas id="pdfCanvas"></canvas>
+        </div>
+
+    </div>
 </div>
-
-<div class="report-viewer-wrapper" id="reportViewer">
-
-<!-- Year Tabs -->
-<div class="year-tabs">
-
-<div class="year-tab active" data-year="2020-2021" data-file="{% static 'pdfs/2020-21.pdf' %}">2020-2021</div>
-<div class="year-tab" data-year="2019-2020" data-file="{% static 'pdfs/2019-20.pdf' %}">2019-2020</div>
-<div class="year-tab" data-year="2018-2019" data-file="{% static 'pdfs/2018-19.pdf' %}">2018-2019</div>
-<div class="year-tab" data-year="2017-2018" data-file="{% static 'pdfs/2017-18.pdf' %}">2017-2018</div>
-<div class="year-tab" data-year="2016-2017" data-file="{% static 'pdfs/2016-17.pdf' %}">2016-2017</div>
-<div class="year-tab" data-year="2015-2016" data-file="{% static 'pdfs/2015-16.pdf' %}">2015-2016</div>
-<div class="year-tab" data-year="2014-2015" data-file="{% static 'pdfs/2014-15.pdf' %}">2014-2015</div>
-<div class="year-tab" data-year="2013-2014" data-file="{% static 'pdfs/2013-14.pdf' %}">2013-2014</div>
-<div class="year-tab" data-year="2012-2013" data-file="{% static 'pdfs/2012-13.pdf' %}">2012-2013</div>
-<div class="year-tab" data-year="2011-2012" data-file="{% static 'pdfs/2011-12.pdf' %}">2011-2012</div>
-<div class="year-tab" data-year="2010-2011" data-file="{% static 'pdfs/2010-11.pdf' %}">2010-2011</div>
-<div class="year-tab" data-year="2009-2010" data-file="{% static 'pdfs/2009-10.pdf' %}">2009-2010</div>
-<div class="year-tab" data-year="2008-2009" data-file="{% static 'pdfs/2008-09.pdf' %}">2008-2009</div>
-<div class="year-tab" data-year="2007-2008" data-file="{% static 'pdfs/2007-08.pdf' %}">2007-2008</div>
-<div class="year-tab" data-year="2006-2007" data-file="{% static 'pdfs/2006-07.pdf' %}">2006-2007</div>
-<div class="year-tab" data-year="2005-2006" data-file="{% static 'pdfs/2005-06.pdf' %}">2005-2006</div>
-<div class="year-tab" data-year="2004-2005" data-file="{% static 'pdfs/2004-05.pdf' %}">2004-2005</div>
-
-</div>
-
-<!-- Toolbar -->
-<div class="viewer-toolbar">
-
-<div class="toolbar-group">
-<button class="toolbar-btn" id="prevBtn">
-<i class="fas fa-chevron-left"></i>
-</button>
-
-<div class="page-indicator">
-<input type="number" id="pageInput" value="1" min="1">
-<span>of <span id="totalPages">--</span></span>
-</div>
-
-<button class="toolbar-btn" id="nextBtn">
-<i class="fas fa-chevron-right"></i>
-</button>
-</div>
-
-<div class="toolbar-group zoom-controls">
-<button class="toolbar-btn" id="zoomOut"><i class="fas fa-minus"></i></button>
-<span id="zoomLevel">100%</span>
-<button class="toolbar-btn" id="zoomIn"><i class="fas fa-plus"></i></button>
-</div>
-
-<div class="toolbar-group">
-<button class="toolbar-btn icon-btn" id="downloadBtn">
-<i class="fas fa-download"></i>
-</button>
-
-<button class="toolbar-btn icon-btn" id="fullscreenBtn">
-<i class="fas fa-expand"></i>
-</button>
-</div>
-
-</div>
-
-<!-- PDF Container -->
-<div class="pdf-container" id="pdfContainer">
-<div class="pdf-loading" id="pdfLoading">
-<i class="fas fa-spinner fa-spin"></i>
-<span>Loading PDF...</span>
-</div>
-
-<canvas id="pdfCanvas"></canvas>
-</div>
-
-</div>
-</div>
-
-<!-- CTA -->
-<section class="cta-section">
-<div class="container">
-<div class="cta-box">
-
-<div class="cta-content">
-<span class="cta-subtitle">Give Us A Hand</span>
-<h2><span>Support Us</span> And Change The Course Of A Child's Life Today!</h2>
-</div>
-
-<a href="#" class="cta-donate">
-<div class="donate-text">
-<span>📱Donate Now</span>
-<small>Secured by Razorpay</small>
-</div>
-</a>
-
-</div>
-</div>
-</section>
 
 <!-- JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="{% static 'js/annual.js' %}"></script>
-
-</body>
-</html>
+{% endblock %}
