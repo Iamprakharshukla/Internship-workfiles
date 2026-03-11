@@ -151,3 +151,13 @@ class TaskAutomationRuleAdmin(admin.ModelAdmin):
     list_filter = ('trigger_type', 'action_type', 'is_active')
     search_fields = ('name',)
 
+from .models import JobPosting
+
+@admin.register(JobPosting)
+class JobPostingAdmin(admin.ModelAdmin):
+    list_display = ('title', 'location', 'job_type', 'is_active', 'application_deadline', 'created_at')
+    list_filter = ('job_type', 'is_active')
+    search_fields = ('title', 'location', 'description')
+    list_editable = ('is_active',)
+
+

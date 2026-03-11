@@ -1100,7 +1100,9 @@ def campus_ambassador(request):
     )
 
 def jobs(request):
-    return render(request, "jobs.html")
+    from .models import JobPosting
+    job_postings = JobPosting.objects.filter(is_active=True)
+    return render(request, "jobs.html", {'job_postings': job_postings})
 
 def news_clippings(request):
     from .models import NewsClipping

@@ -1,174 +1,597 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}Jobs at UDAAN Society{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/jobs.css' %}">
+<style>
+  /* ── Card Grid ───────────────────────────────────── */
+  .jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+
+  @media (max-width: 992px) {
+    .jobs-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .jobs-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .job-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+    transition: transform .25s, box-shadow .25s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .job-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.13);
+  }
+
+  .job-card-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background: linear-gradient(135deg, #e63946 0%, #1d3557 100%);
+  }
+
+  .job-card-body {
+    padding: 22px 20px 18px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .job-card-body h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1d3557;
+    margin: 0 0 8px;
+    line-height: 1.35;
+  }
+
+  .job-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .job-card-tag {
+    font-size: .72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .tag-type {
+    background: #e8f4fd;
+    color: #2b6cb0;
+  }
+
+  .tag-loc {
+    background: #fef3cd;
+    color: #856404;
+  }
+
+  .tag-sal {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  .job-card-desc {
+    font-size: .88rem;
+    color: #555;
+    line-height: 1.55;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .job-card-footer {
+    padding: 14px 20px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .job-card-deadline {
+    font-size: .78rem;
+    color: #888;
+  }
+
+  .job-card-btn {
+    font-size: .82rem;
+    font-weight: 600;
+    color: #e63946;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .job-card-btn:hover {
+    color: #c92130;
+  }
+
+  /* ── Empty State ─────────────────────────────────── */
+  .jobs-empty {
+    text-align: center;
+    padding: 80px 20px;
+    color: #888;
+  }
+
+  .jobs-empty i {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    display: block;
+    color: #ccc;
+  }
+
+  /* ── Hero Banner (matching site-wide style) ──────── */
+  .jobs-hero {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
+  }
+
+  .jobs-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .jobs-hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+  }
+
+  .jobs-hero-content h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .jobs-hero-content p {
+    font-size: 1.1rem;
+    margin-top: 8px;
+    opacity: 0.9;
+    font-weight: 400;
+  }
+
+  /* ── Modal ───────────────────────────────────────── */
+  .job-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: none;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 16px;
+    overflow-y: auto;
+  }
+
+  .job-modal-overlay.active {
+    display: flex;
+  }
+
+  .job-modal {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 720px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    animation: modalIn .3s ease;
+    position: relative;
+  }
+
+  @keyframes modalIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.06);
+    color: #333;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: background .2s;
+  }
+
+  .modal-close:hover {
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  .modal-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 16px 16px 0 0;
+    background: linear-gradient(135deg, #e63946 0%, #1d3557 100%);
+  }
+
+  .modal-body {
+    padding: 28px 32px 32px;
+  }
+
+  .modal-body h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #1d3557;
+    margin: 0 0 12px;
+  }
+
+  .modal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .modal-section {
+    margin-bottom: 20px;
+  }
+
+  .modal-section h4 {
+    font-size: .9rem;
+    font-weight: 700;
+    color: #1d3557;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    border-bottom: 2px solid #e63946;
+    display: inline-block;
+    padding-bottom: 2px;
+  }
+
+  .modal-section p,
+  .modal-section li {
+    font-size: .9rem;
+    color: #444;
+    line-height: 1.65;
+  }
+
+  .modal-section ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .modal-section ul li {
+    margin-bottom: 4px;
+  }
+
+  .modal-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 8px;
+  }
+
+  .modal-contact-item {
+    font-size: .85rem;
+    color: #444;
+  }
+
+  .modal-contact-item strong {
+    color: #1d3557;
+    display: block;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    margin-bottom: 2px;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid #eee;
+  }
+
+  .btn-apply {
+    flex: 1;
+    padding: 12px;
+    background: #e63946;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: .9rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background .2s;
+  }
+
+  .btn-apply:hover {
+    background: #c92130;
+  }
+
+  .btn-share {
+    padding: 12px 20px;
+    background: #f0f0f0;
+    color: #333;
+    border: none;
+    border-radius: 10px;
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s;
+  }
+
+  .btn-share:hover {
+    background: #e0e0e0;
+  }
+
+  @media (max-width: 600px) {
+    .modal-body {
+      padding: 20px 18px 24px;
+    }
+
+    .modal-contact-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .modal-actions {
+      flex-direction: column;
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'css/jobs.css' %}">
+<!-- Hero Banner (matching site-wide style) -->
+<section class="jobs-hero" style="background-image: url('{% static 'img/hero_bg.png' %}');">
+  <div class="jobs-hero-overlay"></div>
+  <div class="jobs-hero-content">
+    <h1>Jobs at UDAAN Society</h1>
+    <p>Join our team and make a difference</p>
+  </div>
+</section>
 
 <div class="jobs-page">
 
-    <!-- Top Banner (Same as Other Pages) -->
-        <section class="page-banner">
-        <div class="page-banner-overlay"></div>
-
-        <div class="page-banner-content">
-            <h1>Jobs at UDAAN Society</h1>
+  <!-- Cards Grid -->
+  {% if job_postings %}
+  <div class="jobs-grid">
+    {% for job in job_postings %}
+    <div class="job-card" onclick="openJobModal({{ job.pk }})">
+      {% if job.image %}
+      <img src="{{ job.image.url }}" alt="{{ job.title }}" class="job-card-img">
+      {% else %}
+      <div class="job-card-img"
+        style="display:flex;align-items:center;justify-content:center;color:#fff;font-size:2.5rem;">
+        <i class="fas fa-briefcase"></i>
+      </div>
+      {% endif %}
+      <div class="job-card-body">
+        <h3>{{ job.title }}</h3>
+        <div class="job-card-meta">
+          <span class="job-card-tag tag-type">{{ job.get_job_type_display }}</span>
+          {% if job.location %}<span class="job-card-tag tag-loc"><i class="fas fa-map-marker-alt"></i> {{ job.location
+            }}</span>{% endif %}
+          {% if job.salary %}<span class="job-card-tag tag-sal">{{ job.salary }}</span>{% endif %}
         </div>
-        </section>
-
-  <!-- Heading -->
- 
-
-  <!-- Image -->
-  <div class="jobs-image">
-    <img src="{% static 'assets/wash-job.jpg' %}" alt="Jobs Image">
+        <p class="job-card-desc">{{ job.description|truncatewords:30 }}</p>
+      </div>
+      <div class="job-card-footer">
+        {% if job.application_deadline %}
+        <span class="job-card-deadline"><i class="far fa-clock"></i> Apply by {{ job.application_deadline|date:"M d, Y"
+          }}</span>
+        {% else %}
+        <span class="job-card-deadline">Open Until Filled</span>
+        {% endif %}
+        <span class="job-card-btn">View Details <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+    {% endfor %}
   </div>
-
-  <!-- Job Title -->
-  <h2>
-    JOB OPPORTUNITY: Block Coordinator for WASH Program
-    (Amroha, Uttar Pradesh)
-  </h2>
-
-  <!-- Intro -->
-  <p>
-    Are you passionate about making a difference in Water, Sanitation,
-    and Hygiene (WASH) and empowering communities?
-  </p>
-
-  <!-- About -->
-  <p>
-    <strong>UDAAN Society</strong>, a leading NGO with over 21 years of experience
-    in WASH and community development, is seeking dedicated and experienced
-    professionals for a transformative WASH program in Uttar Pradesh.
-    We are looking for:
-  </p>
-
-  <ul>
-    <li><strong>3 Block Coordinator</strong></li>
-  </ul>
-
-  <p><strong>(Location: Amroha District, Uttar Pradesh)</strong></p>
-
-  <h3>About the Project:</h3>
-
-  <p>
-    This vital partnership, aligned with the Sustainable Development Goals (SDGs) 5 and 6, aims to “Convene, Converge and Catalyse resources for system strengthening of sustainable WASH programmes with a focus on marginalised and vulnerable communities of Uttar Pradesh.” The project supports the Government of India and Uttar Pradesh’s Swachh Bharat Mission, Grameen (SBM-G) and Jal Jeevan Mission (JJM) to ensure all households and institutions in rural Uttar Pradesh have access to improved and climate-resilient WASH facilities and services. A key focus is on addressing critical gaps in safely managed sanitation, drinking water, and gender discrimination in WASH.
-  </p>
-
-  <!-- Responsibilities -->
-  <section class="job-responsibility-section">
-
-    <h3>Key Responsibilities (General, Specifics will vary by role):</h3>
-
-    <ul class="job-responsibility-list">
-
-      <li>
-        Facilitate and coordinate program activities in close collaboration
-        with UNICEF and state/district administrative units
-        (SBM-G, JJM, School and Anganwadi Kayakalp etc.).
-      </li>
-
-      <li>
-        Support capacity building initiatives for various stakeholders including
-        government functionaries, communities, and local institutions.
-      </li>
-
-      <li>
-        Implement evidence-based advocacy to realize children’s and women’s rights
-        to water and sanitation.
-      </li>
-
-      <li>
-        Ensure women’s participation (at least one-third) in all planning,
-        implementation, monitoring, and execution meetings.
-      </li>
-
-      <li>
-        Actively involve Elected Women Representatives in community-level engagements.
-      </li>
-
-      <li>
-        Promote inclusive representation of women and girls from all community
-        sections in decision-making processes.
-      </li>
-
-      <li>
-        Support the achievement of project outputs related to safely managed
-        sanitation, drinking water, and WASH in institutions.
-      </li>
-
-      <li>
-        Contribute to gender-responsive WASH programming, including Menstrual Health
-        and Hygiene Management (MHHM) sensitization for adolescent girls and boys.
-      </li>
-
-      <li>
-        Ensure compliance with Prevention of Sexual Exploitation and Abuse (PSEA)
-        guidelines.
-      </li>
-
-    </ul>
-
-  </section>
-
-
-  <!-- Desired Profile -->
-  <section class="job-profile-section">
-
-    <h3>Desired Profile:</h3>
-
-    <ul class="job-profile-list">
-
-      <li>Proven experience in the WASH sector, community mobilization, and system strengthening.</li>
-
-      <li>Understanding of government flagship programs like SBM-G and JJM.</li>
-
-      <li>Strong commitment to gender equality and social inclusion in WASH programming.</li>
-
-      <li>Excellent communication, coordination, and training skills.</li>
-
-      <li>Ability to work effectively with government officials, communities, and diverse stakeholders.</li>
-
-      <li>Familiarity with the local language (Hindi) is essential.</li>
-
-    </ul>
-
-  </section>
-
-
-  <!-- Project Duration -->
-  <section class="job-duration-section">
-
-    <h3>Project Duration:</h3>
-
-    <p>
-      The partnership aims to achieve its objectives by June 2026, with overall
-      project goals extending to 2027.
-    </p>
-
-  </section>
-
-
-  <!-- Apply -->
-  <section class="job-apply-section">
-
-    <h3>How to Apply:</h3>
-
-    <p>
-      Please submit your resume and a cover letter detailing your relevant experience
-      and why you are a suitable candidate for this role to
-      <strong>mail@udaansociety.org</strong> by <strong>15/2/2026</strong> with
-      Subject Line: <strong>Application for the Post of Block Coordinator</strong>.
-    </p>
-
-    <p class="job-final-text">
-      Join us in making a sustainable impact on WASH services and empowering
-      communities in Uttar Pradesh.
-    </p>
-
-  </section>
+  {% else %}
+  <div class="jobs-empty">
+    <i class="fas fa-briefcase"></i>
+    <h3>No Open Positions Right Now</h3>
+    <p>Please check back later for new opportunities at UDAAN Society.</p>
+  </div>
+  {% endif %}
 
 </div>
+
+<!-- ── Job Detail Modals ─────────────────────────── -->
+{% for job in job_postings %}
+<div class="job-modal-overlay" id="job-modal-{{ job.pk }}">
+  <div class="job-modal">
+    <button class="modal-close" onclick="closeJobModal({{ job.pk }})">&times;</button>
+
+    {% if job.image %}
+    <img src="{{ job.image.url }}" alt="{{ job.title }}" class="modal-img">
+    {% else %}
+    <div class="modal-img"
+      style="display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);font-size:3rem;">
+      <i class="fas fa-briefcase"></i>
+    </div>
+    {% endif %}
+
+    <div class="modal-body">
+      <h2>{{ job.title }}</h2>
+      <div class="modal-tags">
+        <span class="job-card-tag tag-type">{{ job.get_job_type_display }}</span>
+        {% if job.location %}<span class="job-card-tag tag-loc"><i class="fas fa-map-marker-alt"></i> {{ job.location
+          }}</span>{% endif %}
+        {% if job.salary %}<span class="job-card-tag tag-sal">{{ job.salary }}</span>{% endif %}
+        {% if job.application_deadline %}<span class="job-card-tag" style="background:#fce4ec;color:#c62828;"><i
+            class="far fa-clock"></i> Deadline: {{ job.application_deadline|date:"M d, Y" }}</span>{% endif %}
+      </div>
+
+      <div class="modal-section">
+        <h4>About the Role</h4>
+        <p>{{ job.description|linebreaksbr }}</p>
+      </div>
+
+      {% if job.responsibilities %}
+      <div class="modal-section">
+        <h4>Key Responsibilities</h4>
+        <ul>
+          {% for line in job.responsibilities.splitlines %}
+          {% if line.strip %}<li>{{ line }}</li>{% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      {% if job.desired_profile %}
+      <div class="modal-section">
+        <h4>Desired Profile</h4>
+        <ul>
+          {% for line in job.desired_profile.splitlines %}
+          {% if line.strip %}<li>{{ line }}</li>{% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      {% if job.project_duration %}
+      <div class="modal-section">
+        <h4>Project Duration</h4>
+        <p>{{ job.project_duration }}</p>
+      </div>
+      {% endif %}
+
+      <div class="modal-section">
+        <h4>Contact Information</h4>
+        <div class="modal-contact-grid">
+          {% if job.contact_person %}
+          <div class="modal-contact-item">
+            <strong>Contact Person</strong>
+            {{ job.contact_person }}
+          </div>
+          {% endif %}
+          <div class="modal-contact-item">
+            <strong>Email</strong>
+            <a href="mailto:{{ job.contact_email }}" style="color:#e63946;">{{ job.contact_email }}</a>
+          </div>
+          {% if job.application_deadline %}
+          <div class="modal-contact-item">
+            <strong>Apply By</strong>
+            {{ job.application_deadline|date:"F d, Y" }}
+          </div>
+          {% endif %}
+          {% if job.location %}
+          <div class="modal-contact-item">
+            <strong>Location</strong>
+            {{ job.location }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <a href="mailto:{{ job.contact_email }}?subject=Application for {{ job.title }}" class="btn-apply">
+          <i class="fas fa-paper-plane"></i> Apply via Email
+        </a>
+        <button class="btn-share" onclick="shareJob('{{ job.title }}', {{ job.pk }})">
+          <i class="fas fa-share-alt"></i> Share
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<script>
+  function openJobModal(id) {
+    document.getElementById('job-modal-' + id).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeJobModal(id) {
+    document.getElementById('job-modal-' + id).classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  // Close on overlay click
+  document.querySelectorAll('.job-modal-overlay').forEach(o => {
+    o.addEventListener('click', e => {
+      if (e.target === o) {
+        o.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  });
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.job-modal-overlay.active').forEach(o => {
+        o.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    }
+  });
+
+  function shareJob(title, id) {
+    const url = window.location.origin + '/jobs/#job-' + id;
+    if (navigator.share) {
+      navigator.share({ title: title + ' - UDAAN Society', url: url });
+    } else {
+      navigator.clipboard.writeText(url).then(() => {
+        alert('Link copied to clipboard!');
+      });
+    }
+  }
+</script>
 
 {% endblock %}

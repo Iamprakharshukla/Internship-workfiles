@@ -547,3 +547,39 @@ class TaskAutomationRule(models.Model):
         verbose_name = "Task Automation Rule"
         verbose_name_plural = "Task Automation Rules"
 
+
+# --- Job Postings (Admin-manageable) ---
+class JobPosting(models.Model):
+    JOB_TYPE_CHOICES = [
+        ('full_time', 'Full Time'),
+        ('part_time', 'Part Time'),
+        ('contract', 'Contract'),
+        ('internship', 'Internship'),
+        ('fellowship', 'Fellowship'),
+    ]
+
+    title = models.CharField(max_length=300)
+    location = models.CharField(max_length=200, blank=True)
+    job_type = models.CharField(max_length=20, choices=JOB_TYPE_CHOICES, default='full_time')
+    salary = models.CharField(max_length=200, blank=True, help_text="e.g. ₹25,000 - ₹35,000/month or 'As per experience'")
+    description = models.TextField(help_text="Brief intro / about the project")
+    responsibilities = models.TextField(blank=True, help_text="Key responsibilities (one per line)")
+    desired_profile = models.TextField(blank=True, help_text="Desired qualifications (one per line)")
+    project_duration = models.CharField(max_length=300, blank=True)
+    contact_person = models.CharField(max_length=200, blank=True)
+    contact_email = models.EmailField(default='mail@udaansociety.org')
+    application_deadline = models.DateField(null=True, blank=True)
+    image = models.ImageField(upload_to='jobs/', blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Job Posting"
+        verbose_name_plural = "Job Postings"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.title
+
+
