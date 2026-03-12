@@ -1,12 +1,12 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin, GroupAdmin as BaseGroupAdmin
+from django.contrib.auth.models import User, Group
 from .models import PolicyReport
 
 from .models import (
-    BloodDonor, BloodRequest, Campaign, Report, Project, Task, SubTask,
+    BloodDonor, BloodRequest, Campaign, Report, Project, Task,
     Announcement, Testimonial, StaffProfile, Interaction, Appointment,
-    PersonalNote, Team, SharedNote, NewsClipping, Blog, Expense, ContactMessage
+    PersonalNote, Team, SharedNote, NewsClipping, Blog, ContactMessage
 )
 
 @admin.register(PolicyReport)
@@ -36,14 +36,27 @@ class StaffProfileInline(admin.StackedInline):
 class UserAdmin(BaseUserAdmin):
     inlines = (StaffProfileInline,)
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'get_phone')
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
+    filter_horizontal = ('groups', 'user_permissions',)
     
     def get_phone(self, obj):
         return obj.profile.phone_number if hasattr(obj, 'profile') else '-'
     get_phone.short_description = 'Phone Number'
 
-# Re-register UserAdmin
+# Enhanced Group admin with better permission management
+class GroupAdmin(BaseGroupAdmin):
+    filter_horizontal = ('permissions',)
+    list_display = ('name', 'user_count')
+
+    def user_count(self, obj):
+        return obj.user_set.count()
+    user_count.short_description = 'Members'
+
+# Re-register UserAdmin and GroupAdmin
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.unregister(Group)
+admin.site.register(Group, GroupAdmin)
 
 # Register your models here.
 
@@ -52,10 +65,6 @@ class AnnouncementAdmin(admin.ModelAdmin):
     list_display = ('title', 'is_active', 'created_at')
     list_filter = ('is_active',)
 
-@admin.register(SubTask)
-class SubTaskAdmin(admin.ModelAdmin):
-    list_display = ('title', 'parent_task', 'status', 'assigned_to')
-    list_filter = ('status',)
 
 from .models import Interaction
 @admin.register(Interaction)
@@ -70,6 +79,11 @@ class BloodDonorAdmin(admin.ModelAdmin):
     search_fields = ('name', 'city', 'phone')
     list_filter = ('blood_group', 'city', 'consent_given')
     readonly_fields = ('score', 'donation_count')
+
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_at')
+    search_fields = ('title',)
 
 @admin.register(BloodRequest)
 class BloodRequestAdmin(admin.ModelAdmin):
@@ -88,15 +102,9 @@ class CampaignAdmin(admin.ModelAdmin):
     def target_vs_raised(self, obj):
         return f"{obj.raised_amount} / {obj.goal_amount}"
 
-@admin.register(Expense)
-class ExpenseAdmin(admin.ModelAdmin):
-    list_display = ('title', 'amount', 'date', 'category', 'campaign', 'logged_by')
-    list_filter = ('category', 'date', 'campaign')
-    search_fields = ('title', 'notes')
-
-# Note: Internal workspace tools (Project, Task, SubTask, Team, SharedNote) 
-# have been explicitly removed from the Admin panel and migrated to the UDAAN Portal 
-# for a unified Notion-like workspace experience.
+# Note: Internal workspace tools (Project, Task, SubTask, Team, SharedNote,
+# Expense, TaskComment, TaskAutomationRule) have been explicitly removed from
+# the Admin panel and migrated to the UDAAN Portal for a unified workspace.
 
 
 
@@ -107,11 +115,6 @@ class CampusAmbassadorAdmin(admin.ModelAdmin):
     list_display = ('name', 'college', 'city', 'created_at')
     search_fields = ('name', 'college')
 
-@admin.register(CampusAmbassadorApplication)
-class CampusAmbassadorApplicationAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'college', 'status', 'applied_at')
-    list_filter = ('status',)
-    search_fields = ('full_name', 'college', 'email')
 
 @admin.register(NewsClipping)
 class NewsClippingAdmin(admin.ModelAdmin):
@@ -137,19 +140,6 @@ class ActivityAdmin(admin.ModelAdmin):
     list_filter = ('is_active', 'date')
     search_fields = ('title', 'description')
 
-from .models import TaskComment, TaskAutomationRule
-
-@admin.register(TaskComment)
-class TaskCommentAdmin(admin.ModelAdmin):
-    list_display = ('task', 'author', 'created_at')
-    list_filter = ('created_at',)
-    search_fields = ('content',)
-
-@admin.register(TaskAutomationRule)
-class TaskAutomationRuleAdmin(admin.ModelAdmin):
-    list_display = ('name', 'trigger_type', 'action_type', 'target_user', 'is_active', 'created_at')
-    list_filter = ('trigger_type', 'action_type', 'is_active')
-    search_fields = ('name',)
 
 from .models import JobPosting
 
