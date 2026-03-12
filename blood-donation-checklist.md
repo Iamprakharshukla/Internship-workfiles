@@ -43,6 +43,30 @@
 - [ ]  **AI Summaries & Volunteer Assignment**: Generates a Weekly AI Summary of performance/delays and handles volunteer assignment with skill/location matching.
     - *Django Feasibility: Low-Medium. Requires integrating an external LLM API for the summaries and writing complex assignment algorithms, making it heavier to implement.*
 
+## Donor Gamification Badges (Phase 3 - Retention)
+
+*12 badges to boost donor retention. Auto-awarded via Django signals on DIN fulfillment.*
+
+### Core Donor Journey
+- [ ] **First Flight**: First successful donation
+- [ ] **Second Step**: 2nd donation within 12 months  
+- [ ] **Steady Donor**: 3-4 donations, one every 6 months
+- [ ] **Star Donor**: 5-9 donations, avg response <24h
+- [ ] **Legend Donor**: 10+ donations, 0 no-shows last year
+
+### Type-Based
+- [ ] **Universal Hero**: O-, fulfilled 3+ universal requests
+- [ ] **Rare Hope**: Rare group (AB-, Bombay), any fulfillment
+- [ ] **Plasma Pro**: 3+ plasma donations
+- [ ] **Platelet Hero**: 2+ platelets, esp. emergency
+
+### Reliability & Emergency
+- [ ] **Rapid Responder**: 5+ requests accepted <2h via "I Can Donate"
+- [ ] **Always There**: 90%+ availability ON, 0 no-shows
+- [ ] **Code Red**: Fulfilled 2+ emergency requests
+
+*Django Feasibility: Medium. Add Badge/DonorBadge models, signals on DonorManagement/DIN completion. Display in donor profile.*
+
 ---
 
 # UI for blood donation checklist
