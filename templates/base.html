@@ -354,6 +354,7 @@
                 }
                 
                 modal.classList.remove('hidden');
+                modal.classList.add('flex');
                 // Trigger reflow for transition
                 void modal.offsetWidth;
                 modal.classList.remove('opacity-0');
@@ -367,6 +368,7 @@
                 modal.querySelector('div').classList.add('scale-95');
                 setTimeout(() => {
                     modal.classList.add('hidden');
+                    modal.classList.remove('flex');
                     document.body.style.overflow = '';
                 }, 300); // Wait for transition
             };
