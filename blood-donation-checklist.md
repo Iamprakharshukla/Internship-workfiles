@@ -47,6 +47,8 @@
 
 *12 badges to boost donor retention. Auto-awarded via Django signals on DIN fulfillment.*
 
+<img width="512" height="286" alt="image" src="https://github.com/user-attachments/assets/7824ea6b-09e9-4eab-868a-c71c96604314" />
+
 ### Core Donor Journey
 - [ ] **First Flight**: First successful donation
 - [ ] **Second Step**: 2nd donation within 12 months  
