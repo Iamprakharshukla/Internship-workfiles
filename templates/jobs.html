@@ -425,16 +425,14 @@
         <h3>{{ job.title }}</h3>
         <div class="job-card-meta">
           <span class="job-card-tag tag-type">{{ job.get_job_type_display }}</span>
-          {% if job.location %}<span class="job-card-tag tag-loc"><i class="fas fa-map-marker-alt"></i> {{ job.location
-            }}</span>{% endif %}
+          {% if job.location %}<span class="job-card-tag tag-loc"><i class="fas fa-map-marker-alt"></i> {{ job.location }}</span>{% endif %}
           {% if job.salary %}<span class="job-card-tag tag-sal">{{ job.salary }}</span>{% endif %}
         </div>
         <p class="job-card-desc">{{ job.description|truncatewords:30 }}</p>
       </div>
       <div class="job-card-footer">
         {% if job.application_deadline %}
-        <span class="job-card-deadline"><i class="far fa-clock"></i> Apply by {{ job.application_deadline|date:"M d, Y"
-          }}</span>
+        <span class="job-card-deadline"><i class="far fa-clock"></i> Apply by {{ job.application_deadline|date:"M d, Y" }}</span>
         {% else %}
         <span class="job-card-deadline">Open Until Filled</span>
         {% endif %}
@@ -472,8 +470,7 @@
       <h2>{{ job.title }}</h2>
       <div class="modal-tags">
         <span class="job-card-tag tag-type">{{ job.get_job_type_display }}</span>
-        {% if job.location %}<span class="job-card-tag tag-loc"><i class="fas fa-map-marker-alt"></i> {{ job.location
-          }}</span>{% endif %}
+        {% if job.location %}<span class="job-card-tag tag-loc"><i class="fas fa-map-marker-alt"></i> {{ job.location }}</span>{% endif %}
         {% if job.salary %}<span class="job-card-tag tag-sal">{{ job.salary }}</span>{% endif %}
         {% if job.application_deadline %}<span class="job-card-tag" style="background:#fce4ec;color:#c62828;"><i
             class="far fa-clock"></i> Deadline: {{ job.application_deadline|date:"M d, Y" }}</span>{% endif %}
