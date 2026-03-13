@@ -54,5 +54,36 @@
         width: 1rem;
         height: 1rem;
     }
+
+    /* TomSelect Tailwind overrides to match portal styles */
+    .ts-control {
+        border-color: #e5e7eb !important;
+        border-radius: 0.375rem !important;
+        padding: 0.5rem 0.75rem !important;
+        font-family: inherit !important;
+        box-shadow: none !important;
+    }
+    .ts-dropdown {
+        border-color: #e5e7eb !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+        border-radius: 0.375rem !important;
+    }
 </style>
+
+<!-- Add Tom Select for nice multiple select dropdowns -->
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize TomSelect on all multiple selects (e.g., Dependencies)
+        document.querySelectorAll('select[multiple]').forEach(function(select) {
+            new TomSelect(select, {
+                plugins: ['remove_button'],
+                placeholder: "Select options...",
+                searchField: ['text'],
+                maxOptions: 50,
+            });
+        });
+    });
+</script>
 {% endblock %}
