@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="project",
             name="slug",
-            field=models.SlugField(blank=True, null=True, unique=True),
+            field=models.SlugField(max_length=255, blank=True, null=True, unique=True),
         ),
         migrations.AddField(
             model_name="task",

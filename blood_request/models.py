@@ -130,7 +130,7 @@ class Campaign(models.Model):
 
 class Project(models.Model):
     title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True, blank=True, null=True) # Will populate via migration
+    slug = models.SlugField(max_length=255, unique=True, blank=True, null=True) # Will populate via migration
     description = models.TextField(help_text="Short excerpt for the card")
     content = CKEditor5Field(blank=True, help_text="Full HTML content for the detail page", config_name='extends')
     image = models.ImageField(upload_to='projects/')
