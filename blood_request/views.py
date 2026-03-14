@@ -1506,3 +1506,7 @@ def export_tasks_pdf(request):
             ])
         
         return response
+    
+
+def blood_donation(request):
+    return render(request, "blood_donation.html")

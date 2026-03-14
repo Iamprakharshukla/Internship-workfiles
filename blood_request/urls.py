@@ -47,4 +47,5 @@ urlpatterns = [
     path('our-partners/', views.our_partners, name='our_partners'),
     path('appreciation-and-accolades/', views.appreciationandaccolades, name='appreciationandaccolades'),
     path('our-activities/', views.our_activities, name='our_activities'),
+     path("blood-donation/", views.blood_donation, name="blood_donation"),
 ]

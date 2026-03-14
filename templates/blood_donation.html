@@ -1,0 +1,1004 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blood Donation - UDAAN Society{% endblock %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="{% static 'css/blood_donation.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+
+<div class="hero-slider">
+
+    <!-- Slide 1 -->
+    <div class="hero-slide active">
+        <img src="https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=1920&h=500&fit=crop">
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="hero-slide">
+        <img src="https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=1920&h=500&fit=crop">
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="hero-slide">
+        <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=1920&h=500&fit=crop">
+    </div>
+
+    <div class="hero-overlay"></div>
+
+</div>
+
+<div class="hero-content">
+    <h1>BLOOD DONATION</h1>
+</div>
+
+
+</section>
+
+<!-- ================= BREADCRUMB ================= -->
+
+<div class="breadcrumb">
+    <div class="breadcrumb-container">
+        <a href="{% url 'home' %}">Home</a>
+        <span class="sep">»</span>
+        <span class="current">Blood Donation</span>
+    </div>
+</div>
+
+<!-- ================= HEADER ACTION BAR ================= -->
+
+<div class="header-action-bar">
+
+<div class="container header-action-container">
+
+<!-- DIN TRACKER -->
+
+<div class="din-tracker">
+
+<i class="fa-solid fa-id-card"></i>
+
+<input type="text" placeholder="Enter DIN Number">
+
+<button>
+<i class="fa-solid fa-magnifying-glass"></i>
+Track
+</button>
+
+</div>
+
+<!-- CTA BUTTONS -->
+
+<div class="header-cta">
+
+<a href="javascript:void(0)" class="cta-btn request-btn"
+onclick="document.querySelector('.request-section').scrollIntoView({behavior:'smooth'})">
+<i class="fa-solid fa-droplet"></i>
+Request Blood
+</a>
+
+<a href="javascript:void(0)" class="cta-btn donor-btn"
+onclick="document.querySelector('.donor-section').scrollIntoView({behavior:'smooth'})">
+<i class="fa-solid fa-hand-holding-heart"></i>
+Register as Donor
+</a>
+
+</div>
+</div>  <!-- container close -->
+</div>  <!-- header-action-bar close -->
+
+
+
+
+<!-- donor -->
+ <section class="donor-section form-section" >
+    
+<h2 class="form-title">
+<i class="fa-solid fa-user-plus"></i> Register as Donor
+</h2>
+
+<form class="blood-form">
+
+<div class="form-grid">
+
+<div class="input-group">
+<i class="fa-solid fa-user"></i>
+<input type="text" placeholder="Name *" required>
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-droplet"></i>
+<select required>
+<option>Select Blood Group *</option>
+<option>A+</option>
+<option>A-</option>
+<option>B+</option>
+<option>B-</option>
+<option>O+</option>
+<option>O-</option>
+<option>AB+</option>
+<option>AB-</option>
+</select>
+</div>
+
+<div class="input-group">
+<i class="fa-brands fa-whatsapp"></i>
+<input type="text" placeholder="Whatsapp No *">
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-phone"></i>
+<input type="text" placeholder="Mobile Number *">
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-envelope"></i>
+<input type="email" placeholder="Email Address (Optional)">
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-city"></i>
+<input type="text" placeholder="City *">
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-map-location-dot"></i>
+<input type="text" placeholder="State *">
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-location-pin"></i>
+<input type="text" placeholder="PIN Code *">
+</div>
+
+</div>
+
+
+<p class="consent">
+
+<input type="checkbox">
+
+I authorise this website to display my name and telephone number so that the needy could contact me.
+
+</p>
+
+
+<div class="toggle-row">
+
+<span>Available to Donate Now</span>
+
+<label class="switch">
+<input type="checkbox">
+<span class="slider"></span>
+</label>
+
+</div>
+
+<button class="form-btn">
+<i class="fa-solid fa-heart"></i> Register as Donor
+</button>
+
+</form>
+
+</section>
+
+<!-- blood request -->
+ <section class="request-section form-section">
+
+<h2 class="form-title">
+<i class="fa-solid fa-hand-holding-droplet"></i> Request Blood
+</h2>
+
+<form class="blood-form">
+
+<div class="form-grid">
+
+<div class="input-group">
+<i class="fa-solid fa-user"></i>
+<input type="text" placeholder="Patient Name *">
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-droplet"></i>
+<select>
+<option>Select Blood Group *</option>
+<option>A+</option>
+<option>A-</option>
+<option>B+</option>
+<option>B-</option>
+<option>O+</option>
+<option>O-</option>
+<option>AB+</option>
+<option>AB-</option>
+</select>
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-hospital"></i>
+<input type="text" placeholder="Hospital Name *">
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-phone"></i>
+<input type="text" placeholder="Mobile Number *">
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-location-dot"></i>
+<input type="text" placeholder="City *">
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-map"></i>
+<input type="text" placeholder="State *">
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-location-pin"></i>
+<input type="text" placeholder="PIN Code *">
+</div>
+
+</div>
+
+
+<div class="toggle-row">
+
+<span>Emergency Request</span>
+
+<label class="switch">
+<input type="checkbox">
+<span class="slider"></span>
+</label>
+
+</div>
+
+<button class="form-btn">
+<i class="fa-solid fa-paper-plane"></i> Submit Request
+</button>
+
+</form>
+
+</section>
+
+<!-- NGO and Blood bank registration form -->
+ <section class="organization-registration">
+
+<h2 class="org-title">
+<i class="fa-solid fa-handshake"></i> Partner With Us
+</h2>
+
+<p class="org-subtitle">
+NGOs and Blood Banks can register to help connect donors with patients in need.
+</p>
+
+<div class="org-container">
+
+<!-- NGO Registration -->
+
+<div class="org-card">
+
+<h3><i class="fa-solid fa-people-group"></i> NGO Registration</h3>
+
+<form>
+
+<input type="text" placeholder="NGO Name" required>
+<input type="text" placeholder="Registration Number" required>
+<input type="text" placeholder="City / Location">
+<input type="email" placeholder="Official Email">
+<input type="tel" placeholder="Contact Number">
+<textarea placeholder="About Your NGO"></textarea>
+
+<button type="submit">Register NGO</button>
+
+</form>
+
+</div>
+
+
+<!-- Blood Bank Registration -->
+
+<div class="org-card">
+
+<h3><i class="fa-solid fa-droplet"></i> Blood Bank Registration</h3>
+
+<form>
+
+<input type="text" placeholder="Blood Bank Name" required>
+<input type="text" placeholder="License Number">
+<input type="text" placeholder="Hospital / Organization Name">
+<input type="text" placeholder="City / Location">
+<input type="tel" placeholder="Contact Number">
+<textarea placeholder="Available Blood Types"></textarea>
+
+<button type="submit">Register Blood Bank</button>
+
+</form>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= LIVE REQUESTS BOARD ================= -->
+
+<section class="requests-board">
+
+<div class="container">
+
+<h2 class="board-title">
+<i class="fa-solid fa-droplet"></i>
+Live Blood Requests
+</h2>
+
+
+<!-- FILTER BAR -->
+
+<div class="filter-bar">
+
+<select>
+<option>Blood Group</option>
+<option>A+</option>
+<option>B+</option>
+<option>O+</option>
+<option>AB+</option>
+</select>
+
+<select>
+<option>City</option>
+<option>Delhi</option>
+<option>Noida</option>
+<option>Ghaziabad</option>
+</select>
+
+<select>
+<option>Urgency</option>
+<option>Emergency</option>
+<option>Standard</option>
+</select>
+
+<button class="view-toggle" onclick="toggleView()">
+<i class="fa-solid fa-map"></i> Map View
+</button>
+
+</div>
+
+
+<!-- CARD LIST VIEW -->
+
+<div class="requests-grid" id="listView">
+
+<div class="request-card">
+
+<div class="blood-type">O+</div>
+
+<div class="request-info">
+
+<h3>City Hospital, Ghaziabad</h3>
+
+<p>2 Units Required</p>
+
+<span class="badge emergency">Emergency</span>
+<span class="badge pending">Pending</span>
+
+</div>
+
+<button class="donate-btn">
+<i class="fa-solid fa-hand-holding-droplet"></i>
+I Can Donate
+</button>
+
+</div>
+
+
+
+<div class="request-card">
+
+<div class="blood-type">A+</div>
+
+<div class="request-info">
+
+<h3>Metro Hospital, Noida</h3>
+
+<p>1 Unit Required</p>
+
+<span class="badge standard">Standard</span>
+<span class="badge progress">In Progress</span>
+
+</div>
+
+<button class="donate-btn">
+<i class="fa-solid fa-hand-holding-droplet"></i>
+I Can Donate
+</button>
+
+</div>
+
+</div>
+
+
+<!-- MAP VIEW -->
+
+<div id="mapView" class="map-view"></div>
+
+</div>
+
+</section>
+<!-- our impact -->
+<section class="impact">
+
+<div class="section-title">
+
+<i class="fas fa-heartbeat"></i>
+<h2>Our Impact</h2>
+
+</div>
+
+<div class="impact-wrapper">
+
+<div class="impact-card">
+<i class="fas fa-heart"></i>
+<h3>00</h3>
+<p>Lives Saved</p>
+</div>
+
+<div class="impact-card">
+<i class="fas fa-user"></i>
+<h3>00</h3>
+<p>Active Donors</p>
+</div>
+
+<div class="impact-card">
+<i class="fas fa-hospital"></i>
+<h3>00</h3>
+<p>Hospitals Joined</p>
+</div>
+
+<div class="impact-card">
+<i class="fas fa-map-marker-alt"></i>
+<h3>4</h3>
+<p>Cities Covered</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+
+<!-- how it works -->
+<section class="how-section">
+
+<h2 class="how-title">How It Works</h2>
+
+<div class="how-container">
+
+<!-- STEP 1 -->
+<div class="how-step" onclick="startEligibility()">
+<div class="icon-box">
+<i class="fa-solid fa-user-check"></i>
+</div>
+<h3>Check Eligibility</h3>
+<p>Ensure you meet the age, weight and health requirements before donating blood.</p>
+</div>
+
+<!-- STEP 2 -->
+<div class="how-step">
+<div class="icon-box">
+<i class="fa-solid fa-location-dot"></i>
+</div>
+<h3>Find a Match</h3>
+<p>Our system connects donors with nearby patients needing urgent blood.</p>
+</div>
+
+<!-- STEP 3 -->
+<div class="how-step">
+<div class="icon-box">
+<i class="fa-solid fa-hospital"></i>
+</div>
+<h3>Donate Blood</h3>
+<p>Visit the hospital or clinic and safely donate under professional supervision.</p>
+</div>
+
+<!-- STEP 4 -->
+<div class="how-step">
+<div class="icon-box">
+<i class="fa-solid fa-heart-pulse"></i>
+</div>
+<h3>Save a Life</h3>
+<p>Your donation can save lives and bring hope to families in need.</p>
+</div>
+
+</div>
+
+<!-- Eligibility Modal -->
+<div class="eligibility-modal" id="eligibilityModal">
+
+<div class="eligibility-card">
+
+<h3 id="question"></h3>
+
+<div class="answers">
+<button onclick="answer(true)">Yes</button>
+<button onclick="answer(false)">No</button>
+</div>
+
+<div class="progress">
+<div class="progress-bar" id="progress"></div>
+</div>
+
+<div class="result-area" id="resultArea"></div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- Health & Wellness Section -->
+
+
+<section class="wellness-section">
+
+<h2 class="wellness-title">Health & Wellness Guide</h2>
+
+<div class="wellness-container">
+
+<!-- BEFORE DONATION -->
+
+<div class="wellness-block">
+
+<h3 class="block-title">Before You Donate</h3>
+
+<div class="tips-grid">
+
+<div class="tip-card">
+<div class="tip-icon"><i class="fa-solid fa-glass-water"></i></div>
+<h4>Stay Hydrated</h4>
+<p>Drink plenty of water before donating blood to keep your body hydrated.</p>
+</div>
+
+<div class="tip-card">
+<div class="tip-icon"><i class="fa-solid fa-carrot"></i></div>
+<h4>Eat Iron Rich Food</h4>
+<p>Consume foods like spinach, beans and red meat to maintain iron levels.</p>
+</div>
+
+<div class="tip-card">
+<div class="tip-icon"><i class="fa-solid fa-bed"></i></div>
+<h4>Get Good Sleep</h4>
+<p>Ensure you have at least 7–8 hours of sleep before donating blood.</p>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- AFTER DONATION -->
+
+<div class="wellness-block">
+
+<h3 class="block-title">After You Donate</h3>
+
+<div class="tips-grid">
+
+<div class="tip-card">
+<div class="tip-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+<h4>Avoid Heavy Work</h4>
+<p>Do not perform heavy lifting or strenuous activity for the next 24 hours.</p>
+</div>
+
+<div class="tip-card">
+<div class="tip-icon"><i class="fa-solid fa-cookie-bite"></i></div>
+<h4>Eat Snacks</h4>
+<p>Have sugary snacks or juice if you feel dizzy after donating.</p>
+</div>
+
+<div class="tip-card">
+<div class="tip-icon"><i class="fa-solid fa-bandage"></i></div>
+<h4>Keep Bandage On</h4>
+<p>Keep the bandage on your arm for a few hours to prevent bleeding.</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FAQ -->
+
+<section class="faq-section">
+
+<h2 class="faq-title">Frequently Asked Questions</h2>
+
+<div class="faq-container">
+
+<div class="faq-item">
+
+<div class="faq-question">
+<span>Does donating blood hurt?</span>
+<span class="faq-icon">+</span>
+</div>
+
+<div class="faq-answer">
+<p>
+You may feel a small pinch when the needle is inserted, but most donors report little to no pain.
+</p>
+</div>
+
+</div>
+
+
+<div class="faq-item">
+
+<div class="faq-question">
+<span>Is the equipment safe?</span>
+<span class="faq-icon">+</span>
+</div>
+
+<div class="faq-answer">
+<p>
+Yes. All equipment used for blood donation is sterile, used once and safely disposed.
+</p>
+</div>
+
+</div>
+
+
+<div class="faq-item">
+
+<div class="faq-question">
+<span>How long does the blood donation process take?</span>
+<span class="faq-icon">+</span>
+</div>
+
+<div class="faq-answer">
+<p>
+The donation itself takes about 8–10 minutes. The entire process including rest takes about 30–40 minutes.
+</p>
+</div>
+
+</div>
+
+
+<div class="faq-item">
+
+<div class="faq-question">
+<span>What does the Emergency tag mean?</span>
+<span class="faq-icon">+</span>
+</div>
+
+<div class="faq-answer">
+<p>
+An emergency request means the patient urgently needs blood and nearby donors will be notified immediately.
+</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- newsletters section -->
+
+
+<section class="newsletter-section">
+
+<h2>Join the Blood Donor Community</h2>
+
+<p>
+Stay updated with donation drives, emergency requests and health tips.
+</p>
+
+<div class="newsletter-box">
+
+<input type="email" placeholder="Enter your email">
+
+<button>Subscribe</button>
+
+</div>
+
+</section>
+
+
+
+<!-- Privacy Policy -->
+ <section class="privacy-policy-section">
+
+<div class="privacy-container">
+
+<h2 class="privacy-title">
+<i class="fa-solid fa-shield-halved"></i>
+Our Privacy Policy
+</h2>
+
+<p class="privacy-desc">
+Your personal information is protected and handled with strict privacy standards.
+We ensure transparency, security, and responsible data usage across our platform.
+</p>
+
+<div class="privacy-grid">
+
+<div class="privacy-item">
+<i class="fa-solid fa-lock"></i>
+<h4>Data Encryption</h4>
+<p>All donor and patient information is encrypted and securely stored.</p>
+</div>
+
+<div class="privacy-item">
+<i class="fa-solid fa-user-shield"></i>
+<h4>Consent Based Sharing</h4>
+<p>Your contact details are only shared when you give explicit consent.</p>
+</div>
+
+<div class="privacy-item">
+<i class="fa-solid fa-database"></i>
+<h4>Secure Data Storage</h4>
+<p>We follow strict data protection practices to prevent unauthorized access.</p>
+</div>
+
+<div class="privacy-item">
+<i class="fa-solid fa-eye-slash"></i>
+<h4>No Data Misuse</h4>
+<p>Your information is never sold or used for unrelated purposes.</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+ 
+
+<script>
+
+// ================= HERO SLIDER =================
+
+let slides = document.querySelectorAll(".hero-slide");
+let index = 0;
+
+setInterval(() => {
+
+slides[index].classList.remove("active");
+
+index = (index + 1) % slides.length;
+
+slides[index].classList.add("active");
+
+}, 4000);
+
+
+// ================= BLOOD FORM DIN GENERATOR =================
+
+document.getElementById("bloodForm")?.addEventListener("submit",function(e){
+
+e.preventDefault()
+
+let randomDIN = "DIN-" + Math.floor(100000 + Math.random()*900000)
+
+document.getElementById("dinNumber").innerText = randomDIN
+
+document.getElementById("successModal").style.display="flex"
+
+})
+
+function closeModal(){
+document.getElementById("successModal").style.display="none"
+}
+
+
+// ================= MAP VIEW TOGGLE =================
+
+let mapInitialized=false;
+
+function toggleView(){
+
+let list=document.getElementById("listView")
+let map=document.getElementById("mapView")
+
+if(list.style.display==="none"){
+
+list.style.display="grid"
+map.style.display="none"
+
+}else{
+
+list.style.display="none"
+map.style.display="block"
+
+if(!mapInitialized){
+
+let mapObj=L.map('mapView').setView([28.6692,77.4538],11)
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:19
+}).addTo(mapObj)
+
+L.marker([28.6692,77.4538]).addTo(mapObj)
+.bindPopup("Emergency Request - O+")
+
+mapInitialized=true
+
+}
+
+}
+
+}
+
+
+// ================= OUR IMPACT COUNTER =================
+
+const counters = document.querySelectorAll(".impact-card h3");
+
+counters.forEach(counter => {
+
+const target = +counter.innerText;
+let count = 0;
+
+const speed = target / 200;
+
+function update(){
+
+count += speed;
+
+if(count < target){
+
+counter.innerText = Math.floor(count);
+requestAnimationFrame(update);
+
+}else{
+
+counter.innerText = target;
+
+}
+
+}
+
+update();
+
+});
+
+
+// ================= ELIGIBILITY QUIZ =================
+
+const questions = [
+
+"Are you between 18 and 65 years old?",
+"Is your weight above 50kg?",
+"Are you feeling healthy today?",
+"Have you slept well in the last 24 hours?",
+"Have you not donated blood in the last 3 months?",
+"Do you have no major illness?",
+"Have you not taken antibiotics recently?",
+"Is your blood pressure normal?"
+
+]
+
+let current = 0
+let score = 0
+
+function startEligibility(){
+
+document.getElementById("eligibilityModal").style.display="flex"
+
+current = 0
+score = 0
+
+document.querySelector(".answers").style.display="block"
+document.querySelector(".progress").style.display="block"
+document.getElementById("resultArea").innerHTML=""
+
+showQuestion()
+
+}
+
+function showQuestion(){
+
+document.getElementById("question").innerText = questions[current]
+
+let progress = (current/questions.length)*100
+
+document.getElementById("progress").style.width = progress+"%"
+
+}
+
+function answer(ans){
+
+if(ans) score++
+
+current++
+
+if(current < questions.length){
+
+showQuestion()
+
+}else{
+
+showResult()
+
+}
+
+}
+
+function showResult(){
+
+let percent = Math.round((score/questions.length)*100)
+
+document.getElementById("question").innerHTML="Eligibility Result"
+
+document.querySelector(".answers").style.display="none"
+
+document.querySelector(".progress").style.display="none"
+
+document.getElementById("resultArea").innerHTML=
+
+`
+<div class="result-meter">${percent}%</div>
+<p style="margin-top:15px;font-size:16px;color:#555;">
+${percent>=70 ? "You meet the basic eligibility requirements to donate blood." : "You may not be eligible to donate blood right now."}
+</p>
+`
+
+}
+
+
+// ================= FAQ ACCORDION =================
+
+document.querySelectorAll(".faq-question").forEach(question => {
+
+question.addEventListener("click", () => {
+
+const item = question.parentElement
+const answer = question.nextElementSibling
+
+document.querySelectorAll(".faq-item").forEach(i=>{
+
+if(i !== item){
+
+i.classList.remove("active")
+i.querySelector(".faq-answer").style.maxHeight = null
+
+}
+
+})
+
+item.classList.toggle("active")
+
+if(answer.style.maxHeight){
+
+answer.style.maxHeight = null
+
+}else{
+
+answer.style.maxHeight = answer.scrollHeight + "px"
+
+}
+
+})
+
+})
+
+</script>
+
+{% endblock %}
